@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>06 Milestone 4 - Final Adaptive + Platform States</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="route route--milestone4">
+    <header class="route__header">
+      <div>
+        <p class="eyebrow">ChorePilot / page 06</p>
+        <h1>Milestone 4 - Final adaptive and platform states</h1>
+        <p class="route__copy">
+          The final milestone completes the production package with platform
+          notifications, expanded dashboard and report layouts, account and billing
+          settings, and the key offline, error, loading, and empty states.
+        </p>
+      </div>
+      <a class="route__link" href="./foundations.html">Back to foundations</a>
+    </header>
+
+    <main class="board board--light section-stack">
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Overview</span>
+            <h3>20 final adaptive and state screens</h3>
+            <p>
+              This board proves the product scales from phone notifications to
+              expanded dashboard workspaces while keeping one coherent identity,
+              consistent drawer logic, and polished system feedback.
+            </p>
+          </div>
+          <div class="surface-card">
+            <strong>Design additions</strong>
+            <span>Snackbars, dialogs, bottom sheets, Android and iOS notification layouts, wider data layouts, and final system states.</span>
+          </div>
+        </header>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Platform alerts</span>
+            <h3>Notification center and OS-specific notifications</h3>
+            <p>
+              Notifications stay specific and useful: title, due time, assignee or
+              you-label, proof context when needed, and quick actions that match
+              the platform.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--3">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Notification center - compact light</h4>
+                <p>In-app notification inbox with clear grouping.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 01</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Notification center</h5><span>Today and recent household alerts</span></div>
+                  <span class="badge badge--warning">4 new</span>
+                </div>
+                <div class="notification-stack">
+                  <div class="notification-card">
+                    <div class="notification-card__row">
+                      <div class="mini-icon">KC</div>
+                      <div><strong>Kitchen cleanup is due at 6:00 PM</strong><span class="caption">Emma - proof required</span></div>
+                      <span class="badge">Due</span>
+                    </div>
+                  </div>
+                  <div class="notification-card">
+                    <div class="notification-card__row">
+                      <div class="mini-icon">TR</div>
+                      <div><strong>Take out trash starts in 15 minutes</strong><span class="caption">You - quick action available</span></div>
+                      <span class="badge badge--success">Soon</span>
+                    </div>
+                  </div>
+                  <div class="notification-card">
+                    <div class="notification-card__row">
+                      <div class="mini-icon">ST</div>
+                      <div><strong>River House kept the streak alive</strong><span class="caption">7-day household streak</span></div>
+                      <span class="badge">Win</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Notification center - compact dark</h4>
+                <p>Dark notification inbox with calm contrast.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 02</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="surface-card">
+                  <strong>Notification center</strong>
+                  <span>Quiet hours are on, so only high-importance alerts show first.</span>
+                </div>
+                <div class="notification-stack">
+                  <div class="notification-card">
+                    <div class="notification-card__row">
+                      <div class="mini-icon">PF</div>
+                      <div><strong>Proof required for trash duty</strong><span class="caption">Photo needed before marking complete</span></div>
+                      <span class="badge badge--warning">Proof</span>
+                    </div>
+                  </div>
+                  <div class="notification-card">
+                    <div class="notification-card__row">
+                      <div class="mini-icon">AP</div>
+                      <div><strong>Emma completed bathroom cleaning</strong><span class="caption">Proof is ready for admin review</span></div>
+                      <span class="badge">Review</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Android notification collapsed</h4>
+                <p>Compact Android alert with the right action affordances.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 03</span>
+            </div>
+            <section class="notification-surface notification-surface--dark">
+              <div class="notification-card">
+                <div class="notification-card__row">
+                  <div class="mini-icon">CP</div>
+                  <div><strong>Kitchen cleanup is due at 6:00 PM</strong><span class="caption">Emma - proof required</span></div>
+                  <span class="badge">6:00</span>
+                </div>
+                <div class="notification-actions">
+                  <span class="ghost-button">Mark done</span>
+                  <span class="ghost-button">Snooze</span>
+                  <span class="ghost-button">View</span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Android notification expanded</h4>
+                <p>Expanded Android state with proof and action context.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 04</span>
+            </div>
+            <section class="notification-surface notification-surface--dark">
+              <div class="notification-card">
+                <div class="notification-card__row">
+                  <div class="mini-icon">CP</div>
+                  <div><strong>Proof required for kitchen cleanup</strong><span class="caption">Emma - due at 6:00 PM - 15 min chore</span></div>
+                  <span class="badge badge--warning">Proof</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Why this matters</strong>
+                  <span>The sink and table need to be visible before dinner reset is marked complete.</span>
+                </div>
+                <div class="notification-actions">
+                  <span class="ghost-button">Mark done</span>
+                  <span class="ghost-button">Snooze 15m</span>
+                  <span class="ghost-button">Open chore</span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>iOS notification preview</h4>
+                <p>Polished iOS-style preview with concise copy.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 05</span>
+            </div>
+            <section class="notification-surface notification-surface--light">
+              <div class="notification-card">
+                <div class="notification-card__row">
+                  <div class="mini-icon">CP</div>
+                  <div><strong>Next chore starts in 15 minutes</strong><span class="caption">Take out trash - You</span></div>
+                  <span class="badge badge--success">Now</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Preview image</strong>
+                  <span>Optional chore art or proof hint can live here when useful.</span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Persistent reminder / service concept</h4>
+                <p>Ongoing household reminder surface for high-priority timing.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 06</span>
+            </div>
+            <section class="notification-surface notification-surface--light">
+              <div class="notification-card">
+                <div class="notification-card__row">
+                  <div class="mini-icon">RM</div>
+                  <div><strong>River House active reminder</strong><span class="caption">2 chores due before 7:30 PM tonight</span></div>
+                  <span class="badge">Live</span>
+                </div>
+                <div class="notification-actions">
+                  <span class="ghost-button">Open dashboard</span>
+                  <span class="ghost-button">Mute for 1h</span>
+                </div>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Adaptive boards</span>
+            <h3>Expanded dashboard, chore board, and wide reports</h3>
+            <p>
+              These wider layouts reuse the same drawer and information hierarchy.
+              Nothing becomes an unrelated desktop app; it simply gains stronger
+              supporting panes and more visible data.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--3">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Expanded dashboard - light with reusable drawer</h4>
+                <p>Primary workspace with summary, central board, and context pane.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 07</span>
+            </div>
+            <section class="desktop desktop--light">
+              <div class="desktop__layout">
+                <aside class="drawer">
+                  <div class="drawer__header">
+                    <div class="household-mark__badge">CP</div>
+                    <div class="drawer__label"><strong>River House</strong><span>Expanded dashboard</span></div>
+                  </div>
+                  <div class="nav-list">
+                    <div class="drawer__item is-active">
+                      <div class="drawer__icon">D</div>
+                      <div class="drawer__label"><strong>Dashboard</strong><span>Today and next up</span></div>
+                      <span class="badge">Now</span>
+                    </div>
+                    <div class="drawer__item">
+                      <div class="drawer__icon">C</div>
+                      <div class="drawer__label"><strong>Chores</strong><span>Schedule board</span></div>
+                      <span class="badge">12</span>
+                    </div>
+                    <div class="drawer__item">
+                      <div class="drawer__icon">R</div>
+                      <div class="drawer__label"><strong>Reports</strong><span>Weekly and yearly</span></div>
+                      <span class="badge badge--success">Up</span>
+                    </div>
+                  </div>
+                </aside>
+                <div class="desktop__main">
+                  <div class="card-grid">
+                    <div class="surface-card surface-card--strong"><strong>Household completion</strong><span>86% on-time this week</span></div>
+                    <div class="surface-card"><strong>Pending approvals</strong><span>2 proof reviews waiting</span></div>
+                  </div>
+                  <div class="task-list">
+                    <div class="task-item surface-card">
+                      <div class="task-item__icon">NU</div>
+                      <div class="task-item__meta"><strong>Next up: Kitchen cleanup</strong><span>Emma - due 6:00 PM - proof required</span></div>
+                      <span class="badge">Next</span>
+                    </div>
+                    <div class="task-item surface-card">
+                      <div class="task-item__icon">OD</div>
+                      <div class="task-item__meta"><strong>Overdue: Trash duty</strong><span>Erick - slipped by 20 minutes</span></div>
+                      <span class="badge badge--error">Late</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Context pane</strong>
+                    <span>Show selected chore detail, comments, or reminders without losing the dashboard board.</span>
+                  </div>
+                  <div class="surface-card">
+                    <strong>Weekly trend</strong>
+                    <span>Completion is up 7 points versus last week.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Expanded dashboard - dark with reusable drawer</h4>
+                <p>Dark workspace with the same drawer geometry and logic.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 08</span>
+            </div>
+            <section class="desktop desktop--dark">
+              <div class="desktop__layout">
+                <aside class="drawer">
+                  <div class="drawer__header">
+                    <div class="household-mark__badge">CP</div>
+                    <div class="drawer__label"><strong>River House</strong><span>Premium household</span></div>
+                  </div>
+                  <div class="nav-list">
+                    <div class="drawer__item is-active">
+                      <div class="drawer__icon">D</div>
+                      <div class="drawer__label"><strong>Dashboard</strong><span>Tonight's overview</span></div>
+                      <span class="badge">Now</span>
+                    </div>
+                    <div class="drawer__item">
+                      <div class="drawer__icon">F</div>
+                      <div class="drawer__label"><strong>Family</strong><span>Members and roles</span></div>
+                      <span class="badge">4</span>
+                    </div>
+                    <div class="drawer__item">
+                      <div class="drawer__icon">S</div>
+                      <div class="drawer__label"><strong>Settings</strong><span>Theme and accessibility</span></div>
+                      <span class="badge">New</span>
+                    </div>
+                  </div>
+                </aside>
+                <div class="desktop__main">
+                  <div class="surface-card">
+                    <strong>Tonight's focus</strong>
+                    <span>Two kitchen chores and one proof approval are the only high-priority items left.</span>
+                  </div>
+                  <div class="line-chart">
+                    <span style="height:44px;"></span>
+                    <span style="height:70px;"></span>
+                    <span style="height:62px;"></span>
+                    <span style="height:92px;"></span>
+                    <span style="height:78px;"></span>
+                    <span style="height:106px;"></span>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Selected insight</strong>
+                    <span>Friday is still the most fragile household day for chore completion.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Expanded chore board - light</h4>
+                <p>Wider schedule board with grouped assignments.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 09</span>
+            </div>
+            <section class="desktop desktop--light">
+              <div class="wide-report">
+                <div class="desktop__main">
+                  <div class="surface-card surface-card--strong">
+                    <strong>Expanded chore board</strong>
+                    <span>Grouped by Today, Due soon, Completed, and proof review.</span>
+                  </div>
+                  <div class="three-up">
+                    <div class="surface-card"><strong>Today</strong><span>Kitchen cleanup, trash duty, feed the dog</span></div>
+                    <div class="surface-card"><strong>Due soon</strong><span>Fold laundry, wipe counters</span></div>
+                    <div class="surface-card"><strong>Completed</strong><span>Sweep living room, load dishwasher</span></div>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Selected task detail</strong>
+                    <span>Proof requirement, subtasks, notes, and reminder controls.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Expanded chore board - dark</h4>
+                <p>Dark schedule board with stable grouping and hierarchy.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 10</span>
+            </div>
+            <section class="desktop desktop--dark">
+              <div class="wide-report">
+                <div class="desktop__main">
+                  <div class="surface-card">
+                    <strong>Expanded chore board</strong>
+                    <span>Priority is visible at a glance without introducing empty desktop-only chrome.</span>
+                  </div>
+                  <div class="three-up">
+                    <div class="surface-card"><strong>Pending</strong><span>3 active chores before 8:00 PM</span></div>
+                    <div class="surface-card"><strong>Proof queue</strong><span>2 submissions waiting</span></div>
+                    <div class="surface-card"><strong>Completed</strong><span>5 done today</span></div>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Quick actions</strong>
+                    <span>Approve proof, snooze reminder, or reassign a task.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Wide-layout reports page - light</h4>
+                <p>Wide report page with labeled charts and side explanation.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 11</span>
+            </div>
+            <section class="desktop desktop--light">
+              <div class="wide-report">
+                <div class="desktop__main">
+                  <div class="surface-card surface-card--strong">
+                    <strong>Weekly completion rate</strong>
+                    <span>Apr 8 to Apr 14, measured in completed chores versus assigned chores.</span>
+                  </div>
+                  <div class="bar-chart">
+                    <span style="height:86px;"></span>
+                    <span style="height:102px;"></span>
+                    <span style="height:124px;"></span>
+                    <span style="height:80px;"></span>
+                    <span style="height:132px;"></span>
+                    <span style="height:108px;"></span>
+                    <span style="height:94px;"></span>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Why it matters</strong>
+                    <span>Completion is healthiest when kitchen resets finish before dinner and trash is not left to the end of the night.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Wide-layout reports page - dark</h4>
+                <p>Dark wide report state with strong contrast and context.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 12</span>
+            </div>
+            <section class="desktop desktop--dark">
+              <div class="wide-report">
+                <div class="desktop__main">
+                  <div class="surface-card">
+                    <strong>Family comparison trend</strong>
+                    <span>Yearly totals and contribution share by household member.</span>
+                  </div>
+                  <div class="compare-table">
+                    <span>Erick 31%</span>
+                    <span>Emma 37%</span>
+                    <span>Noah 32%</span>
+                  </div>
+                  <div class="heatmap">
+                    <span class="is-mid"></span><span class="is-strong"></span><span></span><span></span><span class="is-mid"></span><span></span><span></span><span class="is-strong"></span><span></span><span></span><span class="is-mid"></span><span></span>
+                    <span></span><span></span><span class="is-mid"></span><span></span><span></span><span class="is-strong"></span><span></span><span></span><span class="is-mid"></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Trend summary</strong>
+                    <span>Consistency recovered after spring break and stabilized once reminder quiet hours were tuned.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Settings and state</span>
+            <h3>Account, theme, accessibility, billing, and final system states</h3>
+            <p>
+              The product finishes with settings that feel real, plus resilient
+              states for bad connectivity, errors, loading, and empty notification
+              history.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--4">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Account settings screen</h4>
+                <p>Profile, household identity, and sign-in preferences.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 13</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Account settings</h5><span>Profile and sign-in</span></div>
+                </div>
+                <div class="settings-list">
+                  <div class="settings-row">
+                    <div class="settings-row__meta"><strong>Profile name</strong><span>Erick Sorto</span></div>
+                    <span class="badge">Edit</span>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row__meta"><strong>Email</strong><span>erick@chorepilot.app</span></div>
+                    <span class="badge">Change</span>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row__meta"><strong>Household name</strong><span>River House</span></div>
+                    <span class="badge">Update</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Theme settings screen</h4>
+                <p>Light, dark, and follow-system selection.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 14</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="surface-card surface-card--strong">
+                  <strong>Theme settings</strong>
+                  <span>Keep the same art family and layout across theme choices.</span>
+                </div>
+                <div class="choice-stack">
+                  <div class="choice-row">
+                    <div class="choice-row__icon">LT</div>
+                    <div><h4>Light</h4><p>Bright daytime household view.</p></div>
+                    <div class="choice-row__check"></div>
+                  </div>
+                  <div class="choice-row is-selected">
+                    <div class="choice-row__icon">SY</div>
+                    <div><h4>Follow system</h4><p>Switch automatically with device mode.</p></div>
+                    <div class="choice-row__check"></div>
+                  </div>
+                  <div class="choice-row">
+                    <div class="choice-row__icon">DK</div>
+                    <div><h4>Dark</h4><p>Calmer evening household mode.</p></div>
+                    <div class="choice-row__check"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Accessibility settings screen</h4>
+                <p>Large tap targets, labels, and explicit motion choices.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 15</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="settings-list">
+                  <div class="settings-row">
+                    <div class="settings-row__meta"><strong>Larger text</strong><span>Support dynamic type with larger content sizing.</span></div>
+                    <div class="toggle is-on"></div>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row__meta"><strong>Reduce motion</strong><span>Use gentler state changes and fewer celebratory lifts.</span></div>
+                    <div class="toggle"></div>
+                  </div>
+                  <div class="settings-row">
+                    <div class="settings-row__meta"><strong>Always show text labels</strong><span>Pair icons with readable wording in dense areas.</span></div>
+                    <div class="toggle is-on"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Household billing / premium admin page</h4>
+                <p>Plan status, invoices, and household member coverage.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 16</span>
+            </div>
+            <section class="tablet tablet--light">
+              <div class="billing-stack">
+                <div class="billing-card">
+                  <strong>Annual premium</strong>
+                  <span>Renews on Apr 10, 2027 for the full household.</span>
+                </div>
+                <div class="billing-card">
+                  <strong>Covered members</strong>
+                  <span>Erick, Emma, Noah, and one pending invite slot.</span>
+                </div>
+                <div class="billing-card">
+                  <strong>Invoices and payment</strong>
+                  <span>Visa ending 2142 with invoice export available.</span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Offline state</h4>
+                <p>Useful offline explanation with a clear retry posture.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 17</span>
+            </div>
+            <section class="phone phone--warm">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="state-illustration">
+                <img src="../imagegen/m4-offline-state.png" alt="Offline state illustration" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Connection lost</p>
+                  <h4 class="screen-title">You're offline right now.</h4>
+                  <p class="screen-copy">Recent chores stay visible and can be marked locally. Proof uploads and sync will finish once the connection returns.</p>
+                </div>
+                <button class="button button--teal">Retry connection</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Error state</h4>
+                <p>Calm error messaging with recovery path.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 18</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="state-illustration">
+                <img src="../imagegen/m4-error-loading-support.png" alt="Error state illustration" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Something went wrong</p>
+                  <h4 class="screen-title">We couldn't load this household view.</h4>
+                  <p class="screen-copy">Try again in a moment. Your completed chores are safe, and the last synced data can still be reviewed.</p>
+                </div>
+                <div class="cta-stack">
+                  <button class="button">Try again</button>
+                  <button class="button-secondary">Open cached view</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Loading state</h4>
+                <p>Skeleton-based loading without clipped labels.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 19</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="state-illustration">
+                <img src="../imagegen/m4-error-loading-support.png" alt="Loading state illustration" />
+              </div>
+              <div class="content-stack">
+                <div class="surface-card">
+                  <strong>Loading today's plan</strong>
+                  <span>Fetching chores, member updates, and reminders.</span>
+                </div>
+                <div class="skeleton-list">
+                  <div class="skeleton-line"></div>
+                  <div class="skeleton-line is-mid"></div>
+                  <div class="skeleton-line"></div>
+                  <div class="skeleton-line is-short"></div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Empty notifications state</h4>
+                <p>Illustrated quiet-state for a cleared inbox.</p>
+              </div>
+              <span class="screen-tile__label">M4 / 20</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="empty-illustration">
+                <img src="../imagegen/m4-notifications-empty.png" alt="Empty notifications illustration" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">All clear</p>
+                  <h4 class="screen-title">No notifications yet.</h4>
+                  <p class="screen-copy">When chores become due, proof is submitted, or the household hits a streak, those updates will appear here.</p>
+                </div>
+                <button class="button">Back to dashboard</button>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

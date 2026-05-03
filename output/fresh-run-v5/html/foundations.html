@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>00 Foundations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="route route--systems">
+    <header class="route__header">
+      <div>
+        <p class="eyebrow">ChorePilot / page 00</p>
+        <h1>Foundations and reusable systems</h1>
+        <p class="route__copy">
+          Fresh v5 design foundations for the new file only: color roles,
+          typography, spacing, icon samples, component inventory, and the
+          reusable shell patterns that carry through compact, medium, and
+          expanded screens.
+        </p>
+      </div>
+      <a class="route__link" href="./milestone-1.html">Next: Milestone 1</a>
+    </header>
+
+    <main class="board board--light section-stack">
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Coverage</span>
+            <h3>System-first setup before the milestone boards</h3>
+            <p>
+              These foundations lock the light and dark roles, the Material-like
+              shell structure, and the component language so every later board can
+              stay production-oriented instead of drifting screen to screen.
+            </p>
+          </div>
+          <div class="link-card">
+            <a href="./onboarding.html">
+              <strong>Standalone continuity</strong>
+              <span class="mini-copy">Onboarding and premium already live in the new file.</span>
+            </a>
+          </div>
+        </header>
+        <div class="compare-grid">
+          <div class="surface-card surface-card--strong">
+            <strong>Required sections covered</strong>
+            <span>Light tokens, dark tokens, typography table, spacing scale, icon samples, component inventory, reusable app shell.</span>
+          </div>
+          <div class="surface-card">
+            <strong>Adaptive direction</strong>
+            <span>Compact is 390 to 412 wide, medium uses wider content stacks, and expanded relies on a stable drawer plus a three-column working layout.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Tokens</span>
+            <h3>Semantic light and dark color roles</h3>
+            <p>
+              The palette stays calm and readable: indigo for primary ownership,
+              teal for coordination and success, amber for reward and premium
+              emphasis, and slate neutrals for stable household utility UI.
+            </p>
+          </div>
+        </header>
+        <div class="token-grid">
+          <div class="token-card">
+            <p class="eyebrow">Light roles</p>
+            <div class="component-grid">
+              <div class="swatch">
+                <div class="swatch__color" style="background:#4f46e5;"></div>
+                <div class="swatch__meta"><strong>Primary</strong><span>#4F46E5</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#14b8a6;"></div>
+                <div class="swatch__meta"><strong>Secondary</strong><span>#14B8A6</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#f59e0b;"></div>
+                <div class="swatch__meta"><strong>Tertiary</strong><span>#F59E0B</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#f8fafc;"></div>
+                <div class="swatch__meta"><strong>Background</strong><span>#F8FAFC</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#ffffff;"></div>
+                <div class="swatch__meta"><strong>Surface</strong><span>#FFFFFF</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#111827;"></div>
+                <div class="swatch__meta"><strong>On surface</strong><span>#111827</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="token-card">
+            <p class="eyebrow">Dark roles</p>
+            <div class="component-grid">
+              <div class="swatch">
+                <div class="swatch__color" style="background:#c7d2fe;"></div>
+                <div class="swatch__meta"><strong>Primary container</strong><span>#C7D2FE</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#5eead4;"></div>
+                <div class="swatch__meta"><strong>Support accent</strong><span>#5EEAD4</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#fcd34d;"></div>
+                <div class="swatch__meta"><strong>Reward accent</strong><span>#FCD34D</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#0b1220;"></div>
+                <div class="swatch__meta"><strong>Dark background</strong><span>#0B1220</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#111827;"></div>
+                <div class="swatch__meta"><strong>Dark surface</strong><span>#111827</span></div>
+              </div>
+              <div class="swatch">
+                <div class="swatch__color" style="background:#e5e7eb;"></div>
+                <div class="swatch__meta"><strong>Dark text</strong><span>#E5E7EB</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Typography</span>
+            <h3>Readable type ramp and spacing rhythm</h3>
+            <p>
+              Display stays warm and aspirational for family-facing moments, while
+              the rest of the product leans on dense but calm utility copy.
+            </p>
+          </div>
+        </header>
+        <div class="type-table">
+          <div class="type-row type-row--display">
+            <strong>Display</strong>
+            <span>Plus Jakarta Sans / 36 / 700</span>
+          </div>
+          <div class="type-row type-row--title">
+            <strong>Title</strong>
+            <span>Plus Jakarta Sans / 22 / 700</span>
+          </div>
+          <div class="type-row type-row--body">
+            <strong>Body</strong>
+            <span>Inter / 16 / 500</span>
+          </div>
+          <div class="type-row type-row--label">
+            <strong>Label</strong>
+            <span>Inter / 12 / 800</span>
+          </div>
+        </div>
+        <div class="spacing-scale" style="margin-top:14px;">
+          <div class="spacing-step">
+            <strong>8 pt</strong>
+            <div class="spacing-step__bar" style="width:72px;"></div>
+          </div>
+          <div class="spacing-step">
+            <strong>16 pt</strong>
+            <div class="spacing-step__bar" style="width:128px;"></div>
+          </div>
+          <div class="spacing-step">
+            <strong>24 pt</strong>
+            <div class="spacing-step__bar" style="width:180px;"></div>
+          </div>
+          <div class="spacing-step">
+            <strong>32 pt</strong>
+            <div class="spacing-step__bar" style="width:232px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Shells</span>
+            <h3>Reusable app shell components</h3>
+            <p>
+              One top app bar system, one bottom navigation bar, one date
+              carousel, and one reusable drawer define the product scaffolding
+              before screen-specific content is layered in.
+            </p>
+          </div>
+        </header>
+        <div class="shell-grid">
+          <div class="component-board component-board--light">
+            <div class="top-bar">
+              <div class="household-mark">
+                <div class="household-mark__badge">CP</div>
+                <div>
+                  <h5>Good evening, Erick</h5>
+                  <span class="caption">4 chores left before reset time</span>
+                </div>
+              </div>
+              <div class="chip-row">
+                <span class="chip">Streak +7</span>
+                <span class="chip-ghost">Family</span>
+              </div>
+            </div>
+            <div class="day-strip">
+              <div class="day-pill"><strong>Mon</strong><span>08</span></div>
+              <div class="day-pill"><strong>Tue</strong><span>09</span></div>
+              <div class="day-pill is-today"><strong>Today</strong><span>10</span></div>
+              <div class="day-pill"><strong>Thu</strong><span>11</span></div>
+              <div class="day-pill"><strong>Fri</strong><span>12</span></div>
+            </div>
+            <div class="nav-bar nav-bar--5" style="margin-top:16px;">
+              <div class="nav-bar__item is-active">Home</div>
+              <div class="nav-bar__item">Chores</div>
+              <div class="nav-bar__item">Family</div>
+              <div class="nav-bar__item">Reports</div>
+              <div class="nav-bar__item">Menu</div>
+            </div>
+          </div>
+          <div class="component-board component-board--dark">
+            <div class="desktop__layout">
+              <aside class="drawer">
+                <div class="drawer__header">
+                  <div class="household-mark__badge">CP</div>
+                  <div class="drawer__label">
+                    <strong>River House</strong>
+                    <span>Premium household</span>
+                  </div>
+                </div>
+                <div class="nav-list">
+                  <div class="drawer__item is-active">
+                    <div class="drawer__icon">D</div>
+                    <div class="drawer__label"><strong>Dashboard</strong><span>Today and next up</span></div>
+                    <span class="badge">Now</span>
+                  </div>
+                  <div class="drawer__item">
+                    <div class="drawer__icon">C</div>
+                    <div class="drawer__label"><strong>Chores</strong><span>Schedule and rules</span></div>
+                    <span class="badge badge--warning">12</span>
+                  </div>
+                  <div class="drawer__item">
+                    <div class="drawer__icon">R</div>
+                    <div class="drawer__label"><strong>Reports</strong><span>Weekly and yearly trends</span></div>
+                    <span class="badge badge--success">Up</span>
+                  </div>
+                </div>
+              </aside>
+              <div class="desktop__main">
+                <div class="surface-card surface-card--strong">
+                  <strong>Adaptive rule</strong>
+                  <span>Expanded layouts keep the same product identity while adding a stable side navigation and meaningful secondary panes.</span>
+                </div>
+                <div class="card-grid">
+                  <div class="surface-card"><strong>Command center</strong><span>Primary tasks and progress live in the main column.</span></div>
+                  <div class="surface-card"><strong>Context pane</strong><span>Selected chores, member detail, or support insights live on the right.</span></div>
+                </div>
+              </div>
+              <div class="desktop__aside">
+                <div class="surface-card">
+                  <strong>Detail pane</strong>
+                  <span>Notes, proof previews, or premium admin context appear here.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Inventory</span>
+            <h3>Component inventory and feedback surfaces</h3>
+            <p>
+              Buttons, badges, cards, inputs, dialogs, bottom sheets, and chart
+              modules are all represented so the milestone boards can reuse them
+              without redesigning the same interaction over and over.
+            </p>
+          </div>
+        </header>
+        <div class="component-grid">
+          <div class="component-sample">
+            <p class="eyebrow">Buttons</p>
+            <div class="button-row">
+              <span class="button-chip button-chip--filled">Filled</span>
+              <span class="button-chip button-chip--tonal">Tonal</span>
+              <span class="button-chip button-chip--outline">Outline</span>
+              <span class="button-chip button-chip--text">Text</span>
+              <span class="button-chip button-chip--destructive">Delete</span>
+            </div>
+          </div>
+          <div class="component-sample">
+            <p class="eyebrow">Chips and badges</p>
+            <div class="chip-row">
+              <span class="chip">Filter</span>
+              <span class="chip chip--selected">Selected</span>
+              <span class="badge badge--warning">Proof</span>
+              <span class="badge badge--error">Overdue</span>
+              <span class="badge badge--success">Done</span>
+            </div>
+          </div>
+          <div class="component-sample">
+            <p class="eyebrow">Inputs</p>
+            <div class="field">
+              <label>Invite code</label>
+              <div class="field__input mono">H7K9-P4</div>
+            </div>
+            <div class="field" style="margin-top:10px;">
+              <label>Image upload slot</label>
+              <div class="field__slot">Tap to add proof photo</div>
+            </div>
+          </div>
+          <div class="component-sample">
+            <p class="eyebrow">Feedback</p>
+            <div class="dialog-stack">
+              <div class="snackbar">
+                <strong>Trash duty completed</strong>
+                <span class="ghost-button">Undo</span>
+              </div>
+              <div class="dialog-surface">
+                <strong>Approve this proof?</strong>
+                <span class="mini-copy">The note and photo will stay attached to the chore history.</span>
+              </div>
+              <div class="bottom-sheet">
+                <strong>Reminder options</strong>
+                <span class="mini-copy">Quiet, standard, or high-priority household alerts.</span>
+              </div>
+            </div>
+          </div>
+          <div class="component-sample">
+            <p class="eyebrow">Charts</p>
+            <div class="chart-stack">
+              <div class="bar-chart">
+                <span style="height:68px;"></span>
+                <span style="height:92px;"></span>
+                <span style="height:124px;"></span>
+                <span style="height:84px;"></span>
+                <span style="height:136px;"></span>
+                <span style="height:98px;"></span>
+                <span style="height:118px;"></span>
+              </div>
+              <div class="line-chart">
+                <span style="height:42px;"></span>
+                <span style="height:66px;"></span>
+                <span style="height:58px;"></span>
+                <span style="height:88px;"></span>
+                <span style="height:78px;"></span>
+                <span style="height:102px;"></span>
+              </div>
+            </div>
+          </div>
+          <div class="component-sample">
+            <p class="eyebrow">Icon samples</p>
+            <div class="icon-grid">
+              <div class="icon-sample center">HM</div>
+              <div class="icon-sample center">CH</div>
+              <div class="icon-sample center">FM</div>
+              <div class="icon-sample center">RP</div>
+              <div class="icon-sample center">PF</div>
+              <div class="icon-sample center">NW</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

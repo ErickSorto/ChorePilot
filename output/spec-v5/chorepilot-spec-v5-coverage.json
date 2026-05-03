@@ -1,0 +1,570 @@
+{
+  "source": {
+    "pdf_path": "/Users/ericksorto/Downloads/Family Chore App Mockup Spec (5).pdf",
+    "extracted_text_path": "/Users/ericksorto/AndroidStudioProjects/ChorePilot/output/spec-v5/spec-v5.txt",
+    "version_label": "v5",
+    "pdf_page_count": 52,
+    "fresh_figma_file_key": "Rl9j8jMutXQrTsIACC7Efi",
+    "fresh_figma_file_url": "https://www.figma.com/design/Rl9j8jMutXQrTsIACC7Efi"
+  },
+  "workflow_nonnegotiables": [
+    "Build all screens in HTML and CSS first.",
+    "Use AI image generation only for artwork and decorative assets.",
+    "Verify screens in browser screenshots before Figma.",
+    "Capture into a fresh, organized Figma file.",
+    "Do not hand-build placeholder vector UI in Figma when a working HTML version already exists.",
+    "This is not a pilot; complete the full spec unless the user explicitly requests a subset.",
+    "Restate coverage before building and use it as the execution checklist.",
+    "Do not use art-assignment lists as the screen inventory.",
+    "If any required screen or page is missing, report the result as PARTIAL."
+  ],
+  "failure_conditions": [
+    "Onboarding has fewer than 13 required screens plus the optional review handoff.",
+    "Premium has fewer than 6 total screens in the standalone premium page.",
+    "Onboarding screen 11 is not a connected infographic timeline with a visible line and milestone cards.",
+    "Premium screen 2 is not a connected infographic timeline with a visible line and milestone icons.",
+    "Onboarding screen 12 is not a trust/testimonials screen.",
+    "Premium price appears before screen 4 offer sheet.",
+    "Any required Figma page is missing.",
+    "Any required reusable system is missing."
+  ],
+  "figma_pages": [
+    {
+      "name": "00 Foundations",
+      "type": "foundations",
+      "required_screen_count": 0,
+      "required_sections": [
+        "light color tokens group",
+        "dark color tokens group",
+        "typography table",
+        "spacing scale",
+        "icon samples",
+        "component inventory",
+        "reusable app shell components"
+      ],
+      "status": "completed"
+    },
+    {
+      "name": "01 Hero + Onboarding",
+      "type": "standalone_flow",
+      "required_screen_count": 13,
+      "optional_screen_count": 1,
+      "required_generated_art_count": 6,
+      "status": "completed"
+    },
+    {
+      "name": "02 Paywall + Premium Flow",
+      "type": "standalone_flow",
+      "required_screen_count": 6,
+      "required_generated_art_count": 5,
+      "optional_generated_art_count": 1,
+      "status": "completed"
+    },
+    {
+      "name": "03 Milestone 1 - Core Experience",
+      "type": "milestone",
+      "required_screen_count": 18,
+      "required_generated_art_count": 4,
+      "status": "completed"
+    },
+    {
+      "name": "04 Milestone 2 - Family + Chore Management",
+      "type": "milestone",
+      "required_screen_count": 21,
+      "required_generated_art_count": 4,
+      "status": "completed"
+    },
+    {
+      "name": "05 Milestone 3 - Reports + Premium",
+      "type": "milestone",
+      "required_screen_count": 15,
+      "required_generated_art_count": 4,
+      "status": "completed"
+    },
+    {
+      "name": "06 Milestone 4 - Final Adaptive + Platform States",
+      "type": "milestone",
+      "required_screen_count": 20,
+      "required_generated_art_count": 3,
+      "status": "completed"
+    }
+  ],
+  "required_reusable_systems": [
+    "Top App Bar system",
+    "Bottom Navigation Bar system",
+    "Navigation Drawer system",
+    "day/date carousel for schedule-related compact screens",
+    "proof review queue and proof detail workflow",
+    "global chore library / template picker",
+    "onboarding roadmap infographic",
+    "premium trial clarity infographic",
+    "trust/testimonial screen",
+    "premium rescue gift box flow"
+  ],
+  "art_requirements": {
+    "system_rule": "Create a reusable art system first: 4 to 6 hero illustrations, 12 to 20 transparent reusable mini-illustrations or icons, then reuse them across onboarding, empty states, celebrations, premium, and coordination scenes.",
+    "section_assignments": [
+      {
+        "page_name": "01 Hero + Onboarding",
+        "required_roles": [
+          "screen 1 dream outcome hero",
+          "screen 5 pain point reflection support art",
+          "screen 9 personalized household snapshot support cluster",
+          "screen 11 first 7 days roadmap infographic support art",
+          "screen 13 premium handoff bridge art"
+        ],
+        "conditional_roles": [
+          "screen 12 trust/testimonial support art only if it improves hierarchy without clutter"
+        ],
+        "notes": [
+          "Page 50 says onboarding requires 6 generated support or hero assets.",
+          "Page 13 marks screen 12 support art as conditional, so plan for it but remove it if screenshot review shows clutter."
+        ]
+      },
+      {
+        "page_name": "02 Paywall + Premium Flow",
+        "required_roles": [
+          "screen 1 promise hero",
+          "screen 2 trial clarity timeline support art",
+          "screen 3 social trust or premium unlocks support art",
+          "screen 4 offer sheet premium badge or support art",
+          "rescue screen 1 gift reveal art"
+        ],
+        "conditional_roles": [
+          "rescue screen 2 annual-offer support art only if it improves clarity"
+        ],
+        "notes": [
+          "Page 50 says premium requires 5 generated support or hero assets.",
+          "The rescue screen 2 support art is explicitly optional in the art-assignment section."
+        ]
+      },
+      {
+        "page_name": "03 Milestone 1 - Core Experience",
+        "required_roles": [
+          "splash hero or logo-support scene",
+          "empty state illustrations",
+          "success or completion celebration visuals"
+        ]
+      },
+      {
+        "page_name": "04 Milestone 2 - Family + Chore Management",
+        "required_roles": [
+          "family overview support art if used in a hero or empty state",
+          "proof review empty state art",
+          "vacation or gone mode helper state art"
+        ]
+      },
+      {
+        "page_name": "05 Milestone 3 - Reports + Premium",
+        "required_roles": [
+          "report empty states",
+          "streak or reward celebration visuals",
+          "locked premium feature empty states"
+        ]
+      },
+      {
+        "page_name": "06 Milestone 4 - Final Adaptive + Platform States",
+        "required_roles": [
+          "notifications empty state art",
+          "offline support art",
+          "error or loading support art where appropriate"
+        ]
+      }
+    ]
+  },
+  "standalone_flows": {
+    "onboarding": {
+      "page_name": "01 Hero + Onboarding",
+      "required_screen_count": 13,
+      "page_status": "completed",
+      "optional_screens": [
+        {
+          "number": "optional",
+          "name": "Review handoff",
+          "status": "pending",
+          "required": false
+        }
+      ],
+      "rules": [
+        "10 to 12 connected onboarding screens at full fidelity, plus optional review handoff.",
+        "Use 3 to 4 major illustrated moments.",
+        "Use overlapping phone frames and visible connector arrows in the overall lane.",
+        "Reuse the user name 3 or more times after capture.",
+        "At least one trust-building screen must appear before premium handoff.",
+        "On compact screens, response-based onboarding screens must use single-column full-width rows only."
+      ],
+      "screens": [
+        {
+          "number": 1,
+          "name": "Dream Outcome / destination",
+          "art_role": "hero",
+          "must_include": [
+            "aspirational headline",
+            "short emotional supporting copy",
+            "major hero illustration",
+            "one clear CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 2,
+          "name": "Conversational pivot / name capture",
+          "art_role": "light support cluster",
+          "must_include": [
+            "simple name field",
+            "supporting icon cluster or light illustration",
+            "personalization microcopy",
+            "disabled CTA until valid input"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 3,
+          "name": "Near outcome / primary goal",
+          "art_role": "header support",
+          "must_include": [
+            "single-column full-width response rows",
+            "4 to 6 goal options",
+            "one icon per row",
+            "one clear CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 4,
+          "name": "Far outcome / identity",
+          "art_role": "aspirational support art",
+          "must_include": [
+            "single-column full-width response rows",
+            "4 to 5 options",
+            "slightly more aspirational copy",
+            "one CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 5,
+          "name": "Pain point reflection",
+          "art_role": "reflection support art",
+          "must_include": [
+            "one reflective question",
+            "slider, stepped scale, or controlled choice system",
+            "helper text responding to chosen level",
+            "supportive illustration",
+            "one CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 6,
+          "name": "Household struggle",
+          "art_role": "stress-to-order cue",
+          "must_include": [
+            "full-width selectable rows or chips",
+            "icon per problem area",
+            "short captions",
+            "non-judgmental tone",
+            "one CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 7,
+          "name": "Feature excitement",
+          "art_role": "mini-illustration per feature",
+          "must_include": [
+            "full-width selection rows",
+            "icon or mini-illustration per feature",
+            "benefit sentence for each feature",
+            "one CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 8,
+          "name": "Marketing attribution",
+          "art_role": "minimal decorative support art",
+          "must_include": [
+            "lighter, lower-friction layout",
+            "one simple attribution question",
+            "branded or semi-branded source options",
+            "one CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 9,
+          "name": "Personalized household snapshot",
+          "art_role": "support cluster",
+          "must_include": [
+            "personalized headline using the user's name",
+            "3 to 4 polished insight cards",
+            "soft data-visual language",
+            "one CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 10,
+          "name": "Research insight / starting-point insight",
+          "art_role": "insight card support",
+          "must_include": [
+            "one clearly labeled insight block",
+            "honest explanation of what the insight refers to",
+            "why it matters",
+            "no invented research numbers"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 11,
+          "name": "First 7 days roadmap",
+          "art_role": "roadmap infographic support art",
+          "must_include": [
+            "infographic-style connected timeline",
+            "visible line connecting milestone cards",
+            "clear hierarchy for Day 1, Day 3, and Day 7",
+            "strong CTA",
+            "polished roadmap illustration or milestone graphic"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 12,
+          "name": "Trust / testimonials",
+          "art_role": "trust support art",
+          "must_include": [
+            "primary trust headline",
+            "1 to 3 testimonial cards",
+            "compact trust strip",
+            "one forward CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 13,
+          "name": "Premium handoff / paywall intro",
+          "art_role": "premium bridge illustration",
+          "must_include": [
+            "short premium bridge message",
+            "visual continuity with the premium page",
+            "one CTA into standalone premium page",
+            "no pricing grid or plan selector"
+          ],
+          "status": "pending"
+        }
+      ]
+    },
+    "premium": {
+      "page_name": "02 Paywall + Premium Flow",
+      "required_screen_count": 6,
+      "page_status": "completed",
+      "rules": [
+        "Use the exact 4-screen main flow: Promise, Trial clarity, Social trust, Offer sheet.",
+        "Show a clear connected visual narrative from one screen to the next.",
+        "Use infographic-like communication and stronger visual rhythm than the core app.",
+        "Do not show pricing before screen 4 offer sheet.",
+        "Keep light and dark premium sequences separated."
+      ],
+      "screens": [
+        {
+          "number": 1,
+          "name": "Promise",
+          "art_role": "premium hero art",
+          "must_include": [
+            "strong promise headline",
+            "personalized copy when available",
+            "premium hero art",
+            "no visible pricing",
+            "one forward CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 2,
+          "name": "Trial clarity",
+          "art_role": "trial clarity timeline support art",
+          "must_include": [
+            "infographic-style timeline",
+            "connected line running through milestone points",
+            "clear labels for Today, Day 1, Day 3, and Day 7 or configured checkpoints",
+            "one CTA",
+            "no fake urgency"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 3,
+          "name": "Social trust or premium unlocks",
+          "art_role": "trust or unlocks support art",
+          "must_include": [
+            "real reviews only if real reviews exist, otherwise a premium unlocks explanation screen",
+            "elegant quote cards or trust chips if using reviews",
+            "clear premium value explanation if using unlocks"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 4,
+          "name": "Offer sheet",
+          "art_role": "premium badge or plan support art",
+          "must_include": [
+            "first appearance of price",
+            "annual plan preselected when intended",
+            "monthly secondary option when intended",
+            "trial toggle above plans if supported",
+            "sticky primary CTA"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 5,
+          "name": "Rescue screen 1 - Gift reveal",
+          "art_role": "floating translucent premium gift box art",
+          "must_include": [
+            "no price yet",
+            "special gift or unlocked offer moment headline",
+            "curiosity and reward emphasis"
+          ],
+          "status": "pending"
+        },
+        {
+          "number": 6,
+          "name": "Rescue screen 2 - One-time annual offer",
+          "art_role": "annual-offer support art",
+          "must_include": [
+            "annual plan only",
+            "simple CTA",
+            "urgency badge or timer only if real",
+            "clear visual separation from main offer sheet"
+          ],
+          "status": "pending"
+        }
+      ]
+    }
+  },
+  "milestones": [
+    {
+      "page_name": "03 Milestone 1 - Core Experience",
+      "required_screen_count": 18,
+      "screens": [
+        "Splash screen - light",
+        "Splash screen - dark",
+        "Sign in screen",
+        "Create household screen",
+        "Join household with invite code screen",
+        "Notification permission screen",
+        "Photo/proof permission screen",
+        "Home dashboard - compact light",
+        "Home dashboard - compact dark",
+        "Today's chores list - compact light",
+        "Today's chores list - compact dark",
+        "Chore detail - compact light",
+        "Chore detail - compact dark",
+        "Chore completion success state",
+        "Proof uploaded awaiting approval state",
+        "No chores today empty state",
+        "No proof submissions empty state",
+        "Compact continuity thumbnail pointing to standalone onboarding page"
+      ],
+      "status": "completed"
+    },
+    {
+      "page_name": "04 Milestone 2 - Family + Chore Management",
+      "required_screen_count": 21,
+      "screens": [
+        "Family overview - compact light",
+        "Family overview - compact dark",
+        "Family overview - expanded light with reusable drawer",
+        "Family overview - expanded dark with reusable drawer",
+        "Member profile - compact",
+        "Member profile - expanded detail view",
+        "Admin dashboard variant",
+        "Member dashboard variant",
+        "Create chore screen - compact",
+        "Create chore screen - expanded",
+        "Edit chore screen - compact",
+        "Global chore library / template picker screen",
+        "Assign rules screen",
+        "Proof review queue list",
+        "Proof review detail pane",
+        "Vacation mode setup screen",
+        "Day off setup screen",
+        "Gone mode setup screen",
+        "Notification preferences screen",
+        "Invite member screen",
+        "Family empty state if no members yet"
+      ],
+      "status": "completed"
+    },
+    {
+      "page_name": "05 Milestone 3 - Reports + Premium",
+      "required_screen_count": 15,
+      "screens": [
+        "Daily report - compact light",
+        "Daily report - compact dark",
+        "Weekly report - compact light",
+        "Weekly report - compact dark",
+        "Monthly report - compact",
+        "Yearly report - compact",
+        "Weekly report - expanded with detail pane",
+        "Household comparison report",
+        "Streaks and rewards screen",
+        "Locked premium report state",
+        "Locked premium automation state",
+        "Subscription management entry screen",
+        "Compact continuity thumbnail pointing to standalone premium page",
+        "Report empty state",
+        "Report no-data-yet state"
+      ],
+      "status": "completed"
+    },
+    {
+      "page_name": "06 Milestone 4 - Final Adaptive + Platform States",
+      "required_screen_count": 20,
+      "screens": [
+        "Notification center - compact light",
+        "Notification center - compact dark",
+        "Android notification collapsed",
+        "Android notification expanded",
+        "iOS notification preview",
+        "Persistent reminder / service concept if relevant",
+        "Expanded dashboard - light with reusable drawer",
+        "Expanded dashboard - dark with reusable drawer",
+        "Expanded chore board - light",
+        "Expanded chore board - dark",
+        "Wide-layout reports page - light",
+        "Wide-layout reports page - dark",
+        "Account settings screen",
+        "Theme settings screen",
+        "Accessibility settings screen",
+        "Household billing / premium admin page",
+        "Offline state",
+        "Error state",
+        "Loading state",
+        "Empty notifications state"
+      ],
+      "status": "completed"
+    }
+  ],
+  "completion_checks": [
+    "7 exact Figma pages exist with the required names.",
+    "All 93 required screens are represented across the design pages.",
+    "Onboarding page contains 13 required screens and optional review handoff status is explicit.",
+    "Premium page contains the exact 4-screen main flow plus 2 rescue screens.",
+    "HTML browser screenshots have been reviewed and any clipping, wrapping, or safe-area issues were fixed before Figma capture.",
+    "Imported Figma boards have been screenshot-verified after capture.",
+    "Prompt text, notes, and milestone labels stay outside the captured product UI.",
+    "Light and dark groups are clearly separated.",
+    "Top app bar, bottom navigation, and drawer systems are reused consistently.",
+    "No required generated-art role is forgotten.",
+    "Onboarding screen 11 and premium screen 2 are true connected infographic timelines."
+  ],
+  "execution_status": {
+    "overall": "completed",
+    "html_first": "all_pages_complete",
+    "browser_screenshot_review": "all_pages_complete",
+    "fresh_figma_file": "created",
+    "figma_capture": "all_pages_complete"
+  }
+}

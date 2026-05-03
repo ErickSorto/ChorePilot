@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>03 Milestone 1 - Core Experience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="route route--milestone1">
+    <header class="route__header">
+      <div>
+        <p class="eyebrow">ChorePilot / page 03</p>
+        <h1>Milestone 1 - Core experience</h1>
+        <p class="route__copy">
+          The first product milestone establishes the brand, auth and household
+          entry, the compact command center, today's chore flow, and the first
+          real completion and empty states.
+        </p>
+      </div>
+      <a class="route__link" href="./milestone-2.html">Next: Milestone 2</a>
+    </header>
+
+    <main class="board board--light section-stack">
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Overview</span>
+            <h3>18 required milestone screens</h3>
+            <p>
+              This board keeps onboarding as a continuity reference only, then
+              shifts into auth, household entry, and the compact daily rhythm that
+              makes ChorePilot feel like a real command center instead of a stack
+              of generic cards.
+            </p>
+          </div>
+          <div class="surface-card">
+            <strong>New systems introduced</strong>
+            <span>Top app bar, day carousel, bottom navigation, command center summary cards, chore rows, and first completion states.</span>
+          </div>
+        </header>
+        <div class="compare-grid">
+          <div class="link-card">
+            <a href="./foundations.html">
+              <strong>Foundation dependency</strong>
+              <span class="mini-copy">Top app bar, bottom navigation, date carousel, and component inventory come from page 00.</span>
+            </a>
+          </div>
+          <div class="link-card">
+            <a href="./onboarding.html">
+              <strong>Continuity reference</strong>
+              <span class="mini-copy">The full emotional onboarding journey stays on the standalone onboarding page.</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Entry flows</span>
+            <h3>Splash, auth, and household setup</h3>
+            <p>
+              Auth supports onboarding here rather than replacing it. The flow
+              feels branded, specific, and immediately useful for real families.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--4">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Splash screen - light</h4>
+                <p>Warm welcome with clear product identity.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 01</span>
+            </div>
+            <section class="phone phone--warm">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="hero-block">
+                <img src="../imagegen/m1-splash-hero.png" alt="ChorePilot splash artwork" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">ChorePilot</p>
+                  <h4 class="screen-title">Keep home in sync.</h4>
+                  <p class="screen-copy">Shared chores, calmer evenings, and a weekly rhythm the whole household can actually see.</p>
+                </div>
+                <button class="button">Get started</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Splash screen - dark</h4>
+                <p>Dark launch state for night-time household use.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 02</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="hero-block" style="background:linear-gradient(180deg,#172746 0%,#0b1220 100%);">
+                <img src="../imagegen/m1-splash-hero.png" alt="ChorePilot splash artwork dark" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">ChorePilot</p>
+                  <h4 class="screen-title">A steadier household starts here.</h4>
+                  <p class="screen-copy">The same product identity, translated into dark mode without losing warmth or clarity.</p>
+                </div>
+                <button class="button button--gold">Enter the app</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Sign in screen</h4>
+                <p>Simple return path for existing members.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 03</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Welcome back</p>
+                  <h4 class="screen-title">Sign in to your household.</h4>
+                </div>
+                <div class="input-card">
+                  <label>Email</label>
+                  <div class="input-shell">erick@chorepilot.app</div>
+                </div>
+                <div class="input-card">
+                  <label>Password</label>
+                  <div class="input-shell">•••••••••••</div>
+                </div>
+                <div class="info-card">
+                  <strong>Last used household</strong>
+                  <span>River House - Premium family plan</span>
+                </div>
+                <div class="cta-stack">
+                  <button class="button">Sign in</button>
+                  <button class="button-secondary">Use invite code instead</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Create household screen</h4>
+                <p>Guided setup for a new family home base.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 04</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Create a household</p>
+                  <h4 class="screen-title">Name the home and invite the first people.</h4>
+                </div>
+                <div class="input-card">
+                  <label>Household name</label>
+                  <div class="input-shell">River House</div>
+                </div>
+                <div class="choice-stack">
+                  <div class="choice-row is-selected">
+                    <div class="choice-row__icon">3</div>
+                    <div><h4>3 members to start</h4><p>Good for one parent and two kids.</p></div>
+                    <div class="choice-row__check"></div>
+                  </div>
+                  <div class="choice-row">
+                    <div class="choice-row__icon">4</div>
+                    <div><h4>4 to 5 members</h4><p>Room for a fuller family rotation.</p></div>
+                    <div class="choice-row__check"></div>
+                  </div>
+                </div>
+                <button class="button">Create household</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Join household with invite code</h4>
+                <p>Fast entry path for members who were invited.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 05</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Join an existing household</p>
+                  <h4 class="screen-title">Enter the invite code your family shared.</h4>
+                </div>
+                <div class="input-card">
+                  <label>Invite code</label>
+                  <div class="input-shell mono">H7K9-P4</div>
+                </div>
+                <div class="info-card">
+                  <strong>Preview</strong>
+                  <span>You are joining River House with Emma and Noah already active.</span>
+                </div>
+                <div class="cta-stack">
+                  <button class="button">Join household</button>
+                  <button class="button-secondary">Need a new code?</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Notification permission</h4>
+                <p>Permission request framed around useful timing help.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 06</span>
+            </div>
+            <section class="phone phone--warm">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="support-block">
+                <div class="metric-grid" style="padding:18px;width:100%;">
+                  <div class="metric-card"><strong>Due soon alerts</strong><span>Keep kitchen cleanup from sneaking up at 6:00 PM.</span></div>
+                  <div class="metric-card"><strong>Streak nudges</strong><span>Surface wins without turning reminders into nagging.</span></div>
+                </div>
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Stay coordinated</p>
+                  <h4 class="screen-title">Let ChorePilot send helpful reminders.</h4>
+                  <p class="screen-copy">You will only get alerts tied to real chores, proof requests, and household updates that matter.</p>
+                </div>
+                <div class="cta-stack">
+                  <button class="button button--teal">Allow notifications</button>
+                  <button class="button-secondary">Not now</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Photo and proof permission</h4>
+                <p>Explain why camera access helps with accountability.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 07</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="support-block">
+                <div class="choice-stack" style="padding:18px;width:100%;">
+                  <div class="choice-row">
+                    <div class="choice-row__icon">PH</div>
+                    <div><h4>Photo proof</h4><p>Useful for rooms, dishes, and outdoor chores.</p></div>
+                    <div class="choice-row__check"></div>
+                  </div>
+                  <div class="choice-row">
+                    <div class="choice-row__icon">NT</div>
+                    <div><h4>Note proof</h4><p>Works when a short explanation is enough.</p></div>
+                    <div class="choice-row__check"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Proof makes follow-through visible</p>
+                  <h4 class="screen-title">Allow camera access for proof-required chores.</h4>
+                </div>
+                <div class="cta-stack">
+                  <button class="button">Allow camera access</button>
+                  <button class="button-secondary">Use notes only</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Compact continuity thumbnail</h4>
+                <p>Bridge back to the full onboarding lane without duplicating it.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 08</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="hero-block">
+                <img src="../imagegen/onboarding-13-premium-bridge.png" alt="Onboarding continuity support art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Earlier continuity</p>
+                  <h4 class="screen-title">The emotional setup journey lives on its own page.</h4>
+                  <p class="screen-copy">This thumbnail simply keeps the relationship between onboarding and the core product visible.</p>
+                </div>
+                <a class="hub__link" href="./onboarding.html" style="min-height:52px;">Open onboarding page</a>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Command center</span>
+            <h3>Dashboard, today's chore list, and chore detail</h3>
+            <p>
+              The compact experience is the core of the app: a strong household
+              summary, clear date context, next-up ownership, and chore rows that
+              always answer who, what, when, and what proof is expected.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--3">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Home dashboard - compact light</h4>
+                <p>Daily command center with progress, next up, and household momentum.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 09</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="household-mark">
+                    <div class="household-mark__badge">CP</div>
+                    <div class="top-bar__title">
+                      <h5>Good evening, Erick</h5>
+                      <span>River House is 4 of 6 chores complete</span>
+                    </div>
+                  </div>
+                  <span class="badge badge--success">Streak +7</span>
+                </div>
+                <div class="day-strip">
+                  <div class="day-pill"><strong>Mon</strong><span>08</span></div>
+                  <div class="day-pill"><strong>Tue</strong><span>09</span></div>
+                  <div class="day-pill is-today"><strong>Today</strong><span>10</span></div>
+                  <div class="day-pill"><strong>Thu</strong><span>11</span></div>
+                  <div class="day-pill"><strong>Fri</strong><span>12</span></div>
+                </div>
+                <div class="dashboard-hero">
+                  <div class="progress-ring">
+                    <div class="progress-ring__inner">
+                      <div class="center">
+                        <strong class="progress-ring__value">67%</strong>
+                        <span class="caption">done</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="stats-grid">
+                    <div class="summary-stat"><strong>6 total</strong><span>Today</span></div>
+                    <div class="summary-stat"><strong>4 done</strong><span>Completed</span></div>
+                    <div class="summary-stat"><strong>1 overdue</strong><span>Needs help</span></div>
+                  </div>
+                </div>
+                <div class="surface-card surface-card--strong">
+                  <strong>Next up: Kitchen cleanup</strong>
+                  <span>Emma - due 6:00 PM - proof required - 15 min</span>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">UP</div>
+                    <div class="task-item__meta"><strong>Upcoming</strong><span>Fold laundry at 7:15 PM</span></div>
+                    <span class="badge">No proof</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">OD</div>
+                    <div class="task-item__meta"><strong>Overdue</strong><span>Take out trash slipped by 30 min</span></div>
+                    <span class="badge badge--error">Late</span>
+                  </div>
+                </div>
+                <div class="nav-bar nav-bar--5">
+                  <div class="nav-bar__item is-active">Home</div>
+                  <div class="nav-bar__item">Chores</div>
+                  <div class="nav-bar__item">Family</div>
+                  <div class="nav-bar__item">Reports</div>
+                  <div class="nav-bar__item">More</div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Home dashboard - compact dark</h4>
+                <p>Same hierarchy carried into dark mode.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 10</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="household-mark">
+                    <div class="household-mark__badge">CP</div>
+                    <div class="top-bar__title">
+                      <h5>Good evening, Erick</h5>
+                      <span>Calm reset mode for the last two chores</span>
+                    </div>
+                  </div>
+                  <span class="badge">Streak +7</span>
+                </div>
+                <div class="day-strip">
+                  <div class="day-pill"><strong>Mon</strong><span>08</span></div>
+                  <div class="day-pill"><strong>Tue</strong><span>09</span></div>
+                  <div class="day-pill is-today"><strong>Today</strong><span>10</span></div>
+                  <div class="day-pill"><strong>Thu</strong><span>11</span></div>
+                  <div class="day-pill"><strong>Fri</strong><span>12</span></div>
+                </div>
+                <div class="dashboard-hero">
+                  <div class="progress-ring">
+                    <div class="progress-ring__inner">
+                      <div class="center">
+                        <strong class="progress-ring__value">67%</strong>
+                        <span class="caption">done</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="stats-grid">
+                    <div class="summary-stat"><strong>6 total</strong><span>Today</span></div>
+                    <div class="summary-stat"><strong>4 done</strong><span>Completed</span></div>
+                    <div class="summary-stat"><strong>2 left</strong><span>Pending</span></div>
+                  </div>
+                </div>
+                <div class="surface-card">
+                  <strong>Next up: Feed the dog</strong>
+                  <span>Noah - 6:15 PM - note proof - 5 min</span>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">FW</div>
+                    <div class="task-item__meta"><strong>Family fairness</strong><span>Emma and Noah are balanced this week.</span></div>
+                    <span class="badge badge--success">Even</span>
+                  </div>
+                </div>
+                <div class="nav-bar nav-bar--5">
+                  <div class="nav-bar__item is-active">Home</div>
+                  <div class="nav-bar__item">Chores</div>
+                  <div class="nav-bar__item">Family</div>
+                  <div class="nav-bar__item">Reports</div>
+                  <div class="nav-bar__item">More</div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Today's chores list - compact light</h4>
+                <p>Real daily schedule view with grouping and status clarity.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 11</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title">
+                    <h5>Today's chores</h5>
+                    <span>Tuesday, April 10</span>
+                  </div>
+                  <span class="badge badge--warning">1 overdue</span>
+                </div>
+                <div class="day-strip">
+                  <div class="day-pill"><strong>Mon</strong><span>08</span></div>
+                  <div class="day-pill"><strong>Tue</strong><span>09</span></div>
+                  <div class="day-pill is-today"><strong>Today</strong><span>10</span></div>
+                  <div class="day-pill"><strong>Thu</strong><span>11</span></div>
+                  <div class="day-pill"><strong>Fri</strong><span>12</span></div>
+                </div>
+                <div class="chip-row">
+                  <span class="chip chip--selected">Today</span>
+                  <span class="chip-ghost">Upcoming</span>
+                  <span class="chip-ghost">Completed</span>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card surface-card--strong">
+                    <div class="task-item__icon">KC</div>
+                    <div class="task-item__meta"><strong>Kitchen cleanup</strong><span>Emma - 6:00 PM - 15 min - proof required</span></div>
+                    <span class="badge badge--warning">Due soon</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">TR</div>
+                    <div class="task-item__meta"><strong>Take out trash</strong><span>You - 5:30 PM - 8 min - no proof</span></div>
+                    <span class="badge badge--error">Overdue</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">DG</div>
+                    <div class="task-item__meta"><strong>Feed the dog</strong><span>Noah - 6:15 PM - 5 min - note proof</span></div>
+                    <span class="badge">Note</span>
+                  </div>
+                </div>
+                <div class="nav-bar nav-bar--5">
+                  <div class="nav-bar__item">Home</div>
+                  <div class="nav-bar__item is-active">Chores</div>
+                  <div class="nav-bar__item">Family</div>
+                  <div class="nav-bar__item">Reports</div>
+                  <div class="nav-bar__item">More</div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Today's chores list - compact dark</h4>
+                <p>Grouped rows still feel dense and readable in dark mode.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 12</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title">
+                    <h5>Today's chores</h5>
+                    <span>Tuesday, April 10</span>
+                  </div>
+                  <span class="badge">2 left</span>
+                </div>
+                <div class="day-strip">
+                  <div class="day-pill"><strong>Mon</strong><span>08</span></div>
+                  <div class="day-pill"><strong>Tue</strong><span>09</span></div>
+                  <div class="day-pill is-today"><strong>Today</strong><span>10</span></div>
+                  <div class="day-pill"><strong>Thu</strong><span>11</span></div>
+                  <div class="day-pill"><strong>Fri</strong><span>12</span></div>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">DL</div>
+                    <div class="task-item__meta"><strong>Load dishwasher</strong><span>Emma - 7:00 PM - camera proof - 12 min</span></div>
+                    <span class="badge">Proof</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">SW</div>
+                    <div class="task-item__meta"><strong>Sweep living room</strong><span>You - 7:30 PM - no proof - 10 min</span></div>
+                    <span class="badge badge--success">Ready</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">FD</div>
+                    <div class="task-item__meta"><strong>Fold laundry</strong><span>Noah - completed 5:50 PM</span></div>
+                    <span class="badge badge--success">Done</span>
+                  </div>
+                </div>
+                <div class="nav-bar nav-bar--5">
+                  <div class="nav-bar__item">Home</div>
+                  <div class="nav-bar__item is-active">Chores</div>
+                  <div class="nav-bar__item">Family</div>
+                  <div class="nav-bar__item">Reports</div>
+                  <div class="nav-bar__item">More</div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Chore detail - compact light</h4>
+                <p>All the decision-making context sits on one screen.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 13</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title">
+                    <h5>Kitchen cleanup</h5>
+                    <span>Assigned to Emma</span>
+                  </div>
+                  <span class="badge badge--warning">6:00 PM</span>
+                </div>
+                <div class="chip-row">
+                  <span class="chip">Kitchen</span>
+                  <span class="badge badge--warning">Proof required</span>
+                  <span class="badge badge--neutral">15 min</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Description</strong>
+                  <span>Wipe counters, clear the table, and check that the sink area is reset before homework time.</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Subtasks</strong>
+                  <span>1. Load cups 2. Wipe counters 3. Push in chairs</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Notes</strong>
+                  <span>Take one proof photo from the doorway so the full table and sink are visible.</span>
+                </div>
+                <div class="cta-stack">
+                  <button class="button">Mark complete</button>
+                  <button class="button-secondary">Upload proof</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Chore detail - compact dark</h4>
+                <p>Dark detail state stays practical rather than ornamental.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 14</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title">
+                    <h5>Take out trash</h5>
+                    <span>Assigned to Erick</span>
+                  </div>
+                  <span class="badge badge--error">Overdue</span>
+                </div>
+                <div class="chip-row">
+                  <span class="chip">Outside</span>
+                  <span class="badge">No proof</span>
+                  <span class="badge badge--neutral">8 min</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Description</strong>
+                  <span>Pull kitchen and bathroom bags, replace liners, and move the bin to the curb before 7:30 PM.</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Reminder</strong>
+                  <span>The truck comes early tomorrow, so this one affects the whole household if it slips.</span>
+                </div>
+                <div class="cta-stack">
+                  <button class="button button--gold">Mark done now</button>
+                  <button class="button-secondary">Snooze 15 min</button>
+                </div>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">States</span>
+            <h3>Completion, proof, and empty-state moments</h3>
+            <p>
+              The first milestone ends with supportive confirmation and illustrated
+              states so the app already feels emotionally finished before later
+              family and premium depth is added.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--4">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Chore completion success state</h4>
+                <p>A small celebratory moment after finishing work.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 15</span>
+            </div>
+            <section class="phone phone--warm">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="state-illustration">
+                <img src="../imagegen/m1-success-celebration.png" alt="Completion celebration artwork" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Nice work</p>
+                  <h4 class="screen-title">Trash duty is complete.</h4>
+                  <p class="screen-copy">River House is now 5 of 6 chores complete and still holding the 7-day streak.</p>
+                </div>
+                <div class="info-card">
+                  <strong>Microinteraction note</strong>
+                  <span>Checkmark snaps in, the streak badge lifts slightly, and nearby cards settle into the new count.</span>
+                </div>
+                <button class="button button--teal">Back to today's plan</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Proof uploaded awaiting approval</h4>
+                <p>Clarify the wait state without making it feel blocked.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 16</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="surface-card surface-card--strong">
+                  <strong>Proof submitted for kitchen cleanup</strong>
+                  <span>Emma's photo and note are waiting for admin review.</span>
+                </div>
+                <div class="proof-frame">
+                  <img src="../imagegen/m2-proof-review-empty.png" alt="Proof placeholder art" />
+                </div>
+                <div class="quote-card">
+                  <strong>Emma's note</strong>
+                  <span>Counter is wiped, table is clear, and the dishwasher is running.</span>
+                </div>
+                <div class="cta-stack">
+                  <button class="button-secondary">Notify admin now</button>
+                  <button class="button">Return to today's chores</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>No chores today empty state</h4>
+                <p>Illustrated relief state without dead air.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 17</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="empty-illustration">
+                <img src="../imagegen/m1-empty-no-chores.png" alt="No chores illustration" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">A lighter day</p>
+                  <h4 class="screen-title">No chores are scheduled for today.</h4>
+                  <p class="screen-copy">Enjoy the breathing room, or browse the week ahead to see what tomorrow needs.</p>
+                </div>
+                <div class="cta-stack">
+                  <button class="button">View tomorrow</button>
+                  <button class="button-secondary">Browse weekly plan</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>No proof submissions empty state</h4>
+                <p>Approval queue stays meaningful even when calm.</p>
+              </div>
+              <span class="screen-tile__label">M1 / 18</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="empty-illustration">
+                <img src="../imagegen/m1-empty-no-proof.png" alt="No proof submissions illustration" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Queue is clear</p>
+                  <h4 class="screen-title">No proof submissions are waiting right now.</h4>
+                  <p class="screen-copy">When members upload proof, photos and notes will appear here with fast approve or redo actions.</p>
+                </div>
+                <button class="button button--gold">Check completed chores</button>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

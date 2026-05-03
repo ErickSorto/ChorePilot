@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>05 Milestone 3 - Reports + Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="route route--milestone3">
+    <header class="route__header">
+      <div>
+        <p class="eyebrow">ChorePilot / page 05</p>
+        <h1>Milestone 3 - Reports and premium</h1>
+        <p class="route__copy">
+          This milestone adds the full reporting ladder, streak and rewards
+          surfaces, premium locking states, and the in-product contexts that lead
+          into the separate premium conversion lane.
+        </p>
+      </div>
+      <a class="route__link" href="./milestone-4.html">Next: Milestone 4</a>
+    </header>
+
+    <main class="board board--light section-stack">
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Overview</span>
+            <h3>15 required report and premium-context screens</h3>
+            <p>
+              The reports board covers daily, weekly, monthly, and yearly views
+              with labeled charts and practical captions, then shows how premium
+              gating and subscription management connect back to the standalone paywall flow.
+            </p>
+          </div>
+          <div class="surface-card">
+            <strong>New systems introduced</strong>
+            <span>Charts, comparison cards, premium badges, locked states, and pricing entry surfaces.</span>
+          </div>
+        </header>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Report levels</span>
+            <h3>Daily, weekly, monthly, and yearly reporting</h3>
+            <p>
+              Every chart is labeled with what it measures, the time range, and
+              why it matters so the UI reads as actionable product instead of an
+              unlabeled analytics mock.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--3">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Daily report - compact light</h4>
+                <p>Daily assigned, completed, pending, overdue, and contribution view.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 01</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Daily report</h5><span>Tuesday, Apr 10</span></div>
+                  <span class="badge badge--success">86%</span>
+                </div>
+                <div class="summary-strip">
+                  <div class="summary-stat"><strong>7</strong><span>Assigned</span></div>
+                  <div class="summary-stat"><strong>6</strong><span>Completed</span></div>
+                  <div class="summary-stat"><strong>1</strong><span>Pending</span></div>
+                  <div class="summary-stat"><strong>0</strong><span>Overdue</span></div>
+                </div>
+                <div class="surface-card">
+                  <strong>Per-member contribution today</strong>
+                  <span>Emma completed 3, Noah completed 2, Erick completed 1.</span>
+                </div>
+                <div class="bar-chart">
+                  <span style="height:72px;"></span>
+                  <span style="height:94px;"></span>
+                  <span style="height:118px;"></span>
+                  <span style="height:86px;"></span>
+                  <span style="height:64px;"></span>
+                  <span style="height:104px;"></span>
+                  <span style="height:130px;"></span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Daily report - compact dark</h4>
+                <p>Dark report variant with the same labeled structure.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 02</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="surface-card">
+                  <strong>Daily report</strong>
+                  <span>Completion percentage today, pending chores, and proof rate.</span>
+                </div>
+                <div class="summary-strip">
+                  <div class="summary-stat"><strong>92%</strong><span>Completion</span></div>
+                  <div class="summary-stat"><strong>75%</strong><span>Proof rate</span></div>
+                  <div class="summary-stat"><strong>1</strong><span>Late</span></div>
+                  <div class="summary-stat"><strong>+2</strong><span>Streak</span></div>
+                </div>
+                <div class="line-chart">
+                  <span style="height:52px;"></span>
+                  <span style="height:78px;"></span>
+                  <span style="height:66px;"></span>
+                  <span style="height:96px;"></span>
+                  <span style="height:88px;"></span>
+                  <span style="height:104px;"></span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Weekly report - compact light</h4>
+                <p>Most consistent member, proof rate, and day-by-day completion.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 03</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Weekly report</h5><span>Apr 8 to Apr 14</span></div>
+                  <span class="badge">Week 15</span>
+                </div>
+                <div class="summary-strip">
+                  <div class="summary-stat"><strong>31</strong><span>Completed</span></div>
+                  <div class="summary-stat"><strong>89%</strong><span>Rate</span></div>
+                  <div class="summary-stat"><strong>Emma</strong><span>Most consistent</span></div>
+                  <div class="summary-stat"><strong>83%</strong><span>Proof rate</span></div>
+                </div>
+                <div class="bar-chart">
+                  <span style="height:84px;"></span>
+                  <span style="height:96px;"></span>
+                  <span style="height:112px;"></span>
+                  <span style="height:78px;"></span>
+                  <span style="height:124px;"></span>
+                  <span style="height:102px;"></span>
+                  <span style="height:88px;"></span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Weekly report - compact dark</h4>
+                <p>Dark weekly view with missed chores and streak delta.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 04</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="summary-strip">
+                  <div class="summary-stat"><strong>2</strong><span>Missed</span></div>
+                  <div class="summary-stat"><strong>+1</strong><span>Vs last week</span></div>
+                  <div class="summary-stat"><strong>7</strong><span>Longest streak</span></div>
+                  <div class="summary-stat"><strong>4</strong><span>Proof approvals</span></div>
+                </div>
+                <div class="line-chart">
+                  <span style="height:46px;"></span>
+                  <span style="height:70px;"></span>
+                  <span style="height:74px;"></span>
+                  <span style="height:94px;"></span>
+                  <span style="height:80px;"></span>
+                  <span style="height:110px;"></span>
+                </div>
+                <div class="surface-card">
+                  <strong>What it means</strong>
+                  <span>Friday dipped because kitchen cleanup and trash both landed late after sports practice.</span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Monthly report - compact</h4>
+                <p>Monthly trend, member totals, and category breakdown.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 05</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Monthly report</h5><span>April overview</span></div>
+                </div>
+                <div class="line-chart">
+                  <span style="height:40px;"></span>
+                  <span style="height:62px;"></span>
+                  <span style="height:74px;"></span>
+                  <span style="height:96px;"></span>
+                  <span style="height:82px;"></span>
+                  <span style="height:108px;"></span>
+                </div>
+                <div class="compare-table">
+                  <span>Emma 36 chores</span>
+                  <span>Noah 28 chores</span>
+                  <span>Erick 31 chores</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Why it matters</strong>
+                  <span>Kitchen and laundry are still the heaviest categories this month.</span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Yearly report - compact</h4>
+                <p>Strongest and weakest months with annual streak milestones.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 06</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="surface-card surface-card--strong">
+                  <strong>Yearly report</strong>
+                  <span>Consistency trend and family contribution comparison</span>
+                </div>
+                <div class="heatmap">
+                  <span class="is-mid"></span><span></span><span></span><span class="is-strong"></span><span></span><span class="is-mid"></span><span></span><span></span><span class="is-strong"></span><span></span><span></span><span class="is-mid"></span>
+                  <span></span><span class="is-mid"></span><span></span><span></span><span class="is-mid"></span><span></span><span class="is-strong"></span><span></span><span></span><span class="is-mid"></span><span></span><span></span>
+                </div>
+                <div class="surface-card">
+                  <strong>Trend summary</strong>
+                  <span>March was strongest, January was weakest, and the family recovered after spring break.</span>
+                </div>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Depth views</span>
+            <h3>Expanded weekly insight, family comparison, and streak rewards</h3>
+            <p>
+              These screens show how reports scale past compact cards into richer
+              decision-making surfaces without turning into unrelated desktop-only
+              products.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--3">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Weekly report - expanded with detail pane</h4>
+                <p>Central chart with a focused explanation pane.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 07</span>
+            </div>
+            <section class="desktop desktop--light">
+              <div class="wide-report">
+                <div class="desktop__main">
+                  <div class="surface-card surface-card--strong">
+                    <strong>Weekly completion rate by day</strong>
+                    <span>Apr 8 to Apr 14, measured as completed chores versus assigned chores.</span>
+                  </div>
+                  <div class="bar-chart">
+                    <span style="height:82px;"></span>
+                    <span style="height:98px;"></span>
+                    <span style="height:118px;"></span>
+                    <span style="height:76px;"></span>
+                    <span style="height:128px;"></span>
+                    <span style="height:106px;"></span>
+                    <span style="height:90px;"></span>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Most consistent member</strong>
+                    <span>Emma completed 96% of assigned chores and submitted proof on time every time this week.</span>
+                  </div>
+                  <div class="surface-card">
+                    <strong>Why Friday dipped</strong>
+                    <span>Trash and kitchen cleanup both slipped after practice, which pulled the completion rate down 11 points.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Household comparison report</h4>
+                <p>Cross-member totals and family contribution balance.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 08</span>
+            </div>
+            <section class="tablet tablet--light">
+              <div class="stack">
+                <div class="surface-card surface-card--strong">
+                  <strong>Household comparison</strong>
+                  <span>Completed chores, proof rate, and missed tasks by member.</span>
+                </div>
+                <div class="compare-table">
+                  <span>Erick 31</span>
+                  <span>Emma 36</span>
+                  <span>Noah 28</span>
+                </div>
+                <div class="bar-chart">
+                  <span style="height:90px;"></span>
+                  <span style="height:126px;"></span>
+                  <span style="height:84px;"></span>
+                  <span style="height:110px;"></span>
+                  <span style="height:70px;"></span>
+                  <span style="height:94px;"></span>
+                  <span style="height:118px;"></span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Streaks and rewards screen</h4>
+                <p>Celebratory but still tied to real household behavior.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 09</span>
+            </div>
+            <section class="phone phone--warm">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="state-illustration">
+                <img src="../imagegen/m3-streak-celebration.png" alt="Streak celebration art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Family rewards</p>
+                  <h4 class="screen-title">River House just hit a 7-day streak.</h4>
+                  <p class="screen-copy">Keep the momentum visible with badges, points, and meaningful recognition that still fits the product tone.</p>
+                </div>
+                <div class="summary-strip">
+                  <div class="summary-stat"><strong>7 days</strong><span>Household</span></div>
+                  <div class="summary-stat"><strong>18</strong><span>Emma points</span></div>
+                  <div class="summary-stat"><strong>14</strong><span>Noah points</span></div>
+                  <div class="summary-stat"><strong>5</strong><span>Badges</span></div>
+                </div>
+                <button class="button button--gold">View reward ideas</button>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Premium contexts</span>
+            <h3>Locked states, subscription entry, continuity, and empty reports</h3>
+            <p>
+              Premium is not treated as a random standalone paywall here. These
+              screens explain what is locked, why it matters, and where the user
+              goes next for the full conversion flow.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--3">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Locked premium report state</h4>
+                <p>Blurred report depth with a clear premium explanation.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 10</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="empty-illustration">
+                <img src="../imagegen/m3-locked-premium-empty.png" alt="Locked premium report art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Premium report</p>
+                  <h4 class="screen-title">Yearly insights unlock with premium.</h4>
+                  <p class="screen-copy">Advanced trend history, yearly comparisons, and deeper family analytics live behind the premium plan.</p>
+                </div>
+                <button class="button button--gold">See premium flow</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Locked premium automation state</h4>
+                <p>Rules and smarter reminders gated without confusion.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 11</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="empty-illustration">
+                <img src="../imagegen/m3-locked-premium-empty.png" alt="Locked premium automation art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Automation rules</p>
+                  <h4 class="screen-title">Smart assignment and custom reminders are premium tools.</h4>
+                </div>
+                <div class="surface-card">
+                  <strong>What unlocks</strong>
+                  <span>Vacation balancing, approval workflows, advanced reminders, and deeper report history.</span>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Subscription management entry screen</h4>
+                <p>Calm entry point into plan status and billing.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 12</span>
+            </div>
+            <section class="phone phone--warm">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="state-illustration">
+                <img src="../imagegen/m3-subscription-support.png" alt="Subscription management support art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Subscription</p>
+                  <h4 class="screen-title">Manage the household premium plan.</h4>
+                </div>
+                <div class="surface-card surface-card--strong">
+                  <strong>Current plan</strong>
+                  <span>Annual premium with 7-day trial completed successfully.</span>
+                </div>
+                <div class="cta-stack">
+                  <button class="button">Open billing details</button>
+                  <button class="button-secondary">View premium benefits</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Compact continuity thumbnail pointing to premium page</h4>
+                <p>Small reference back to the full conversion lane.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 13</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="hero-block">
+                <img src="../imagegen/premium-01-promise-hero.png" alt="Premium continuity hero" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Standalone continuity</p>
+                  <h4 class="screen-title">The full premium journey lives on its own page.</h4>
+                </div>
+                <a class="hub__link" href="./premium.html" style="min-height:52px;">Open premium flow</a>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Report empty state</h4>
+                <p>Illustrated empty state for a cleared reporting surface.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 14</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="empty-illustration">
+                <img src="../imagegen/m3-report-empty.png" alt="Report empty state art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Nothing to compare yet</p>
+                  <h4 class="screen-title">This report is empty for now.</h4>
+                  <p class="screen-copy">Once the household finishes a few more chores, trend lines and member comparison will fill in here automatically.</p>
+                </div>
+                <button class="button">Back to reports</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Report no-data-yet state</h4>
+                <p>Early-stage no-data view that still feels hopeful.</p>
+              </div>
+              <span class="screen-tile__label">M3 / 15</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="empty-illustration">
+                <img src="../imagegen/m3-report-empty.png" alt="No-data-yet reports art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Insights start soon</p>
+                  <h4 class="screen-title">There is not enough data yet for this range.</h4>
+                  <p class="screen-copy">Keep the household active for another week and the report will automatically start comparing streaks, proof rate, and member balance.</p>
+                </div>
+                <button class="button button--gold">See weekly report instead</button>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

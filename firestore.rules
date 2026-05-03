@@ -1,0 +1,375 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function householdPath(householdId) {
+      return /databases/$(database)/documents/households/$(householdId);
+    }
+
+    function memberPath(householdId, userId) {
+      return /databases/$(database)/documents/households/$(householdId)/members/$(userId);
+    }
+
+    function invitePath(inviteCode) {
+      return /databases/$(database)/documents/householdInvites/$(inviteCode);
+    }
+
+    function inviteDoc(inviteCode) {
+      return get(invitePath(inviteCode));
+    }
+
+    function householdExists(householdId) {
+      return exists(householdPath(householdId));
+    }
+
+    function householdDoc(householdId) {
+      return get(householdPath(householdId));
+    }
+
+    function memberExists(householdId, userId) {
+      return exists(memberPath(householdId, userId));
+    }
+
+    function memberDoc(householdId, userId) {
+      return get(memberPath(householdId, userId));
+    }
+
+    function currentMemberExists(householdId) {
+      return signedIn() && memberExists(householdId, request.auth.uid);
+    }
+
+    function currentMemberDoc(householdId) {
+      return get(memberPath(householdId, request.auth.uid));
+    }
+
+    function isActiveMemberDoc(member) {
+      return member.data.active == true;
+    }
+
+    function isActiveHouseholdMember(householdId) {
+      return currentMemberExists(householdId) && isActiveMemberDoc(currentMemberDoc(householdId));
+    }
+
+    function isHouseholdOwner(householdId) {
+      return signedIn()
+        && householdExists(householdId)
+        && householdDoc(householdId).data.ownerUserId == request.auth.uid;
+    }
+
+    function isHouseholdAdmin(householdId) {
+      return isActiveHouseholdMember(householdId)
+        && (
+          currentMemberDoc(householdId).data.role == 'Owner'
+          || currentMemberDoc(householdId).data.role == 'Admin'
+        );
+    }
+
+    function hasActiveInviteException(householdId) {
+      return signedIn()
+        && householdExists(householdId)
+        && householdDoc(householdId).data.activeInviteCode is string
+        && householdDoc(householdId).data.activeInviteCode != ''
+        && exists(invitePath(householdDoc(householdId).data.activeInviteCode))
+        && inviteDoc(householdDoc(householdId).data.activeInviteCode).data.householdId == householdId
+        && isInviteJoinable(inviteDoc(householdDoc(householdId).data.activeInviteCode));
+    }
+
+    function isValidHouseholdCreate(householdId) {
+      return signedIn()
+        && request.resource.data.id == householdId
+        && request.resource.data.ownerUserId == request.auth.uid
+        && request.resource.data.memberCount == 1;
+    }
+
+    function isMemberCountChangeOnly() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['memberCount'])
+        && (
+          request.resource.data.memberCount == resource.data.memberCount + 1
+          || request.resource.data.memberCount == resource.data.memberCount - 1
+        );
+    }
+
+    function hasInviteRoleForHousehold(householdId, role) {
+      return householdExists(householdId)
+        && householdDoc(householdId).data.activeInviteCode is string
+        && householdDoc(householdId).data.activeInviteCode != ''
+        && exists(invitePath(householdDoc(householdId).data.activeInviteCode))
+        && inviteDoc(householdDoc(householdId).data.activeInviteCode).data.householdId == householdId
+        && isInviteJoinable(inviteDoc(householdDoc(householdId).data.activeInviteCode))
+        && inviteDoc(householdDoc(householdId).data.activeInviteCode).data.role == role;
+    }
+
+    function isInviteBasedSelfMemberCreate(householdId, memberId) {
+      return signedIn()
+        && request.auth.uid == memberId
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.active == true
+        && request.resource.data.weeklyEffortScore == 0
+        && request.resource.data.lastAssignedCycleKey == ''
+        && hasInviteRoleForHousehold(householdId, request.resource.data.role);
+    }
+
+    function isInitialOwnerMemberCreate(householdId, memberId) {
+      return signedIn()
+        && request.auth.uid == memberId
+        && householdExists(householdId)
+        && householdDoc(householdId).data.ownerUserId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.role == 'Owner'
+        && request.resource.data.active == true;
+    }
+
+    function isSelfMemberProfileUpdate(memberId) {
+      return isSelf(memberId)
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.active == resource.data.active
+        && request.resource.data.weeklyEffortScore == resource.data.weeklyEffortScore
+        && request.resource.data.lastAssignedCycleKey == resource.data.lastAssignedCycleKey
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'displayName',
+          'availabilityMode',
+          'availabilityStartDate',
+          'availabilityEndDate',
+          'availabilityStatusLabel',
+          'availabilitySummary',
+        ]);
+    }
+
+    function isAdminMemberUpdate(householdId, memberId) {
+      return isHouseholdAdmin(householdId)
+        && request.resource.data.userId == memberId;
+    }
+
+    function isCurrentMemberAssignee(householdId, assigneeId, assigneeName) {
+      return isActiveHouseholdMember(householdId)
+        && (
+          (assigneeId is string && assigneeId != '' && assigneeId == request.auth.uid)
+          || (
+            assigneeName is string
+            && assigneeName != ''
+            && currentMemberDoc(householdId).data.displayName == assigneeName
+          )
+        );
+    }
+
+    function choreAdminFieldsUnchanged() {
+      return request.resource.data.id == resource.data.id
+        && request.resource.data.title == resource.data.title
+        && request.resource.data.additionalComments == resource.data.additionalComments
+        && request.resource.data.roomId == resource.data.roomId
+        && request.resource.data.roomName == resource.data.roomName
+        && request.resource.data.roomIconKey == resource.data.roomIconKey
+        && request.resource.data.roomColorKey == resource.data.roomColorKey
+        && request.resource.data.assignee == resource.data.assignee
+        && request.resource.data.assigneeId == resource.data.assigneeId
+        && request.resource.data.autoAssign == resource.data.autoAssign
+        && request.resource.data.smartAssignmentMode == resource.data.smartAssignmentMode
+        && request.resource.data.assignmentPool == resource.data.assignmentPool
+        && request.resource.data.dayAssignments == resource.data.dayAssignments
+        && request.resource.data.effortLevel == resource.data.effortLevel
+        && request.resource.data.repeatsEnabled == resource.data.repeatsEnabled
+        && request.resource.data.repeatStartDate == resource.data.repeatStartDate
+        && request.resource.data.repeatFrequency == resource.data.repeatFrequency
+        && request.resource.data.dailyRepeatMode == resource.data.dailyRepeatMode
+        && request.resource.data.selectedWeekdays == resource.data.selectedWeekdays
+        && request.resource.data.monthlyPattern == resource.data.monthlyPattern
+        && request.resource.data.customPattern == resource.data.customPattern
+        && request.resource.data.selectedOneTimeDate == resource.data.selectedOneTimeDate
+        && request.resource.data.proofRequired == resource.data.proofRequired
+        && request.resource.data.durationMinutes == resource.data.durationMinutes
+        && request.resource.data.isActive == resource.data.isActive
+        && request.resource.data.pendingApproval == resource.data.pendingApproval
+        && request.resource.data.discoverySessionId == resource.data.discoverySessionId
+        && request.resource.data.discoveryImageStoragePath == resource.data.discoveryImageStoragePath
+        && request.resource.data.discoveryImageUrl == resource.data.discoveryImageUrl
+        && request.resource.data.discoveryGenerated == resource.data.discoveryGenerated;
+    }
+
+    function isAllowedMemberChoreUpdate(householdId) {
+      return isCurrentMemberAssignee(
+          householdId,
+          resource.data.assigneeId,
+          resource.data.assignee
+        )
+        && choreAdminFieldsUnchanged()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'status',
+          'dueLabel',
+          'proofPhotoCount',
+          'completedByName',
+          'completedAtEpochMs',
+          'occurrences',
+        ])
+        && request.resource.data.status != 'Overdue'
+        && !(resource.data.status == 'PendingProof' && request.resource.data.status == 'Completed')
+        && request.resource.data.dueLabel != 'Approved';
+    }
+
+    function isValidProofWrite(householdId) {
+      return isActiveHouseholdMember(householdId)
+        && request.resource.data.choreId is string
+        && request.resource.data.dateKey is string
+        && request.resource.data.uploadedByUserId == request.auth.uid
+        && request.resource.data.uploadedByName == currentMemberDoc(householdId).data.displayName;
+    }
+
+    function isOwnProofDocument() {
+      return resource.data.uploadedByUserId == request.auth.uid;
+    }
+
+    function isNotificationReadReceiptUpdate(householdId) {
+      return isActiveHouseholdMember(householdId)
+        && resource.data.recipientUserIds.hasAny([request.auth.uid])
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['readReceipts'])
+        && request.resource.data.householdId == resource.data.householdId
+        && request.resource.data.choreId == resource.data.choreId
+        && request.resource.data.type == resource.data.type
+        && request.resource.data.title == resource.data.title
+        && request.resource.data.body == resource.data.body
+        && request.resource.data.createdAtEpochMs == resource.data.createdAtEpochMs
+        && request.resource.data.recipientUserIds == resource.data.recipientUserIds;
+    }
+
+    function isValidInviteCreate(inviteCode) {
+      return signedIn()
+        && request.resource.data.code == inviteCode
+        && request.resource.data.householdId is string
+        && request.resource.data.householdName is string
+        && request.resource.data.active == true
+        && request.resource.data.usageCount == 0
+        && request.resource.data.expiresAtEpochMs is int
+        && request.resource.data.lifecycleStatus == 'Active'
+        && isHouseholdAdmin(request.resource.data.householdId);
+    }
+
+    function isInviteNotExpired(invite) {
+      return !(invite.data.expiresAtEpochMs is int)
+        || invite.data.expiresAtEpochMs == 0
+        || invite.data.expiresAtEpochMs > request.time.toMillis();
+    }
+
+    function isInviteLifecycleActive(invite) {
+      return !(invite.data.lifecycleStatus is string)
+        || invite.data.lifecycleStatus == ''
+        || invite.data.lifecycleStatus == 'Active';
+    }
+
+    function isInviteJoinable(invite) {
+      return invite.data.active == true
+        && isInviteLifecycleActive(invite)
+        && isInviteNotExpired(invite)
+        && (
+          invite.data.usageLimit == 0
+          || invite.data.usageCount < invite.data.usageLimit
+        );
+    }
+
+    function inviteShouldRemainActive() {
+      return resource.data.usageLimit == 0
+        || resource.data.usageCount + 1 < resource.data.usageLimit;
+    }
+
+    function isValidInviteConsumption() {
+      return signedIn()
+        && request.resource.data.code == resource.data.code
+        && request.resource.data.householdId == resource.data.householdId
+        && request.resource.data.householdName == resource.data.householdName
+        && request.resource.data.role == resource.data.role
+        && request.resource.data.allowAnonymous == resource.data.allowAnonymous
+        && request.resource.data.usageLimit == resource.data.usageLimit
+        && request.resource.data.createdAtEpochMs == resource.data.createdAtEpochMs
+        && request.resource.data.expiresAtEpochMs == resource.data.expiresAtEpochMs
+        && request.resource.data.usageCount == resource.data.usageCount + 1
+        && request.resource.data.active == inviteShouldRemainActive()
+        && request.resource.data.lifecycleStatus == (
+          inviteShouldRemainActive() ? 'Active' : 'Exhausted'
+        );
+    }
+
+    match /users/{uid} {
+      allow get: if isSelf(uid);
+      allow list: if false;
+      allow create, update: if isSelf(uid) && request.resource.data.uid == uid;
+      allow delete: if false;
+
+      match /devices/{installationId} {
+        allow get, list, create, update, delete: if isSelf(uid);
+      }
+    }
+
+    match /households/{householdId} {
+      allow get: if isActiveHouseholdMember(householdId) || hasActiveInviteException(householdId);
+      allow list: if false;
+      allow create: if isValidHouseholdCreate(householdId);
+      allow update: if isHouseholdAdmin(householdId)
+        || (hasActiveInviteException(householdId) && isMemberCountChangeOnly());
+      allow delete: if false;
+
+      match /members/{memberId} {
+        allow get, list: if isActiveHouseholdMember(householdId);
+        allow create: if isHouseholdAdmin(householdId)
+          || isInitialOwnerMemberCreate(householdId, memberId)
+          || isInviteBasedSelfMemberCreate(householdId, memberId);
+        allow update: if isAdminMemberUpdate(householdId, memberId)
+          || isSelfMemberProfileUpdate(memberId);
+        allow delete: if isHouseholdAdmin(householdId)
+          || (isSelf(memberId) && isActiveHouseholdMember(householdId));
+      }
+
+      match /rooms/{roomId} {
+        allow get, list: if isActiveHouseholdMember(householdId);
+        allow create, update, delete: if isHouseholdAdmin(householdId);
+      }
+
+      match /chores/{choreId} {
+        allow get, list: if isActiveHouseholdMember(householdId);
+        allow create: if isHouseholdAdmin(householdId);
+        allow update: if isHouseholdAdmin(householdId)
+          || isAllowedMemberChoreUpdate(householdId);
+        allow delete: if isHouseholdAdmin(householdId);
+      }
+
+      match /proofs/{proofId} {
+        allow get, list: if isActiveHouseholdMember(householdId);
+        allow create: if isValidProofWrite(householdId);
+        allow update: if false;
+        allow delete: if isHouseholdAdmin(householdId)
+          || (isActiveHouseholdMember(householdId) && isOwnProofDocument());
+      }
+
+      match /reassignmentDecisions/{decisionId} {
+        allow get, list: if isActiveHouseholdMember(householdId);
+        allow create, update, delete: if isHouseholdAdmin(householdId);
+      }
+
+      match /notifications/{notificationId} {
+        allow get, list: if isActiveHouseholdMember(householdId);
+        allow create: if isHouseholdAdmin(householdId);
+        allow update: if isHouseholdAdmin(householdId) || isNotificationReadReceiptUpdate(householdId);
+        allow delete: if isHouseholdAdmin(householdId);
+      }
+
+      match /rewards/{rewardId} {
+        allow get, list: if isActiveHouseholdMember(householdId);
+        allow create, update, delete: if isHouseholdAdmin(householdId);
+      }
+    }
+
+    match /householdInvites/{inviteCode} {
+      allow get: if isInviteJoinable(resource);
+      allow list: if false;
+      allow create: if isValidInviteCreate(inviteCode);
+      allow update: if isHouseholdAdmin(resource.data.householdId) || isValidInviteConsumption();
+      allow delete: if false;
+    }
+  }
+}

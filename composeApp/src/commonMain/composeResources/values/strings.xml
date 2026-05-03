@@ -1,0 +1,3 @@
+<resources>
+    <string name="snackbar_chore_completed_points">Chore completed +%1$d points!</string>
+</resources>

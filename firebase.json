@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "source": "iosApp/functions"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

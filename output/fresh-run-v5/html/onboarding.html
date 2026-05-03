@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChorePilot V5 Onboarding Lane</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="route route--onboarding">
+    <header class="route__header">
+      <div>
+        <p class="eyebrow">ChorePilot / standalone page 01</p>
+        <h1>Hero and onboarding lane</h1>
+        <p class="route__copy">
+          Fresh v5 onboarding sequence with all 13 required screens plus the
+          optional review handoff, built in HTML first with connected flow
+          structure, single-column response rows, and a true roadmap
+          infographic.
+        </p>
+      </div>
+      <a class="route__link" href="./premium.html">Next: premium lane</a>
+    </header>
+
+    <main class="board board--light">
+      <section class="board__intro">
+        <div>
+          <h2>Connected onboarding flow</h2>
+          <p>
+            Emotional progression moves from hope to reflection to insight to
+            trust, then bridges cleanly into premium.
+          </p>
+        </div>
+        <p class="eyebrow">14 flow stages including optional review handoff</p>
+      </section>
+
+      <section class="flow-grid">
+        <article class="flow-step flow-step--right">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 01</span>
+            <h3>Dream outcome</h3>
+            <p>Lead with the future household feeling before setup friction.</p>
+          </div>
+          <section class="phone phone--warm">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span class="is-active">Destination</span><span>Personalize</span><span>Reflect</span></div>
+            <div class="hero-block">
+              <img src="../imagegen/onboarding-01-dream-outcome.png" alt="Calm family evening routine" />
+            </div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Less reminding, more visible ownership</p>
+                <h4 class="screen-title">A calmer home starts with a shared rhythm everyone can see.</h4>
+                <p class="screen-copy">
+                  ChorePilot helps your household feel lighter by making the next
+                  right responsibility obvious, fair, and easier to follow
+                  through on together.
+                </p>
+              </div>
+              <div class="metric-grid">
+                <div class="metric-card"><strong>Fairer handoffs</strong><span>Dishes, laundry, and resets stop drifting to one person.</span></div>
+                <div class="metric-card"><strong>Calmer evenings</strong><span>Backpacks, dinner cleanup, and tomorrow prep feel coordinated.</span></div>
+              </div>
+              <div class="cta-stack">
+                <button class="button">Start my family setup</button>
+                <button class="button-secondary">I already have an account</button>
+              </div>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step flow-step--right">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 02</span>
+            <h3>Name capture</h3>
+            <p>Make the experience personal before deeper questions begin.</p>
+          </div>
+          <section class="phone phone--light">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Destination</span><span class="is-active">Personalize</span><span>Reflect</span></div>
+            <div class="support-block">
+              <div class="metric-grid" style="padding: 18px; width: 100%;">
+                <div class="metric-card"><strong>Tailored copy</strong><span>Your goals and pace shape the rest of the setup.</span></div>
+                <div class="metric-card"><strong>Smarter defaults</strong><span>We’ll tune the first plan around how your home actually works.</span></div>
+              </div>
+            </div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Let’s make it personal</p>
+                <h4 class="screen-title">What should we call you in the plan?</h4>
+                <p class="screen-copy">We’ll use your name to make the next screens feel like a guided conversation, not a generic setup flow.</p>
+              </div>
+              <div class="input-card">
+                <label for="name">First name</label>
+                <input id="name" class="input-shell" type="text" value="Erick" />
+              </div>
+              <button class="button">Continue as Erick</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step flow-step--right flow-step--down">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 03</span>
+            <h3>Near outcome</h3>
+            <p>Capture the most immediate result Erick wants to feel first.</p>
+          </div>
+          <section class="phone phone--light">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Destination</span><span class="is-active">Immediate goal</span><span>Identity</span></div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Erick, what would help first?</p>
+                <h4 class="screen-title">What would make your household feel better this week?</h4>
+              </div>
+              <div class="choice-stack">
+                <div class="choice-row is-selected">
+                  <div class="choice-row__icon">1</div>
+                  <div><h4>Fairer chore sharing</h4><p>Make the workload feel visible and less one-sided.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">2</div>
+                  <div><h4>Fewer reminders</h4><p>Reduce how often one person has to carry the mental load.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">3</div>
+                  <div><h4>Calmer evenings</h4><p>Create smoother dinner, homework, and reset transitions.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">4</div>
+                  <div><h4>More kid independence</h4><p>Make tasks visible enough that children can step in sooner.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+              </div>
+              <button class="button">Keep building the plan</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 04</span>
+            <h3>Identity outcome</h3>
+            <p>Move from practical help to the deeper home identity shift.</p>
+          </div>
+          <section class="phone phone--light">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Immediate goal</span><span class="is-active">Identity</span><span>Reflect</span></div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Longer-term feeling</p>
+                <h4 class="screen-title">What kind of home do you want this to become?</h4>
+              </div>
+              <div class="choice-stack">
+                <div class="choice-row is-selected">
+                  <div class="choice-row__icon">A</div>
+                  <div><h4>Less parent mental load</h4><p>One person should not have to silently steer everything.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">B</div>
+                  <div><h4>More family teamwork</h4><p>Create shared ownership instead of chore negotiations.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">C</div>
+                  <div><h4>Fewer arguments</h4><p>Make expectations clear before tension builds.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">D</div>
+                  <div><h4>A steadier home rhythm</h4><p>Turn household care into a calmer weekly pattern.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+              </div>
+              <button class="button">That’s the direction</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step flow-step--right">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 05</span>
+            <h3>Pain reflection</h3>
+            <p>Slow the flow down and let the current burden be acknowledged.</p>
+          </div>
+          <section class="phone phone--warm">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Reflect</span><span class="is-active">Mental load</span><span>Struggles</span></div>
+            <div class="support-block">
+              <img src="../imagegen/onboarding-05-pain-reflection.png" alt="Mental load reflection support art" />
+            </div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Intentional pause</p>
+                <h4 class="screen-title">How heavy does the household mental load feel right now?</h4>
+                <p class="screen-copy">We’ll use this to pace reminders and the first routines so support shows up before more pressure does.</p>
+              </div>
+              <div class="scale-stack">
+                <div class="scale-row"><strong>Light friction</strong><span>Mostly under control</span></div>
+                <div class="scale-row"><strong>Busy</strong><span>Needs more structure</span></div>
+                <div class="scale-row is-active"><strong>Heavy</strong><span>One person is holding too much</span></div>
+                <div class="scale-row"><strong>Chaotic</strong><span>Things get forgotten constantly</span></div>
+                <div class="scale-row"><strong>Near burnout</strong><span>It feels hard to keep up</span></div>
+              </div>
+              <button class="button button--teal">Continue with this pace</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step flow-step--right">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 06</span>
+            <h3>Household struggle</h3>
+            <p>Pinpoint the breakdown that hurts the most.</p>
+          </div>
+          <section class="phone phone--light">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Mental load</span><span class="is-active">Breakdowns</span><span>Desire</span></div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Household friction</p>
+                <h4 class="screen-title">Which breakdown stings the most right now?</h4>
+              </div>
+              <div class="choice-stack">
+                <div class="choice-row">
+                  <div class="choice-row__icon">!</div>
+                  <div><h4>Chores get forgotten</h4><p>Important tasks disappear until someone reminds everybody.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row is-selected">
+                  <div class="choice-row__icon">=</div>
+                  <div><h4>Work feels uneven</h4><p>One person absorbs too much planning, checking, and follow-up.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">?</div>
+                  <div><h4>No one knows whose task it is</h4><p>Ownership stays fuzzy until the last minute.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">✓</div>
+                  <div><h4>Accountability is weak</h4><p>There is no clean way to see follow-through or proof.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+              </div>
+              <button class="button">Use this as our anchor</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step flow-step--right flow-step--down">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 07</span>
+            <h3>Feature excitement</h3>
+            <p>Identify the product moment that feels most relieving.</p>
+          </div>
+          <section class="phone phone--light">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Breakdowns</span><span class="is-active">Most helpful feature</span><span>Attribution</span></div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">What feels like relief?</p>
+                <h4 class="screen-title">Which feature would make the biggest difference first?</h4>
+              </div>
+              <div class="feature-stack">
+                <div class="feature-row is-selected">
+                  <div class="choice-row__icon">A</div>
+                  <div><h4>Auto assignment</h4><p>Build clearer ownership before the week turns messy.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="feature-row">
+                  <div class="choice-row__icon">B</div>
+                  <div><h4>Proof required</h4><p>Know when something is truly done without nagging.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="feature-row">
+                  <div class="choice-row__icon">C</div>
+                  <div><h4>Smart reminders</h4><p>Catch tasks early without turning the app into noise.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="feature-row">
+                  <div class="choice-row__icon">D</div>
+                  <div><h4>Weekly reports</h4><p>See what is working and what still feels uneven.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+              </div>
+              <button class="button">Build around that first</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 08</span>
+            <h3>Marketing attribution</h3>
+            <p>Capture source data without breaking the emotional tone.</p>
+          </div>
+          <section class="phone phone--light">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Most helpful feature</span><span class="is-active">Where you heard about us</span><span>Snapshot</span></div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Quick one</p>
+                <h4 class="screen-title">Where did you first hear about ChorePilot?</h4>
+              </div>
+              <div class="choice-stack">
+                <div class="choice-row">
+                  <div class="choice-row__icon">T</div>
+                  <div><h4>TikTok</h4><p>Short, practical family routine content.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">Y</div>
+                  <div><h4>YouTube</h4><p>Longer-form family systems or productivity content.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row is-selected">
+                  <div class="choice-row__icon">F</div>
+                  <div><h4>Friend or family</h4><p>Someone close mentioned it as a helpful routine tool.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+                <div class="choice-row">
+                  <div class="choice-row__icon">A</div>
+                  <div><h4>App Store search</h4><p>You were looking for something more structured and calm.</p></div>
+                  <div class="choice-row__check"></div>
+                </div>
+              </div>
+              <button class="button">Keep going</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step flow-step--right">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 09</span>
+            <h3>Personalized snapshot</h3>
+            <p>Deliver the first “this understands us” moment.</p>
+          </div>
+          <section class="phone phone--warm">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Snapshot</span><span class="is-active">Insights</span><span>Starting point</span></div>
+            <div class="support-block">
+              <img src="../imagegen/onboarding-09-snapshot-cluster.png" alt="Household snapshot cluster art" />
+            </div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Erick, here’s your first household snapshot</p>
+                <h4 class="screen-title">Your home already has momentum. It just needs clearer ownership.</h4>
+              </div>
+              <div class="insight-grid">
+                <div class="info-card"><strong>Biggest blocker</strong><span>Evening resets stay invisible until they are urgent.</span></div>
+                <div class="info-card"><strong>Likely quick win</strong><span>Make laundry and kitchen closeout visible before Sunday night.</span></div>
+                <div class="info-card"><strong>Strongest pattern</strong><span>Kids are ready for clearer task boundaries, not more reminders.</span></div>
+                <div class="info-card"><strong>Best first focus</strong><span>Fair chore sharing will lift the whole routine fastest.</span></div>
+              </div>
+              <button class="button button--teal">That feels accurate</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step flow-step--right">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 10</span>
+            <h3>Starting-point insight</h3>
+            <p>Frame the gap honestly without inventing fake research.</p>
+          </div>
+          <section class="phone phone--light">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Insights</span><span class="is-active">Starting point</span><span>Roadmap</span></div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Modeled household insight</p>
+                <h4 class="screen-title">Erick, your household would benefit most from clearer ownership and fewer reminders.</h4>
+                <p class="screen-copy">This is based on the answers you just gave us, not on invented survey stats.</p>
+              </div>
+              <div class="info-card">
+                <strong>What this means right now</strong>
+                <span>
+                  Your home does not need more complexity. It needs a routine that
+                  makes responsibility visible earlier in the week.
+                </span>
+              </div>
+              <div class="metric-grid">
+                <div class="metric-card"><strong>Start here</strong><span>Shared resets with clear owners</span></div>
+                <div class="metric-card"><strong>Protect next</strong><span>Evenings and school-prep handoffs</span></div>
+              </div>
+              <button class="button">Show the first 7 days</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step flow-step--right flow-step--down">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 11</span>
+            <h3>Roadmap infographic</h3>
+            <p>Use a true connected timeline with visible progression.</p>
+          </div>
+          <section class="phone phone--light">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Starting point</span><span class="is-active">Day 1 to Day 7</span><span>Trust</span></div>
+            <div class="support-block">
+              <img src="../imagegen/onboarding-11-roadmap-support.png" alt="Roadmap support illustration" />
+            </div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">First 7 days</p>
+                <h4 class="screen-title">A meaningful win can show up quickly.</h4>
+              </div>
+              <div class="timeline">
+                <div class="timeline__item">
+                  <small>Day 1</small>
+                  <h4>Relief starts</h4>
+                  <p>Initialize chores, assign the first owners, and feel the first drop in decision fatigue.</p>
+                </div>
+                <div class="timeline__item">
+                  <small>Day 3</small>
+                  <h4>Momentum builds</h4>
+                  <p>Less clutter, less reminding, and a lighter evening rhythm begin to hold.</p>
+                </div>
+                <div class="timeline__item">
+                  <small>Day 7</small>
+                  <h4>Routine feels real</h4>
+                  <p>Fairness, calm, and follow-through become visible across the week.</p>
+                </div>
+              </div>
+              <button class="button">That’s the kind of win we need</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 12</span>
+            <h3>Trust before premium</h3>
+            <p>Build confidence with trust signals instead of fake ratings.</p>
+          </div>
+          <section class="phone phone--warm">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Roadmap</span><span class="is-active">Trust</span><span>Review</span></div>
+            <div class="support-block">
+              <img src="../imagegen/onboarding-12-trust-support.png" alt="Trust support illustration" />
+            </div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Why the next step feels safe</p>
+                <h4 class="screen-title">Built for real households, not productivity theater.</h4>
+              </div>
+              <div class="testimonial-stack">
+                <div class="trust-card"><strong>Private household space</strong><span>No public feed, no social pressure, and no noisy growth hacks.</span></div>
+                <div class="trust-card"><strong>Parent-led control</strong><span>Approvals, proof review, and availability rules stay where they belong.</span></div>
+                <div class="trust-card"><strong>Flexible enough for real life</strong><span>Vacation mode, day-off logic, and better reminder pacing keep the plan humane.</span></div>
+              </div>
+              <div class="trust-strip">
+                <span class="pill">Family-safe</span>
+                <span class="pill">Calm reminders</span>
+                <span class="pill">Clear ownership</span>
+              </div>
+              <button class="button button--teal">I trust this direction</button>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step flow-step--right">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Optional</span>
+            <h3>Review handoff</h3>
+            <p>Optional, soft ask only after value feels concrete.</p>
+          </div>
+          <section class="phone phone--light">
+            <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress"><span>Trust</span><span class="is-active">Review</span><span>Premium</span></div>
+            <div class="content-stack">
+              <div class="quote-card">
+                <strong>How does this first pass feel so far?</strong>
+                <span>If ChorePilot already feels thoughtful, you can leave a quick rating now or keep moving.</span>
+              </div>
+              <div class="gift-block" style="min-height: 150px;">
+                <div style="display: grid; gap: 10px; text-align: center;">
+                  <div style="font-size: 1.8rem; color: var(--tertiary);">★★★★★</div>
+                  <div class="eyebrow" style="margin: 0; color: var(--tertiary-deep);">Only if it feels true</div>
+                </div>
+              </div>
+              <div class="cta-stack">
+                <button class="button button--gold">Rate the experience</button>
+                <button class="button-secondary">Maybe later</button>
+              </div>
+            </div>
+          </section>
+        </article>
+
+        <article class="flow-step">
+          <div class="flow-step__meta">
+            <span class="flow-step__chip">Screen 13</span>
+            <h3>Premium handoff</h3>
+            <p>Bridge calmly into the standalone premium flow with no pricing yet.</p>
+          </div>
+          <section class="phone phone--dark">
+            <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+            <div class="progress progress--dark"><span>Trust</span><span class="is-active">Premium bridge</span><span>Offer</span></div>
+            <div class="hero-block" style="background: linear-gradient(180deg, #172746 0%, #0f1a31 100%);">
+              <img src="../imagegen/onboarding-13-premium-bridge.png" alt="Premium bridge illustration" />
+            </div>
+            <div class="content-stack">
+              <div>
+                <p class="eyebrow">Next layer</p>
+                <h4 class="screen-title">Erick, ready to see the weekly rhythm before the chaos hits?</h4>
+                <p class="screen-copy">Premium adds the deeper planning layer: clearer week-level balance, better ownership rotation, and more confidence in what tomorrow needs.</p>
+              </div>
+              <div class="unlock-stack">
+                <div class="mini-card"><strong>Smarter weekly planning</strong><span>See collisions, gaps, and overloaded days earlier.</span></div>
+                <div class="mini-card"><strong>Better household balance</strong><span>Make recurring work feel fair instead of invisible.</span></div>
+              </div>
+              <div class="cta-stack">
+                <button class="button button--gold">See the premium flow</button>
+                <button class="button-secondary">Not yet</button>
+              </div>
+            </div>
+          </section>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

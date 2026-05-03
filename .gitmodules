@@ -1,0 +1,3 @@
+[submodule "output/firebase-kotlin-sdk-ref"]
+	path = output/firebase-kotlin-sdk-ref
+	url = https://github.com/GitLiveApp/firebase-kotlin-sdk

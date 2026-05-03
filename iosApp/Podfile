@@ -1,0 +1,47 @@
+platform :ios, '18.2'
+
+use_frameworks!
+
+target 'iosApp' do
+  pod 'FirebaseAuth'
+  pod 'FirebaseFunctions'
+  pod 'FirebaseMessaging'
+  pod 'FirebaseFirestore'
+  pod 'FirebaseStorage'
+  pod 'GoogleSignIn', '9.1.0'
+  pod 'PurchasesHybridCommon', '17.54.0'
+  pod 'PurchasesHybridCommonUI', '17.54.0'
+end
+
+post_install do |_installer|
+  project = Xcodeproj::Project.open('iosApp.xcodeproj')
+  target = project.targets.find { |item| item.name == 'iosApp' }
+  script_name = 'Sync Google URL Scheme'
+  phase = target.shell_script_build_phases.find { |item| item.name == script_name } || target.new_shell_script_build_phase(script_name)
+  phase.shell_script = <<-'SCRIPT'
+set -e
+
+GOOGLE_PLIST="$SRCROOT/iosApp/GoogleService-Info.plist"
+if [ ! -f "$GOOGLE_PLIST" ]; then
+  echo "GoogleService-Info.plist not found at $GOOGLE_PLIST; skipping Google URL scheme sync."
+  exit 0
+fi
+
+REVERSED_CLIENT_ID=$(/usr/libexec/PlistBuddy -c "Print :REVERSED_CLIENT_ID" "$GOOGLE_PLIST" 2>/dev/null || true)
+if [ -z "$REVERSED_CLIENT_ID" ]; then
+  echo "REVERSED_CLIENT_ID not found in GoogleService-Info.plist; skipping URL scheme sync."
+  exit 0
+fi
+
+APP_PLIST="$TARGET_BUILD_DIR/$INFOPLIST_PATH"
+/usr/libexec/PlistBuddy -c "Delete :CFBundleURLTypes" "$APP_PLIST" 2>/dev/null || true
+/usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes array" "$APP_PLIST"
+/usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0 dict" "$APP_PLIST"
+/usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleTypeRole string Editor" "$APP_PLIST"
+/usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLName string google-sign-in" "$APP_PLIST"
+/usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLSchemes array" "$APP_PLIST"
+/usr/libexec/PlistBuddy -c "Add :CFBundleURLTypes:0:CFBundleURLSchemes:0 string $REVERSED_CLIENT_ID" "$APP_PLIST"
+echo "Updated Info.plist with Google URL scheme: $REVERSED_CLIENT_ID"
+SCRIPT
+  project.save
+end

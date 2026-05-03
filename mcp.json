@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "hotswan": {
+      "command": "java",
+      "args": [
+        "-jar",
+        "/Users/ericksorto/Library/Application Support/Google/AndroidStudio2025.3.2/plugins/plugin/lib/hotswan-mcp-server.jar",
+        "--project-dir",
+        "/Users/ericksorto/AndroidStudioProjects/ChorePilot"
+      ]
+    }
+  }
+}

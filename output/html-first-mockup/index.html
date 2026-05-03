@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChorePilot HTML Mockup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient--one"></div>
+    <div class="ambient ambient--two"></div>
+    <div class="ambient ambient--three"></div>
+
+    <main class="page-shell">
+      <header class="masthead">
+        <div class="brand-lockup">
+          <span class="brand-mark">CP</span>
+          <div>
+            <p class="eyebrow">HTML First Verification Build</p>
+            <h1>ChorePilot family chore app mockup</h1>
+          </div>
+        </div>
+        <p class="lede">
+          A browser-rendered pass of every milestone screen from the PDF, built
+          for visual QA before capture into Figma.
+        </p>
+      </header>
+
+      <section class="hero-banner">
+        <div class="hero-copy">
+          <p class="eyebrow">Visual thesis</p>
+          <h2>Friendly household logistics with calm accountability and bright, trustworthy momentum.</h2>
+          <p>
+            The first viewport behaves like a poster, but the screens stay
+            utility-first: clear assignments, visible proof states, and a family
+            operating rhythm that feels optimistic instead of punitive.
+          </p>
+        </div>
+        <div class="hero-metrics">
+          <article>
+            <span class="metric-label">Total screens</span>
+            <strong data-total-screens>93</strong>
+          </article>
+          <article>
+            <span class="metric-label">Board pages</span>
+            <strong data-page-count>7</strong>
+          </article>
+          <article>
+            <span class="metric-label">Artwork source</span>
+            <strong>OpenAI Image API + HTML QA</strong>
+          </article>
+        </div>
+      </section>
+
+      <div id="app"></div>
+    </main>
+
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,2404 @@
+===== PAGE 1 =====
+
+Family Chore App Mockup Specification — Agent-
+Optimized V2
+Project Goal
+Design a family chore app that feels polished on mobile, tablet, and desktop, follows Material Design 3,
+supports  light and dark themes, and is structured so a design agent can generate strong UI without
+drifting into documentation boards or vague invented patterns.
+The  app  helps  families  stay  in  sync  by:  -  automatically  assigning  chores  each  day  -  showing  who  is
+responsible for each chore - allowing users to check chores off - requiring proof when needed - showing
+daily, weekly, monthly, and yearly reports - supporting admin and member roles - supporting onboarding,
+premium/paywall, notifications, availability modes, and advanced settings
+This document is both: 1. a product-facing mockup spec 2. an execution prompt for an AI design agent
+working in Figma or via HTML-to-Figma capture
+1. Execution Mode
+1.1 Core instruction
+This is a UI generation task, not a documentation task.
+The  agent  must  generate  actual  UI  screens  first.  Do  not create  guide  boards,  report  boards,  spec
+summary boards, or abstract planning frames unless this document explicitly asks for them.
+1.1.1 Instruction structure rule
+Long instructions are acceptable, but for execution-heavy work the agent must process them in this order:
+1. Goal — what must be built 2. Constraints — what must not happen 3. Workflow — the order to follow 4.
+Quality bar — what “good” looks like 5. Optional preferences — lower-priority refinements
+Do not treat all instructions as one flat mixed block. Important requirements must be surfaced as non-
+negotiables and actively checked during execution.
+1.1.2 Non-negotiable execution block
+For this project, the agent should always operate from these core non-negotiables: - Build all screens in
+HTML and CSS first - Use AI image generation only for artwork and decorative assets - Verify screens in
+browser screenshots before Figma - Then capture into a fresh, organized Figma file - Do not hand-build
+1
+
+===== PAGE 2 =====
+
+placeholder vector UI in Figma when a working HTML version already exists - Actively fix visual wonkiness
+before capture instead of assuming it will disappear later
+1.1.3 Full-delivery contract
+This is not a pilot. The agent must complete the full spec unless the user explicitly requests a subset.
+Do not narrow scope on your own. Do not treat onboarding and premium as a trial run. If any required
+page or required screen is missing, the task is incomplete.
+1.1.4 Preflight coverage step
+Before building anything, the agent must restate the execution plan as a coverage table with: - page name
+- required screen count - exact screen list - required generated art assets
+The agent must use that coverage table as the build checklist for the whole task.
+1.1.5 Screen inventory vs art assignment rule
+The page-by-page art assignment section is art placement guidance only. It is not the screen inventory.
+Do not use the art-assignment list as the checklist of which screens to build. The required screens must
+come from the explicit screen inventories and screen-by-screen sections.
+1.1.6 Hard failure conditions
+Treat the task as incomplete if any of these are true: - onboarding has fewer than 13 required screens plus
+the optional review handoff - premium has fewer than 6 screens total in the standalone premium page -
+onboarding Screen 11 is not a  connected infographic timeline with a visible line and milestone cards -
+premium  Screen  2  is  not  a  connected  infographic  timeline with  a  visible  line  and  milestone  icons  -
+onboarding Screen 12 is not a trust / testimonials screen - premium price appears before Screen 4 Offer
+Sheet - required pages are missing - required reusable systems are missing
+1.1.7 Partial-completion rule
+If any required screen or page is missing, the agent must explicitly report the result as: - PARTIAL
+And then list exactly what is missing. Do not present the task as complete when it is partial.
+1.2 Preferred production workflow
+Preferred workflow for this project: 1. Build the milestone boards as local  HTML/CSS screens first using
+shared design tokens, shared generated assets, and reusable navigation components. 2. Review the HTML
+output visually and fix spacing, clipping, safe-area handling, and density issues before moving anything into
+Figma. 3. Capture each board into the target Figma file sequentially. 4. Import each captured board into
+Figma as a stable visual frame first. 5. Use Figma tooling only for: - page setup - naming - cleanup -
+2
+
+===== PAGE 3 =====
+
+alignment - moving boards to the correct milestone pages - small refinements outside the captured frame
+6. Screenshot-verify each imported board before moving on. 7. Fix clipping, overflow, spacing imbalance,
+status bar conflicts, text drift, and blank areas immediately.
+1.2.1 HTML-to-Figma capture rules
+Final deliverable is the organized Figma file, but HTML/CSS is the primary production surface.
+Do not reflow or rebuild working HTML screens in Figma unless there is a specific defect to fix.
+Keep milestone labels, board tags, and notes outside the captured product UI.
+Preserve the HTML composition as faithfully as possible when moved into Figma.
+If text disappears, shifts, clips, or moves off to the side in Figma, treat that as a capture defect and
+correct the import method rather than redesigning the screen.
+If a milestone board becomes too tall or sparse, split it into multiple frames on the same Figma page
+instead of stretching one giant board.
+1.2.1.1 Text bounding rules for HTML before capture
+This is mandatory because HTML-to-Figma text containers can preserve oversized invisible widths.
+Every text element must: - have an explicit max width tied to its actual content container - be wrapped in a
+bounded text container before capture - respect the real card or panel width, not just the visual parent
+width - be tested in-browser before capture so no text leaves the layout
+Text limits: - screen titles: max 2 lines - supporting copy: max 3 lines unless intentionally longer - row titles:
+max 1 line unless explicitly wrapped - row captions: max 2 lines
+If a parent card looks correct but the underlying text box is wider than the parent, that is a defect and must
+be fixed in HTML before import.
+1.2.1.2 Screenshot verification rule
+The agent must verify each HTML board via screenshots in the browser before Figma capture. If spacing,
+clipping, safe areas, text wrapping, or navigation alignment look wrong in screenshots, fix HTML/CSS first.
+1.2.2 HTML-first rule
+Do not try Figma-first as the primary production path. For this project, HTML/CSS should be treated as the
+default generation path because it produces stronger screen composition and more reliable visual output.
+1.3 Fallback rule
+If any direct raster or image placement path in Figma becomes unreliable, do not keep retrying it. Stay on
+the HTML-first workflow and continue using Figma only as the final organization, cleanup, and presentation
+layer .
+• 
+• 
+• 
+• 
+• 
+• 
+3
+
+===== PAGE 4 =====
+
+1.4 UI-first rule
+The first pass must prioritize: - polished screens - consistent visual density - connected user flows - reusable
+art system - accurate Material 3 component behavior
+Do not let the first pass drift into: - documentation-style pages - massive notes-only frames - isolated
+disconnected screens with no narrative structure
+2. Official References the Agent Must Follow
+The agent must use these as source-of-truth references before building components.
+2.1 Material 3 references
+Material 3 home: https://m3.material.io/
+Components index: https://m3.material.io/components
+Icons overview: https://m3.material.io/styles/icons/overview
+Applying icons: https://m3.material.io/styles/icons/applying-icons
+Designing icons: https://m3.material.io/styles/icons/designing-icons
+Buttons: https://m3.material.io/components/all-buttons
+Icon buttons: https://m3.material.io/components/icon-buttons/overview
+Text fields: https://m3.material.io/components/text-fields
+Date pickers: https://m3.material.io/components/date-pickers
+Time pickers: https://m3.material.io/components/time-pickers
+Menus: https://m3.material.io/components/menus
+Bottom sheets: https://m3.material.io/components/bottom-sheets/overview
+Dialogs: https://m3.material.io/components/dialogs
+2.2 Android adaptive layout references
+Use window size classes: https://developer .android.com/develop/ui/compose/layouts/adaptive/use-
+window-size-classes
+Canonical layouts: https://developer .android.com/develop/ui/compose/layouts/adaptive/canonical-
+layouts
+Support different display sizes: https://developer .android.com/develop/ui/compose/layouts/
+adaptive/support-different-display-sizes
+Adaptive layout overview: https://developer .android.com/develop/ui/compose/layouts/adaptive
+2.3 Reference usage rule
+The agent must  not invent component anatomy when an official Material 3 pattern already exists. If a
+screen element maps to an existing Material 3 component, use that component and name it accordingly in
+Figma.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+4
+
+===== PAGE 5 =====
+
+3. Product Summary
+3.1 Core concept
+A shared household productivity app for families.
+3.2 Main user types
+Admin
+Parent or household manager who can: - create and edit chores - manage members - review proof -
+configure rules and automation - manage premium settings - view household-wide reports
+Member
+Child, roommate, partner , or household participant who can: - see assigned chores - complete chores -
+upload proof when required - view personal progress - toggle availability modes
+3.3 Main product outcomes
+Everyone knows what to do each day
+Chores are distributed fairly
+Completion is visible to the whole family
+Accountability feels clear , not punishing
+Reports motivate consistency
+Customizations reduce friction and mental load
+4. Design Direction
+4.1 Tone
+clean
+friendly
+dependable
+motivating
+modern
+family-safe
+emotionally warm
+organized
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+5
+
+===== PAGE 6 =====
+
+4.2 Visual style
+Use  Material 3 as the base system. Custom styling is allowed only when the result still clearly reads as
+Material 3.
+The UI should feel: - softer and warmer than a business dashboard - structured like a productivity tool -
+rewarding in small moments - calm and reassuring for parents - easy to understand for kids and other
+members
+4.3 Keywords
+calm
+collaborative
+structured
+encouraging
+fair
+bright in light mode
+cozy and focused in dark mode
+4.4 Creative positioning
+Think of the app as: Google Family + Todoist + Duolingo-style motivation + Material 3 polish
+4.5 Specificity over generic UI rule
+Generic nice-looking containers are not enough. Every screen must feel like it has a clear product purpose,
+believable content, and visual meaning.
+Required rule: - do not fill milestone boards with generic placeholder cards that only summarize ideas -
+show  actual  product  screens  with  realistic  UI  structure  -  every  screen  should  contain  meaningful  app
+content that fits the screen’s job - every major screen should include at least one screen-specific visual or
+structural element that makes sense for that screen
+Examples: - a proof review screen should show a believable proof preview, member note, decision actions,
+and decision context - a schedule or chores screen should show a day/date control, realistic chores, and task
+status - a trust or review screen should visually communicate ratings, love for the product, or testimonial
+confidence - a report screen should clearly label what every chart means and why it matters
+Generic UI anti-patterns to avoid
+Do not rely on: - unlabeled cards with vague headings - decorative pills that do not map to real features -
+empty panels used as filler - charts without context - repeated generic layouts where only the title changes
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+6
+
+===== PAGE 7 =====
+
+Meaningful-screen rule
+Each screen should be specific enough that a user could understand: - what the screen is for - what action
+they can take - why the information matters - how it fits into the app’s workflow
+5. Responsive and Adaptive Layout Rules
+5.1 Size classes
+Use window size classes, not device labels.
+Design for: -  Compact width: under 600dp -  Medium width: 600dp to under 840dp -  Expanded width:
+840dp and above
+The agent may optionally consider larger desktop widths, but the main adaptive decisions should be based
+on compact, medium, and expanded.
+5.2 Reuse rule for larger layouts
+Larger layouts must start from the mobile layout and reuse it intelligently.
+That means: - same information architecture - same component logic - same visual language - same screen
+purpose - same interaction model where possible
+Do not redesign the desktop version into a different product.
+5.3 What medium and expanded layouts should do
+Compact
+single primary column
+bottom navigation
+stacked cards
+sheet-based supporting content
+Medium
+reuse the compact layout first
+expand spacing carefully
+allow limited side-by-side grouping when still readable
+use 2-column arrangements when helpful
+avoid overly wide empty cards
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+7
+
+===== PAGE 8 =====
+
+Expanded
+reuse the compact structure, then expand it
+use adaptive patterns such as:
+list-detail
+rail + content + detail pane
+supporting pane
+2-column or 3-column grids with clear purpose
+extra width should go to useful supportive content only
+5.4 Large-layout behavior rule
+Extra width must be used for: - detail panes - filters - charts - member summaries - proof previews -
+secondary analytics - context side panels
+Extra width must not be used for: - giant empty gutters - stretched cards with poor readability - unrelated
+fake dashboard panels - decorative dead space
+5.5 Density rule
+Do not leave large empty areas on tablet or desktop boards. If a board has more than roughly 15% unused
+space on the right or bottom: - reduce the board size, or - add the missing companion pane, chart panel,
+detail panel, or next flow step
+5.6 Safe area rule
+All board titles, headers, and labels must stay inside safe bounds with at least 32px outer padding. No text
+may be clipped by board edges.
+5.7 Crop rule
+Crop every board to content bounds plus consistent outer padding. Do not leave a large empty lower half
+under the final row.
+6. Canonical Layout Guidance by Screen Type
+6.1 Use list-detail for these screens
+On expanded layouts, use a list-detail pattern for: - chore list + chore detail - proof queue + proof detail -
+family member list + member detail - notification list + notification detail
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+8
+
+===== PAGE 9 =====
+
+6.2 Use supporting pane for these screens
+Use a supporting pane layout for: - dashboard + side summary - reports + filters/legend/details - settings +
+preview/help panel - premium comparison + benefits pane
+6.3 Use feed/grid layouts for these screens
+Use responsive feed/grid behavior for: - insights cards - rewards/streak cards - empty-state collections -
+settings option collections
+7. Theme System
+Provide both light and dark themes.
+The mockup must clearly show: - semantic Material color roles - typography system - component inventory -
+elevation usage - icon style - illustration direction - light vs dark QA comparisons
+7.1 Theme consistency rule
+Build the light theme first. Derive dark theme by swapping semantic tokens, not by redesigning the UI.
+Light  and  dark  must  reuse:  -  the  same  component  anatomy  -  the  same  spacing  system  -  the  same
+illustration family - the same icon set - the same information hierarchy
+Do not create unrelated dark-only layouts.
+7.2 Theme separation rule
+Light and dark themes must be shown in clearly separated frame groups or page regions. Do not place
+them interleaved in the same main visual lane.
+Required rules: - light theme boards live in one clearly labeled group - dark theme boards live in a separate
+clearly labeled group - the design stays exactly the same between themes - only colors, surfaces, shadows,
+and semantic tokens change - do not mix dark and light components in one implementation lane - do not
+let the next agent infer hybrid layouts from mixed boards
+7.3 Theme parity rule
+The dark theme is not a redesign. It is the same product UI with the same: - component structure - screen
+order - spacing - navigation system - onboarding layout - premium flow layout
+Only the theme tokens should change.
+9
+
+===== PAGE 10 =====
+
+8. Color System
+Use Material color roles.
+8.1 Light Theme
+Core colors
+Primary: #4F46E5
+On Primary: #FFFFFF
+Primary Container: #E0E7FF
+On Primary Container: #1E1B4B
+Secondary: #14B8A6
+On Secondary: #FFFFFF
+Secondary Container: #CCFBF1
+On Secondary Container: #134E4A
+Tertiary: #F59E0B
+On Tertiary: #FFFFFF
+Tertiary Container: #FEF3C7
+On Tertiary Container: #78350F
+Surface roles
+Background: #F8FAFC
+On Background: #111827
+Surface: #FFFFFF
+Surface Variant: #EEF2F7
+On Surface: #111827
+On Surface Variant: #667085
+Outline: #CBD5E1
+Error: #DC2626
+Success: #16A34A
+Warning: #F59E0B
+Scrim: #00000052
+8.2 Dark Theme
+Core colors
+Primary: #A5B4FC
+On Primary: #1E1B4B
+Primary Container: #312E81
+On Primary Container: #E0E7FF
+Secondary: #5EEAD4
+On Secondary: #042F2E
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+10
+
+===== PAGE 11 =====
+
+Secondary Container: #134E4A
+On Secondary Container: #CCFBF1
+Tertiary: #FCD34D
+On Tertiary: #452103
+Tertiary Container: #78350F
+On Tertiary Container: #FEF3C7
+Surface roles
+Background: #0B1220
+On Background: #E5E7EB
+Surface: #111827
+Surface Variant: #1F2937
+On Surface: #F3F4F6
+On Surface Variant: #9CA3AF
+Outline: #334155
+Error: #F87171
+Success: #4ADE80
+Warning: #FBBF24
+Scrim: #00000080
+8.3 Semantic usage guidance
+Primary: key CTAs, selected states, onboarding focus, paywall CTA, progress highlights
+Secondary: supportive buttons, chips, switches, family sync accents
+Tertiary: streaks, rewards, premium accents, celebration moments
+Error: failed proof upload, validation errors, destructive actions
+Success: chore complete, proof approved, streak earned
+9. Typography
+Use only Google Fonts.
+9.1 Recommended fonts
+Primary: Inter
+Alternative: Plus Jakarta Sans
+9.2 Type scale
+Display Large: 57/64, 700
+Display Medium: 45/52, 700
+Headline Large: 32/40, 700
+Headline Medium: 28/36, 700
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+11
+
+===== PAGE 12 =====
+
+Headline Small: 24/32, 600
+Title Large: 22/28, 600
+Title Medium: 16/24, 600
+Title Small: 14/20, 600
+Body Large: 16/24, 400
+Body Medium: 14/20, 400
+Body Small: 12/16, 400
+Label Large: 14/20, 600
+Label Medium: 12/16, 600
+Label Small: 11/16, 600
+9.3 Usage guidance
+daily counters: Headline Large or Display Medium
+section titles: Headline Small or Title Large
+card titles: Title Medium
+helper text: Body Small or Label Small
+chips/badges: Label Medium
+10. Iconography and Art Direction
+10.1 Icon system
+Default icon family: Material Symbols Rounded. Use official Material icon guidance unless a screen needs
+a custom illustrated icon.
+10.2 Suggested feature icons
+chores: task_alt, checklist
+family: group, family_restroom
+proof: photo_camera, verified
+stats: bar_chart, analytics
+streaks: local_fire_department
+vacation mode: beach_access
+gone mode: flight_takeoff, location_off
+notifications: notifications_active
+premium: workspace_premium, diamond
+10.3 Art direction
+Use exportable illustrations with a soft, warm, family-safe, Material-friendly look.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+12
+
+===== PAGE 13 =====
+
+Core onboarding art style
+The onboarding should feel emotionally engaging, premium, and welcoming. It should not feel like a plain
+setup wizard.
+Visual style: - soft-gradient illustration system with rounded forms - warm household scenes and human
+moments - polished editorial composition, not generic app clipart - subtle depth through layered shapes,
+soft shadows, and light atmospheric glow - expressive but calm color accents drawn from the app theme -
+friendly  faces  and  family  interactions  without  over-detailed  realism  -  clean  silhouettes  and  simplified
+features for consistency - no uncanny realism - no dark gritty mood - no noisy collage look - no mixed
+illustration styles
+Engagement principles for onboarding art
+Every major onboarding screen should feel like part of one emotional journey. The visual progression
+should move from: 1. welcome and hope 2. recognition of the household problem 3. personalization and
+being understood 4. confidence in the plan 5. commitment to premium
+That means the art should evolve across the onboarding screens: - opening screens should feel warm,
+inviting, and aspirational - middle screens should feel reflective and specific to the household’s pain points -
+snapshot and roadmap screens should feel intelligent, structured, and rewarding - paywall handoff should
+feel premium, calm, and high-trust
+Onboarding screen composition style
+For  onboarding  screens,  use  this  structure  unless  a  specific  screen  needs  a  justified  variation:  -  small
+progress indicator at the top - one main prompt or question per screen - one focal visual area in the upper
+third or upper half - one primary interaction area in the middle - one strong CTA area at the bottom -
+minimal secondary actions
+Do not make onboarding feel like a long form. Each screen should feel intentionally composed and easy to
+emotionally process.
+10.4 Required art moments
+onboarding hero art
+onboarding reflection art
+onboarding snapshot support art
+onboarding roadmap infographic art
+empty-state illustrations
+celebration visuals
+premium hero art
+premium timeline support art
+premium rescue gift box art
+admin dashboard support art
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+13
+
+===== PAGE 14 =====
+
+10.5 Page-by-page art assignment
+The agent must be explicit about which pages and which screens use generated artwork. Do not leave
+artwork placement vague.
+Page 01 Hero + Onboarding
+Use image generation on these screens: - Screen 1 Dream Outcome hero - Screen 5 Pain point reflection
+support art - Screen 9 Personalized household snapshot support cluster - Screen 11 First 7 days roadmap
+infographic support art - Screen 12 Trust/testimonial support art only if it improves hierarchy without clutter
+- Screen 13 Premium handoff bridge art
+Page 02 Paywall + Premium Flow
+Use image generation on these screens: - Screen 1 Promise hero - Screen 2 Trial clarity timeline support art -
+Screen 3 Social trust or premium unlocks support art - Screen 4 Offer sheet premium badge/support art -
+Rescue screen 1 gift reveal art - Rescue screen 2 optional annual-offer support art if it improves clarity
+Page 03 Milestone 1 - Core Experience
+Use image generation on these screens: - splash hero or logo-support scene - empty state illustrations -
+success / completion celebration visuals
+Page 04 Milestone 2 - Family + Chore Management
+Use image generation on these screens: - family overview support art if used in a hero or empty state -
+proof review empty state - vacation / gone mode empty or helper state
+Page 05 Milestone 3 - Reports + Premium
+Use image generation on these screens: - report empty states - streak / reward celebration visuals - locked
+premium feature empty states
+Page 06 Milestone 4 - Final Adaptive + Platform States
+Use  image  generation  on  these  screens:  -  notifications  empty  state  -  offline  /  error  /  loading  support
+illustrations where appropriate
+Art usage rule
+Generated art must support a specific screen purpose. Do not add decorative art just to fill space. Every
+generated image must have a defined role such as: - emotional hero - reflection support - personalized
+value  moment  -  roadmap  infographic  support  -  trust  support  -  empty  state  support  -  premium  offer
+enhancement
+14
+
+===== PAGE 15 =====
+
+10.6 Asset system rule
+Do not generate a unique big illustration for every screen. Create a reusable art system first: - 4 to 6 hero
+illustrations for high-emotion screens -  12 to 20 transparent reusable icons or mini-illustrations for
+cards, chips, micro-moments, and empty states
+Reuse these across: - onboarding - empty states - celebration - premium - family coordination scenes
+11. Image Generation Instructions for the Agent
+The  design  agent  should  explicitly  use  the  image  generation  tool to  make  the  Figma  design  more
+beautiful.
+11.1 Use image generation for
+onboarding hero illustrations
+onboarding reflection/support illustrations
+onboarding roadmap infographic support art
+personalized snapshot support clusters
+premium/paywall hero art
+premium timeline support art
+premium rescue gift box art
+empty-state illustrations
+celebration visuals
+family coordination scenes
+exportable decorative assets
+custom chore-category illustrations if needed
+11.2 Asset generation rules
+Generated assets must: - use transparent backgrounds when they need to be layered in Figma - stay within
+the app palette - feel warm, family-safe, soft, and Material-friendly - support the UI instead of overpowering
+it - match both light and dark surface contexts - belong to one consistent illustration family - be generated
+at full quality so they can be reused later without quality loss
+Global image style prompt direction
+Use one consistent house style across all generated visuals: - premium family productivity app illustration -
+soft gradient lighting - rounded shapes and softened edges - polished editorial composition - subtle depth
+and glow - no text inside the art - no fake UI inside the art - no harsh outlines - no photorealism - no flat
+emoji look - transparent background when layered in UI
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+15
+
+===== PAGE 16 =====
+
+Gradient and color direction
+Preferred  gradient  families:  -  indigo  to  lavender  for  aspiration  and  premium  calm  -  teal  to  aqua  for
+progress, trust, and family coordination - warm amber accents for rewards, hope, and highlight moments -
+deep midnight blue to indigo for dark-theme hero scenes
+Use these gradients softly. Do not oversaturate the art or make it neon-heavy.
+Art detail rule
+Every requested generated image should specify: - screen name - purpose of the image on that screen -
+mood - composition - palette direction - whether it needs transparent background - whether it is a hero
+image, support image, icon cluster , or infographic-support image
+11.3 Asset storage and reuse rules
+The agent must save all AI-generated visual assets in an organized folder structure for later reuse. Do not
+leave them scattered across temporary files or embedded only inside one board.
+Folder requirement
+Create  a  dedicated  asset  folder  structure  such  as:  -  /generated-assets/onboarding/hero/ -  /
+generated-assets/onboarding/icons/ -  /generated-assets/premium/ -  /generated-assets/
+empty-states/ - /generated-assets/rewards/ - /generated-assets/navigation/
+Asset management rules
+keep the original full-quality generated versions
+also keep export-ready transparent PNG versions where needed
+use clear descriptive names for every file
+group related variants together
+store the final selected version and any approved alternates
+make sure the same assets can be reused across HTML boards and Figma without re-generation
+Naming examples
+onboarding-hero-family-sync-v1.png
+onboarding-friction-overwhelmed-parent-v2.png
+onboarding-roadmap-7day-v1.png
+premium-hero-calm-home-v1.png
+icon-proof-required-soft-v1.png
+11.4 What to avoid
+generic stock-photo style art
+overly detailed realism
+unrelated decorative clutter
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+16
+
+===== PAGE 17 =====
+
+inconsistent illustration styles across screens
+12. Elevation, Shape, and Spacing
+12.1 Shape system
+extra small: 8
+small: 12
+medium: 16
+large: 24
+extra large: 28
+full: pill / avatar / FAB
+12.2 Elevation guidance
+base cards: level 1
+floating cards/snackbars: level 2-3
+FAB: level 3
+dialogs/bottom sheets/paywall surfaces: level 4-5
+12.3 Spacing system
+Use an 8pt spacing system.
+Recommended outer padding
+compact mobile frames: 16
+medium frames: 24
+expanded frames: 24 to 32
+13. Navigation Structure
+13.1 Compact mobile navigation
+Bottom navigation with 4 primary tabs: - Home - Chores - Reports - Family
+Reusable bottom navigation system
+The bottom navigation bar must be designed once as a distinct branded component, not left as a plain
+default Material bar , and then reused across almost all compact mobile screens.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+17
+
+===== PAGE 18 =====
+
+Use the bottom navigation bar on: - dashboard - chores list - reports - family - settings-adjacent primary
+screens if they are part of the core tab structure - any main in-app compact screen that belongs to the
+persistent app shell
+Do  not use the bottom navigation bar on: - onboarding - paywall and premium flow - full-screen auth
+transitions if they intentionally break from the main app shell - full-screen modal states where persistent tab
+navigation would be distracting
+Bottom navigation design requirement
+Design  one specific bottom bar system first, then reuse that exact system everywhere. Do not let the
+agent recreate slightly different bottom bars per screen.
+The bottom bar should feel: - premium - friendly - polished - clearly branded - more beautiful than the
+default Material fallback
+Bottom navigation visual direction
+Use Material 3 anatomy as the base, but add tasteful brand styling so it does not look generic.
+Recommended treatment: - softly elevated floating bar or carefully inset surface - slightly rounded outer
+container - stronger selected-state pill or container treatment - subtle shadow or depth that still feels clean -
+icons  and  labels  that  feel  balanced  and  intentionally  spaced  -  consistent  inner  padding  and  safe-area
+handling
+Bottom navigation item anatomy
+Each nav item should include: - one icon - one label - one selected state - optional subtle motion or
+emphasis on selection
+The selected item should have: - a clear branded container or pill treatment - stronger contrast than inactive
+items - icon and label that feel unified
+Inactive items should: - remain legible - not fade too much - keep visual harmony with the selected item
+Bottom navigation beautification rules
+make the bottom bar feel polished and intentionally designed, not generic
+keep icon alignment perfectly consistent
+keep label spacing consistent across all tabs
+use one selected-state treatment across the app
+use Material 3 anatomy, but allow tasteful brand styling through semantic color and shape
+maintain strong contrast in both light and dark themes
+selected icon and label must feel clearly active without becoming visually loud
+bar height, corner treatment, inner padding, and shadow/elevation treatment must be consistent
+everywhere it appears
+do not use the plain default bottom navigation appearance without refinement
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+18
+
+===== PAGE 19 =====
+
+define the bottom bar once in the design system before placing it across screens
+ensure the exact same bottom bar is reused in all eligible screens
+Bottom navigation consistency rule
+The agent must verify that the same bottom navigation component is reused across the app shell screens.
+If a screen uses a different bottom bar style, that must be treated as a defect unless the screen intentionally
+exits the main shell.
+FAB behavior: - visible for admins where relevant - used for Create Chore, Quick Assign, Invite Member -
+must move upward when keyboard appears if needed
+13.2 Medium and expanded navigation
+Use: - Navigation Rail for medium and expanded where persistent navigation is useful - Navigation Drawer
+for admin-heavy expanded screens
+Recommended left-side items: - Dashboard - Chores - Schedule - Reports - Family - Notifications - Settings -
+Premium
+Optional right pane: - chore detail - proof preview - member summary - report filter details
+13.3 Universal Top App Bar requirements
+A consistent top app bar system is required across the product. The agent must define a reusable Top App
+Bar component and reuse it instead of inventing different top navigation treatments screen by screen.
+Compact top app bar
+Must support: - leading navigation icon or back button - screen title - optional subtitle only when necessary -
+trailing action icons - correct separation from the OS status bar
+Medium and expanded top app bar
+Must support: - title aligned consistently with page content - optional breadcrumb, section label, or filter
+summary - trailing utility actions - consistent relation to the side navigation system
+Top app bar rules
+the status bar and top app bar must never visually collide
+milestone labels, frame labels, or board labels must never sit inside the captured UI area
+the OS status bar is a separate region from the app top bar
+all top bars must use the same spacing, icon size, title alignment logic, and action spacing
+do not create a different top bar style for every screen group
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+19
+
+===== PAGE 20 =====
+
+13.4 Reusable Navigation Drawer system
+The side drawer needs its own defined section and must be built as a reusable navigation component for
+consistency. Do not redraw it differently across screens.
+Drawer purpose
+Use the drawer as the primary expanded-layout navigation pattern when the screen is admin-heavy or
+when persistent household navigation is helpful.
+Drawer anatomy
+The reusable drawer should include: - top safe area - drawer container - household avatar or household
+mark - household name or workspace label - primary nav items - optional secondary nav group - bottom
+utility area for settings, billing, help, or profile
+Required drawer row pattern
+The drawer must use a single-column Material-style row system. Each navigation item should be one full-
+width row containing: - one leading icon - one text label - optional trailing badge or count only when needed
+- one consistent selected container or pill treatment
+Do not use: - text-only drawer rows - multi-column drawer items - uneven icon placement - inconsistent row
+heights - inconsistent label alignment
+Drawer visual rules
+use consistent internal padding on all screens
+use one spacing system for item-to-item distance
+use one icon size throughout the drawer
+use one selected-state treatment throughout the drawer
+selected item should use semantic container color , not a random custom fill
+unselected items should maintain proper contrast in both light and dark themes
+icon color and label color must follow the same semantic rules across all drawer states
+the drawer should feel polished, balanced, symmetrical, and intentionally designed
+define the drawer as a premium reusable component, not a temporary side panel
+Drawer spacing and symmetry rules
+outer drawer padding must be consistent
+item row padding must be consistent
+row height must be consistent
+icon-to-label spacing must be consistent
+vertical spacing between groups must be consistent
+the avatar/header area must align with the navigation items below it
+bottom utility items must align with the primary navigation column
+the visual weight of the drawer should feel centered and balanced, not drifting left or right
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+20
+
+===== PAGE 21 =====
+
+Drawer content rules
+Recommended primary drawer items: - Dashboard - Chores - Schedule - Reports - Family
+Recommended secondary or utility items: - Notifications - Settings - Premium - Billing - Help
+Drawer interaction states
+Design and reuse all of these states: - default - selected - hover if desktop-like context is shown - pressed -
+focused - disabled if ever applicable
+Drawer reuse rule
+Create the drawer once as a reusable system component and reuse it across all expanded screens. If a
+screen needs a modified version, the changes must be minimal and justified. Do not change drawer width,
+padding logic, selected style, icon treatment, or row structure arbitrarily.
+14. Material 3 Component Mapping
+The agent must label Figma components using Material 3-aligned names.
+14.1 App shell
+OS Status Bar region
+Top App Bar
+Bottom Navigation Bar
+Navigation Rail
+Navigation Drawer
+Scaffold
+App shell rules
+OS status bar and app top bar must be treated as separate layers
+content must respect safe areas before the top app bar starts
+frame labels, milestone labels, or board tags must stay outside the product UI capture area
+the top app bar and navigation drawer must be defined as reusable shell components before
+detailed screens are built
+14.2 Buttons and actions
+Filled Button
+Outlined Button
+Text Button
+Filled Tonal Button
+FAB
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+21
+
+===== PAGE 22 =====
+
+Extended FAB
+Icon Button
+Segmented Button
+14.3 Cards and containers
+Elevated Card
+Filled Card
+Outlined Card
+List Item
+Divider
+14.4 Inputs and controls
+Outlined Text Field
+Exposed Dropdown Menu
+Checkbox
+Radio Button
+Switch
+Date Picker
+Time Picker
+Menus
+14.5 Feedback and surfaces
+Dialog
+Modal Bottom Sheet
+Snackbar
+Linear Progress Indicator
+Circular Progress Indicator
+Tooltip if needed
+14.6 App-specific derived components
+These should be built from Material 3 foundations: - Chore Card - Member Card - Proof Upload Row -
+Summary Card - Streak Card - Locked Feature Card - Paywall Benefit Card - Report Filter Chip - Role Badge
+15. Information Architecture
+Main areas
+Splash
+Onboarding flow
+Auth / create household / join household
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+1. 
+2. 
+3. 
+22
+
+===== PAGE 23 =====
+
+Invite code / household entry
+Premium/paywall flow
+Home dashboard
+Chore list
+Chore detail
+Chore creation/editing
+Family management
+Proof review and approvals
+Reports and insights
+Notifications
+Settings and modes
+Admin billing and premium controls
+16. Standalone Hero + Onboarding Page
+This must be its own exact Figma page. Do not bury the full onboarding flow only inside Milestone 1.
+16.1 Exact page requirement
+Use this exact page name: - 01 Hero + Onboarding
+This page should contain the full-fidelity onboarding journey, not just a few reference frames.
+16.2 Onboarding strategy and persuasion model
+Onboarding must move away from functional setup and toward emotional persuasion, reflection, and
+commitment. It should feel like the user is stepping into a guided household transformation journey, not
+filling out preferences.
+Use a high-friction, high-commitment model in a calm, family-safe way: - ask deeper questions, not just
+logistical ones - let users reflect instead of rushing through generic next screens - make the user mentally
+invest before premium appears - make the product feel like a guide that understands their household
+Emotional flow order
+The onboarding should follow this sequence: 1. dream outcome / destination 2. personalization 3. near-
+term  goals  4.  long-term  identity  outcome  5.  pain  acknowledgement  6.  current  household  struggles  7.
+feature desire 8. marketing attribution 9. personalized household snapshot 10. comparison or starting-
+point insight 11. 7-day roadmap 12. trust and review handoff 13. premium readiness / paywall bridge
+Required depth
+13 required onboarding screens at full fidelity, plus 1 optional review handoff
+3 to 4 major illustrated moments
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+11. 
+12. 
+13. 
+14. 
+15. 
+• 
+• 
+23
+
+===== PAGE 24 =====
+
+overlapping phone frames
+visible connector arrows
+clear emotional progression
+personalized copy once the user provides their name
+at least one trust-building screen before the premium handoff
+user name reused 3 or more times after it is collected
+16.3 Onboarding art and screen composition rules
+The onboarding must feel beautiful, premium, emotionally persuasive, and mobile-first. It must not feel
+like a stack of generic utility cards.
+Core visual direction
+warm, uplifting, family-centered art direction
+strong editorial hero compositions on key screens
+soft gradients, gentle glow, and rounded forms
+one focal visual per screen
+premium but calm atmosphere
+no cluttered multi-panel look on compact screens
+Mobile-first composition rule
+On compact screens, all response-based onboarding screens must use  single-column full-width rows
+only. Do not use 2-column choice grids on compact onboarding screens.
+Each selectable row must include: - one leading icon or mini-illustration - one strong title - one short
+supporting caption - one clear selected state - comfortable padding and touch target size - consistent row
+height and spacing - visually polished surface treatment
+Selectable row beautification rules
+Every onboarding choice row should feel designed, not generic. Use: - soft rounded card or row container -
+subtle border or tonal fill - clear selected container treatment - icon badge or icon holder on the left -
+balanced internal spacing - clean title/caption hierarchy - optional chevron or check treatment only if it
+improves clarity
+The row should feel: - premium - touch-friendly - calm - intentional - aesthetically pleasing even before
+selection
+This rule applies to: - near-goal selection - far-goal selection - friction / pain choices - feature excitement -
+attribution source choices when possible - household struggle choices
+One-job-per-screen rule
+Every onboarding screen should do exactly one job: - one main question or message - one primary action -
+minimal secondary actions - clean vertical flow from top to bottom
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+24
+
+===== PAGE 25 =====
+
+Reflection rule
+At least one pain-recognition screen should intentionally slow the user down. Use a slider , stepped control,
+or reflective multi-choice pattern that encourages pause and acknowledgment. Do not make this screen feel
+rushed.
+Research-backed insight rule
+If onboarding includes a statistics or quality-of-life insight screen, it must be clearly labeled and visually
+explained. Do not drop in unlabeled bar graphs. Every chart or stat block must explain: - what the metric is -
+what period it refers to - whether it comes from research, product data, or a modeled estimate - why it
+matters to the user
+If a research-backed statistic is shown, use a clean evidence card layout such as: - headline stat - small label
+like “Research insight” or “Based on survey data” - one sentence explaining relevance - optional micro-chart
+only if it is clearly labeled
+Do not invent research numbers. If trustworthy data is not available yet, use a modeled insight card or
+“household snapshot” framing instead of fake statistics.
+16.4 Hero and onboarding screen-by-screen sequence
+Be explicit: these are screens, not vague steps. Each screen needs its own purpose, focal visual, interaction
+model, CTA, and allowed visual elements.
+Screen 1 — Dream Outcome / destination screen
+Purpose: - sell the future household outcome before talking about features or setup
+Must include: - one strong aspirational headline - short emotional supporting copy - major hero illustration
+showing  a  calmer ,  more  coordinated  family  rhythm  -  one  clear  CTA  -  optional  sign-in  text  link  only  if
+necessary
+Allowed visuals: - large hero art - subtle gradient background - small progress indicator if desired
+Not allowed: - account form - analytics chart - feature checklist - dense copy block
+Content direction: - calmer evenings - fewer reminders - smoother handoffs - more teamwork - less mental
+load for parents
+Screen 2 — Conversational pivot / name capture screen
+Purpose: - make the experience personal immediately
+Must  include:  -  a  simple  name  field  -  soft  supporting  icon  cluster  or  lighter  illustration  -  microcopy
+explaining personalization - CTA disabled until valid input
+25
+
+===== PAGE 26 =====
+
+Allowed visuals: - small decorative icon cluster - very light background treatment
+Not allowed: - long explanatory paragraph - multiple inputs
+Rule: - start using the name on later screens, for example: “Erick, what would help your household most
+first?”
+Screen 3 — Near outcome / primary goal screen
+Purpose: - capture the most immediate practical result the user wants
+Must include: - full-width single-column response rows - one icon per row - 4 to 6 goal options - ability to
+select one or up to two if the logic supports it - one clear CTA
+Allowed visuals: - row icons - light supporting gradient or soft header art
+Not allowed: - 2-column card grid on compact screens
+Example themes: - fair chore sharing - fewer reminders - better accountability - calmer evenings - stronger
+routines - more kid independence
+Screen 4 — Far outcome / identity screen
+Purpose: - move from practical help to deeper identity change
+Must include: - full-width single-column response rows - slightly more aspirational copy than Screen 3 - 4 to
+5 options - one CTA
+Allowed visuals: - more elevated icon styling than Screen 3 - subtle aspirational support art in upper section
+Example  themes:  -  less  parent  mental  load  -  stronger  family  teamwork  -  fewer  arguments  -  more
+responsibility in kids - a calmer home rhythm
+Screen 5 — Pain point reflection screen
+Purpose: - help the user admit how much the current situation is costing them
+Must include: - one reflective question - slider , stepped scale, or controlled choice system - helper text that
+responds to the chosen level - supportive illustration with stress, clutter , or forgotten chores shown in a
+softened style - one CTA
+Allowed controls: - slider with 5 to 7 stops - stepped emotion scale - labeled intensity selector
+Not allowed: - unlabeled generic chart - multiple competing questions
+26
+
+===== PAGE 27 =====
+
+Example question directions: - how often do chores get forgotten? - how often do you have to remind
+people? - how heavy does the household mental load feel?
+Rule: - this is an intentional friction screen; let the user pause and reflect
+Screen 6 — Household struggle screen
+Purpose: - identify the most painful current breakdowns
+Must include: - full-width selectable rows or chips - icon per problem area - short, clear captions - non-
+judgmental tone - one CTA
+Allowed visuals: - row icons - subtle stress-to-order visual cue in upper section
+Example struggle themes: - chores are forgotten - no one knows whose task it is - work feels uneven - there
+is no proof or accountability - routines fall apart during busy weeks
+Screen 7 — Feature excitement screen
+Purpose: - learn what feature creates the most desire
+Must  include:  -  full-width  selection  rows  -  small  icon  or  mini-illustration  per  feature  -  one  sentence
+explaining the benefit of each feature - one CTA
+Allowed visuals: - polished feature icons - optional small illustration cluster in header
+Example feature rows: - auto assignment - proof required - smart reminders - weekly reports - vacation /
+gone mode - admin approvals
+Screen 8 — Marketing attribution screen
+Purpose: - capture acquisition data without breaking trust
+Must include: - lighter , lower-friction layout - one simple question about where they heard about the app -
+branded or semi-branded source options - optional “other” only if needed - one CTA
+Allowed visuals: - branded chips or icon rows - minimal decorative support art only
+Example sources: - TikTok - Instagram - YouTube - Friend / Family - Search - App Store
+Rule: - keep this visually shorter and simpler than the emotional screens around it
+Screen 9 — Personalized household snapshot screen
+Purpose: - provide the first major “this app understands us” value moment
+27
+
+===== PAGE 28 =====
+
+Must include: - personalized headline using the user’s name - 3 to 4 polished insight cards - soft data-visual
+language such as bars, tags, or insight chips - strongest intelligent-product moment before the roadmap -
+one CTA
+Allowed visuals: - insight bars - tags - mini stat chips - support art cluster in upper area
+Not allowed: - unlabeled graphs - fake benchmark numbers
+Suggested card themes: - biggest current blocker - first focus area - likely quick win - household pattern
+summary
+Rule: - this screen should feel premium, structured, and reassuring
+Screen 10 — Research insight / starting-point insight screen
+Purpose: - create a clear sense of the gap between current state and better routine
+Must include one of these approaches: 1. real research-backed quality-of-life insight, only if trustworthy
+data exists 2. starting-point insight framing, if real research data does not exist
+If using research-backed insight: - use one clearly labeled stat card or evidence block - explain exactly what
+the stat refers to - explain why it matters - optionally use one simple labeled micro-chart - keep the wording
+honest and careful
+If research data is not trustworthy enough: - frame it as a starting-point insight instead - example: “Based
+on your answers, your household would benefit most from clearer ownership and fewer reminders.”
+Not allowed: - unlabeled bar graph - unexplained percentage - invented study claim
+Screen 11 — First 7 days roadmap screen
+Purpose: - show that the user can get a meaningful win quickly
+Must include: - infographic-style connected timeline - visible line connecting milestone cards - clear visual
+hierarchy for Day 1, Day 3, and Day 7 - one strong CTA that moves forward confidently - a polished roadmap
+illustration or milestone graphic
+Allowed visuals: - timeline line - milestone icons - roadmap support art - emotional benefit text
+Roadmap content direction: - Day 1: initialize chores, assign the first responsibilities, and feel the first sense
+of relief and clarity - Day 3: notice early momentum, less clutter , less reminding, and a happier lighter home
+feeling - Day 7: see a meaningful difference in routine, fairness, calm, and follow-through
+Personalization rule: - the roadmap should speak in terms of the household’s likely improvement, not just
+raw app actions - adapt wording slightly based on the user’s chosen goals when possible - focus on how life
+feels better , not only on what was set up
+28
+
+===== PAGE 29 =====
+
+Roadmap design rule: - this must use a connected infographic timeline with a clearly visible line through
+the milestones - do not replace it with stacked cards - use milestone icons, short emotional benefit copy,
+and clear progression
+Rule: - focus on what the household feels and gains, not just what the app technically does
+Screen 12 — Trust / testimonials screen
+Purpose: - build confidence before premium appears
+Must include: - polished testimonial cards or trust signals - elegant hierarchy - calm, high-trust tone - usage
+proof or ratings only if grounded in real data - one CTA or forward action
+Allowed visuals: - subtle trust support art - quote cards - trust chips - small 5-star icon cluster when truthful
+and appropriate - an illustration of a happy family or reviewer-style moment only if it supports trust without
+clutter
+Recommended content structure: - one primary trust headline - 1 to 3 testimonial cards - one compact trust
+strip such as rating, review sentiment, or quality signal - one forward CTA into the next step
+Not allowed: - privacy controls replacing the trust screen - fake review count - fake star average - crowded
+collage of quotes - generic filler card with no actual trust role
+Rule: - this should feel beautiful and reassuring, not salesy
+Optional review handoff — after trust, before premium
+Purpose: - ask for a rating only after the user has already seen value
+Must include: - soft visual treatment - clear primary and secondary actions - no coercive wording - clear
+sense that the user is reacting to value already shown
+Recommended visual treatment: - a compact rating card or native-style review handoff panel - 5-star icon
+row - subtle illustration of delight or appreciation - optional small quote bubble or heart/check/star motif
+Recommended CTA pattern: - primary: Rate app - secondary: Maybe later
+Review timing rule: - show only after the snapshot and trust/value moment - never before the user feels
+understood - never make it a blocking required step
+Screen 13 — Premium handoff / paywall intro screen
+Purpose: - transition emotionally into the standalone premium flow
+29
+
+===== PAGE 30 =====
+
+Must include: - short premium bridge message - visual continuity with the premium page - one CTA leading
+into the standalone paywall page - no full pricing sheet yet if pricing lives on the premium page - premium
+support art or bridge illustration Purpose: - transition emotionally into the standalone premium flow
+Must include: - short premium bridge message - visual continuity with the premium page - one CTA leading
+into the standalone paywall page - no full pricing sheet yet if pricing lives on the premium page - premium
+support art or bridge illustration
+Not allowed: - plan selector - full pricing grid - fake countdown
+16.5 Onboarding persuasion rules
+use the user’s name 3 or more times after it is captured
+keep auth, permissions, and account logistics out of the emotional core unless absolutely necessary
+use strong CTA copy instead of generic “Next” on important screens
+make the onboarding feel like a guided conversation, not a survey
+show real value before any review prompt
+make the roadmap outcome-based, not feature-based
+make the user feel seen, diagnosed, and hopeful before premium appears
+16.6 Review prompt hack rule
+Use a trust-building sequence: - first show the personalized snapshot, roadmap, or trust content - then
+show a beautiful review prompt or native review handoff only after value feels concrete - never show the
+review prompt too early - do not make review a required step
+17. Standalone Paywall and Premium Flow
+This must be its  own exact Figma page. Do not leave the full premium experience nested only under
+Milestone 3.
+17.1 Exact page requirement
+Use this exact page name: - 02 Paywall + Premium Flow
+17.2 Premium design direction
+Premium  should  feel  high-conversion,  polished,  visually  exciting,  and  immediately  valuable.  The
+closest reference energy is  Temu-style promotional momentum, but adapted to a cleaner , higher-trust,
+more premium family-product experience.
+That means: - strong visual rhythm - clear reward framing - fast emotional payoff - obvious deal/value
+hierarchy - bold CTA clarity - infographic-like communication
+It must not feel: - scammy - chaotic - fake-discount heavy - visually noisy - cheap or low-trust
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+30
+
+===== PAGE 31 =====
+
+Use this hybrid positioning: - Temu-like conversion clarity and urgency structure - Material 3 polish and
+spacing discipline - family-safe, trustworthy product tone
+17.3 Premium visual style
+The premium flow should be more visually charged than the rest of the app, while still staying inside the
+same brand system.
+Visual rules
+richer gradients than core app flows
+stronger focal art moments
+brighter accent contrast on CTAs and offer cards
+more obvious hierarchy between primary and secondary plans
+clean infographic structures for timeline and value explanation
+subtle glow, soft shadow, and premium depth
+one illustration family only
+no cluttered collage layout
+no fake coupon spam look
+Premium art style
+Use premium hero art that feels: - aspirational - rewarding - calm but high-value - polished enough to feel
+like a special offer moment
+Recommended premium art motifs: - glowing family/home rhythm scene - polished premium badge or
+premium household cluster - floating calendar , checklist, star , chart, and reminder objects - structured
+timeline graphic with visual milestones - translucent gift box for rescue offer only
+17.4 Post-auth premium flow requirement
+The main premium conversion flow should be designed around the post-sign-in primary placement.
+Placement
+post_auth_primary
+Flow structure
+Use this exact 4-screen flow for the main premium experience: 1. Promise 2. Trial clarity 3. Social trust 4.
+Offer sheet
+The first 3 screens are still app-owned UI and should be visually beautiful, but the content should be
+structured so it can be updated from metadata later .
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+31
+
+===== PAGE 32 =====
+
+17.5 Screen-by-screen premium sequence
+Be explicit: these are screens, not vague steps. Each one needs its own purpose, layout, focal art, and CTA.
+Screen 1 — Promise screen
+Purpose: - emotionally frame premium before any price appears
+Must include: - strong promise headline - personalized copy using the user’s name when available - optional
+adaptation based on their chosen household goals - premium hero art - no visible pricing yet - one forward
+CTA
+Example  content  direction:  -  calmer  routines  -  less  parent  mental  load  -  better  fairness  -  clearer
+accountability - deeper insights
+Style: - bold premium opening - strongest hero composition on the paywall page - visually exciting but still
+clean
+Screen 2 — Trial clarity screen
+Purpose: - reduce anxiety and explain what happens next
+Must include: - an infographic-style timeline - a connected line running through milestone points - clear
+labels for  Today,  Day 1,  Day 3, and  Day 7 or the exact configured trial checkpoints - one CTA - no fake
+urgency
+Required messaging structure: - Today: full premium access begins - Day 1: chores are initialized, structure
+is visible, the home already feels more organized -  Day 3: momentum builds, reminders drop, and the
+household feels lighter - Day 7: routine, fairness, and calm are noticeably stronger - Reminder checkpoint:
+user gets reminded before the trial ends if that is true - Billing checkpoint: billing starts unless canceled if
+that is true
+Trial clarity infographic rule
+This must use a  connected infographic timeline. Do not replace it with stacked cards. Use: - vertical or
+stepped connected line - milestone icons - short benefit text per milestone - clear visual progression from
+now to later - stronger visual emphasis on Day 1, Day 3, and Day 7
+Screen 3 — Social trust screen
+Purpose: - justify the premium upgrade through trust
+Must include one of these: 1. real reviews only, if real reviews exist 2. What premium unlocks page, if real
+reviews are not strong enough yet
+32
+
+===== PAGE 33 =====
+
+If using reviews: - use real testimonial structure only - use elegant quote cards or trust chips - avoid fake
+ratings or invented numbers
+If reviews are weak: - replace this screen with a value-explanation screen showing what premium unlocks: -
+advanced reports - smart assignment rules - reminders - approval workflows - vacation balancing - deeper
+household clarity
+Screen 4 — Offer sheet
+Purpose: - this is the first place where price appears
+Must include: - annual plan preselected by default when intended - monthly as secondary option when
+intended - trial toggle above plans if supported - one sticky primary CTA - plan ordering that makes the
+annual plan feel like the obvious best-value choice - price text that comes from the configured package
+source, not hardcoded UI math
+Offer sheet clarity rules
+price appears only here in the main flow
+odd pricing or charm pricing should only be shown if it matches the actual offering
+do not show fake crossed-out prices unless they are real
+do not compute fake weekly breakdowns unless they are clearly truthful and intended
+explain value in plain language, not just feature names
+17.6 Premium flow layout rule
+This page must look like a real premium conversion sequence. Do not reduce it to one main paywall card
+plus a few small note cards.
+Use a clear connected visual narrative: - left-to-right sequence, or - top-to-bottom stepped sequence
+The user should visually feel that they are moving through a persuasive journey, not glancing at random
+pricing mockups.
+17.7 Temu-like conversion principles to borrow
+Borrow these principles only: - strong offer hierarchy - emotionally obvious value - high visual clarity for the
+best plan - fast comprehension of reward - exciting rescue offer presentation when appropriate - bold CTA
+treatment
+Do  not borrow: - spammy coupon clutter - misleading urgency - fake scarcity - fake timers - low-trust
+discount language
+17.8 Offer and pricing rules
+annual should be preselected by default if that is the intended strategy
+• 
+• 
+• 
+• 
+• 
+• 
+33
+
+===== PAGE 34 =====
+
+monthly should appear as the secondary option when appropriate
+odd pricing / charm pricing should only be shown if it matches the actual configured price source
+never fake discounts or fake price math in the UI
+explain why premium is worth paying for in terms of calmer routines, less mental load, better
+fairness, deeper reports, and stronger household accountability
+the premium flow should feel valuable before it feels transactional
+17.9 What this standalone premium page should include
+This page should include: - Promise screen - Trial clarity screen - Social trust or “what premium unlocks”
+screen - Offer sheet - decline/rescue branch - free vs premium clarity - visual connection lines or arrows
+between screens - premium-specific hero art and reusable icons
+17.10 Premium roadmap content rule
+The first-week or trial roadmap must not be purely operational. Make it feel personally rewarding.
+Use milestone content direction like: - Day 1: setup begins, chores feel more organized, first sense of relief -
+Day  3:  early  momentum,  less  clutter ,  less  reminding,  household  feels  lighter  -  Day  7:  noticeable
+improvement in routine, fairness, and calm
+Do not make the roadmap only say what the app does. It should show what the household feels and gains.
+17.11 Premium screen separation by theme
+Do not visually mix light and dark versions of the premium flow in the same main lane.
+Required rule: - light premium sequence shown in its own clearly separated frame group - dark premium
+sequence shown in its own clearly separated frame group - same layout, same structure, same components
+- only colors, surfaces, and theme tokens change
+This is required so the next implementation agent does not accidentally combine light and dark screens into
+one UI.
+17.12 Premium-specific art generation requirements
+Generate dedicated premium assets for: - Promise screen hero - trial clarity / timeline graphic support art -
+trust/value explanation visual support - offer sheet premium badge or plan art - abandonment gift box art
+Keep these in the same illustration family as onboarding, but give them a slightly more premium and
+reward-oriented feel.
+• 
+• 
+• 
+• 
+• 
+34
+
+===== PAGE 35 =====
+
+17.13 Purchase abandonment rescue flow
+This needs its own mini-branch on the premium page. Do not implement it as a fake front-end trick. Design
+it as a real rescue flow tied to a separate offering strategy.
+Placement
+purchase_abandonment
+Trigger moments
+Show the rescue flow only when: - user closes the main offer page, or - user opens the purchase flow and
+backs out, or - user returns later after seeing the main paywall and not converting
+Rescue screen 1 — Gift reveal
+Must include: - floating translucent premium gift box art - no price yet - simple headline such as a special
+gift or unlocked offer moment - strong focus on curiosity and reward
+Rescue screen 2 — One-time annual offer
+Must include: - annual plan only - simple CTA - urgency badge or timer only if it is real - offer clarity without
+clutter - clear visual separation from the main offer sheet
+Rescue design rule
+The rescue flow should feel like a special premium branch, not a cheap desperate fallback.
+17.14 Metadata and truthfulness rule
+The design should assume that: - package order - CTA copy - trial toggle behavior - badges - rescue visibility
+- urgency copy can be controlled by metadata or offering config later .
+But the visible price should always be treated as coming from the real package source. Do not hardcode
+fake pricing logic into the mockup instructions.
+17.15 Free vs premium clarity
+The premium page should clearly communicate what changes after upgrade.
+Free stays useful
+Show that free still includes: - core chore assignment - basic completion tracking - basic reminders
+• 
+35
+
+===== PAGE 36 =====
+
+Premium unlocks more leverage
+Show that premium adds: - advanced reports - yearly insights - smart assignment rules - approval workflows
+- deeper reminders - balancing logic - stronger household coordination tools
+17.16 Final premium page standard
+By the end of the premium flow, the user should feel: - this is worth paying for - the value is clear - the offer
+is understandable - the first win is close - the annual plan is the best choice if it truly is
+18. Figma File Structure
+18.1 Page names
+Use  these  exact  page  names:  -  00  Foundations -  01  Hero  +  Onboarding -
+02 Paywall + Premium Flow -  03 Milestone 1 - Core Experience -  04 Milestone 2 - 
+Family + Chore Management - 05 Milestone 3 - Reports + Premium - 06 Milestone 4 - 
+Final Adaptive + Platform States
+18.2 Frame naming prefixes
+Use: - SYS / - M1 / - M2 / - M3 / - M4 / - LIGHT / - DARK / - COMPACT / - MEDIUM / -
+EXPANDED /
+18.3 Internal frame order per page
+Inside each milestone page, use this order: 1. milestone overview board 2. new components introduced 3.
+main flow lane(s) 4. major screen groupings 5. light theme variants 6. dark theme variants 7. compact /
+medium / expanded comparisons 8. edge cases and states
+19. Milestone Strategy
+Each milestone page must prioritize the current milestone at full fidelity.
+Do not force every milestone page to show every earlier screen at full size. That makes boards too large, too
+sparse, and harder to keep polished.
+Milestone page rule
+current milestone screens: full size and full fidelity
+previous milestone screens: compact references only when needed for continuity
+keep light and dark examples where relevant
+• 
+• 
+• 
+36
+
+===== PAGE 37 =====
+
+keep adaptive variants for major screens
+18. Milestone 1 — Core Experience
+Goal
+Establish visual identity, onboarding continuity, auth/household entry, and the core daily chore experience.
+Include on this page
+Design system section
+light color tokens group
+dark color tokens group
+typography table
+spacing scale
+icon samples
+component inventory introduced in milestone 1
+reusable app shell components
+Exact screen inventory for Milestone 1
+Splash screen — light
+Splash screen — dark
+Sign in screen
+Create household screen
+Join household with invite code screen
+Notification permission screen
+Photo/proof permission screen
+Home dashboard — compact light
+Home dashboard — compact dark
+Today’s chores list — compact light
+Today’s chores list — compact dark
+Chore detail — compact light
+Chore detail — compact dark
+Chore completion success state
+Proof uploaded awaiting approval state
+No chores today empty state
+No proof submissions empty state
+Compact continuity thumbnail pointing to standalone onboarding page
+18.1 Splash screen
+Must include: - app logo - app name - short tagline such as “Keep home in sync” - subtle gradient or clean
+solid background - light and dark variants - no stray prompt labels inside the product frame
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+11. 
+12. 
+13. 
+14. 
+15. 
+16. 
+17. 
+18. 
+37
+
+===== PAGE 38 =====
+
+18.2 Onboarding flow lane
+The full onboarding journey lives on the standalone  Hero + Onboarding page. Milestone 1 may include
+only a compact continuity reference if needed.
+18.3 Auth / household entry
+Provide these exact flows: - create new household - join existing household with invite code - sign in
+Do not let auth dominate the emotional onboarding flow. Auth should support onboarding, not replace it.
+18.4 Home dashboard
+This screen must feel like the household command center , not a generic card stack.
+Must include: - greeting using realistic household context - today’s progress ring - chores completed vs total
+- next chore card - household consistency or streak card - quick stats strip - overdue/upcoming section -
+reusable branded bottom navigation on eligible compact variants
+Must also include these specific structural elements: - a top horizontal day/date carousel showing nearby
+days  with  Today  clearly  highlighted  -  a  global  chores  summary  section showing  total  chores  today,
+completed, pending, and overdue - a  next-up card with assignee, due time, and one primary action - at
+least one meaningful support card such as family streak, fairness summary, or weekly momentum
+Recommended compact order: 1. top app bar 2. day/date carousel 3. progress ring + summary numbers 4.
+next-up chore card 5. global chores summary 6. overdue/upcoming list 7. bottom navigation
+Do not make the dashboard feel like unrelated floating cards. Everything should support the story of “what
+needs attention today.”
+18.5 Today’s chores list
+This screen must feel like a real daily schedule view, not a generic list.
+Each chore card must support: - title - assignee avatar - due time or suggested time - proof required / not
+required badge - priority indicator - estimated duration - completion action - reusable branded bottom
+navigation on eligible compact variants
+Must also include: - a day/date carousel or schedule selector at the top - clear grouping such as Today,
+Upcoming, Completed, or room/category when appropriate - realistic chore examples with believable labels
+- meaningful list status treatment for overdue, due soon, and completed
+Recommended screen-specific elements: - calendar/date control with swipe or tap behavior implied - room
+chip or category icon for each chore when helpful - proof-required chip with camera or note icon - subtle
+divider or grouping logic between active and completed chores
+38
+
+===== PAGE 39 =====
+
+Do not use a plain undifferentiated list of empty cards. Each row should clearly communicate who, what,
+when, and what proof/status is expected.
+18.6 Chore detail screen
+Must include: - task name - description - assigned person - due or suggested time - proof requirement -
+notes - subtasks if any - complete button - upload proof button when needed
+18.7 Completion states
+Include  exact  states:  -  success  state  -  proof  uploaded  state  -  awaiting  approval  state  -  celebration
+microinteraction note
+19. Milestone 2 — Family + Chore Management
+Goal
+Add family roles, member management, and the full create/edit chore system.
+Include on this page
+Design system additions
+chips
+segmented controls
+date/time pickers
+switches
+dropdowns
+image upload cards
+approval badges
+Exact screen inventory for Milestone 2
+Family overview — compact light
+Family overview — compact dark
+Family overview — expanded light with reusable drawer
+Family overview — expanded dark with reusable drawer
+Member profile — compact
+Member profile — expanded detail view
+Admin dashboard variant
+Member dashboard variant
+Create chore screen — compact
+Create chore screen — expanded
+Edit chore screen — compact
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+11. 
+39
+
+===== PAGE 40 =====
+
+Global chore library / template picker screen
+Assign rules screen
+Proof review queue list
+Proof review detail pane
+Vacation mode setup screen
+Day off setup screen
+Gone mode setup screen
+Notification preferences screen
+Invite member screen
+Family empty state if no members yet
+19.1 Family overview
+This screen must feel like a real household management screen, not a generic overview card set.
+Must include: - household name - member list with avatars - role badges - invite member button - per-
+member summary - admin controls entry point
+Recommended meaningful sections: - household header with avatar cluster or household mark - member
+completion snapshot - fairness / workload balance summary - quick actions such as invite, switch role
+preview, or manage rules - family streak or consistency surface if it supports context
+Expanded variants must use the reusable drawer correctly and may include: - member list on the left -
+selected member or family summary in the main pane - support/detail pane when helpful
+Do not make this screen just a column of generic rounded boxes. It should feel like the living control center
+for the family.
+19.2 Admin vs member view
+Admin can
+create/edit/delete chores
+approve proof
+manage assignments
+manage rules
+view all household reports
+manage premium and household settings
+Member can
+view assigned chores
+complete chores
+upload proof
+view personal reports
+manage personal availability modes
+12. 
+13. 
+14. 
+15. 
+16. 
+17. 
+18. 
+19. 
+20. 
+21. 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+40
+
+===== PAGE 41 =====
+
+19.3 Create/edit chore screen
+This screen must feel like a premium, practical creation flow with clear meaning and believable controls. Do
+not make it a stack of generic blank inputs.
+Must include fields for: - chore name - description - category - assignee selection - auto-assign toggle -
+repeat frequency - days of week - preferred time / optimal time to finish - due time - estimated duration -
+difficulty level - proof required toggle - proof type: photo, video, note, none - admin approval required
+toggle - points/reward value - late policy - reminder settings - save draft - publish
+Recommended structure: - header area with chore type or category icon - meaningful grouped sections
+such  as  Basics,  Assignment,  Timing,  Proof,  Rewards,  and  Rules  -  sticky  publish/save  action  area  when
+appropriate - helper text that makes settings easy to understand
+Meaningful  UI  details  to  include:  -  category  icons  for  common  chores  -  room  or  category  picker  with
+believable options - repeat day chips - proof type choice rows with camera/video/note icons - reward points
+visual treatment that feels motivating - admin approval state that clearly affects the workflow
+19.4 Global chore library / template picker
+This  screen  should  help  admins  start  from  common  household  tasks  instead  of  always  creating  from
+scratch.
+Must  include:  -  searchable  template  list  -  category  filters  such  as  Kitchen,  Bathroom,  Laundry,  Pets,
+Bedroom, Shared Spaces - one icon per template row - short supporting descriptions - quick action to use
+template
+This screen should feel especially helpful and premium, not like a plain list.
+19.5 Proof review queue and proof detail
+This area must feel like a real approval workflow with clear context, not a vague review placeholder .
+Queue list must include:
+task title
+member avatar or name
+submission time
+proof type chip (photo, video, note)
+status badge
+short preview text or preview thumbnail
+Detail pane or compact review screen must include:
+uploaded proof preview placeholder for photo/video submissions
+note or explanation left by the member when relevant
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+41
+
+===== PAGE 42 =====
+
+task instructions or proof requirement reminder
+member name and submission time
+admin comment area
+decision actions: Approve, Ask for redo, Leave note
+visible context so the admin can decide quickly
+Recommended  visual  elements:  -  photo  placeholder  frame  for  proof  image  preview  -  note  card  for
+submitted explanation - small decision icons for approve/redo/comment - status chip showing pending /
+approved / needs redo
+Do not make the review screen a blank card with only a title. It should look like a meaningful moderation /
+approval workflow.
+19.6 Availability modes
+Create exact screens for: - Vacation mode - Day off - Gone mode
+Each should show how assignments are rebalanced. Use meaningful empty/helper states and clear date
+controls rather than plain generic cards. Create exact screens for: - Vacation mode - Day off - Gone mode
+Each should show how assignments are rebalanced.
+20. Milestone 3 — Reports + Premium
+Goal
+Add daily/weekly/monthly/yearly reports, streaks, premium gating, and paywall flow continuity.
+Include on this page
+Design system additions
+charts
+comparison cards
+premium badges
+blurred locked states
+pricing cards
+Exact screen inventory for Milestone 3
+Daily report — compact light
+Daily report — compact dark
+Weekly report — compact light
+Weekly report — compact dark
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+1. 
+2. 
+3. 
+4. 
+42
+
+===== PAGE 43 =====
+
+Monthly report — compact
+Yearly report — compact
+Weekly report — expanded with detail pane
+Household comparison report
+Streaks and rewards screen
+Locked premium report state
+Locked premium automation state
+Subscription management entry screen
+Compact continuity thumbnail pointing to standalone premium page
+Report empty state
+Report no-data-yet state
+20.1 Report requirements
+The agent must design all four report levels. Do not stop at daily and weekly.
+Daily report
+Must  include:  -  chores  assigned  today  -  chores  completed  today  -  pending  chores  -  overdue  chores  -
+completion percentage today - per-member contribution today
+Weekly report
+Must include: - total completed this week - completion rate by day - most consistent member - missed
+chores count - proof submission rate - streak change vs previous week
+Monthly report
+Must include: - monthly trend - per-member totals - category breakdown - skipped or reassigned chores -
+average weekly completion inside the month - comparison against previous month
+Yearly report
+Must include: - yearly consistency trend - strongest and weakest months - yearly total completed chores -
+family contribution comparison - annual streak milestones - trend summary
+20.2 Chart suggestions
+bar chart for weekly completions
+line chart for monthly trends
+stacked bars for family comparison
+donut chart for completion categories
+yearly heatmap calendar
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+11. 
+12. 
+13. 
+14. 
+15. 
+• 
+• 
+• 
+• 
+• 
+43
+
+===== PAGE 44 =====
+
+Chart labeling rule
+Every chart must clearly state: - what the chart measures - time range - unit or meaning of the values - why
+it matters if a short caption is needed
+Do not place unlabeled graphs in the UI.
+20.3 Premium flow execution reminder
+The full premium journey lives on the standalone  Paywall + Premium Flow page. Milestone 3 should
+include only a compact continuity reference plus the specific report and locking contexts that lead into
+premium.
+Do not represent premium as a single isolated paywall screen. Show premium as a connected conversion
+flow with a clear promise, value explanation, offer sheet, and optional rescue.
+20.4 Free vs premium structure
+Free version ideas
+limited household size
+limited history window
+limited reports depth
+limited notifications customization
+limited automation rules
+Premium version ideas
+unlimited members
+advanced reports
+yearly insights
+smart assignment rules
+custom reminders
+proof approval workflows
+vacation balancing logic
+premium themes or icons
+21. Milestone 4 — Final Adaptive + Platform States
+Goal
+Complete the production-level mockup with adaptive boards, platform notifications, and polished system
+states.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+44
+
+===== PAGE 45 =====
+
+Include on this page
+Design system additions
+snackbars
+dialogs
+bottom sheets
+Android and iOS notification layouts
+keyboard-aware examples
+wider data layouts
+Exact screen inventory for Milestone 4
+Notification center — compact light
+Notification center — compact dark
+Android notification collapsed
+Android notification expanded
+iOS notification preview
+Persistent reminder / service concept if relevant
+Expanded dashboard — light with reusable drawer
+Expanded dashboard — dark with reusable drawer
+Expanded chore board — light
+Expanded chore board — dark
+Wide-layout reports page — light
+Wide-layout reports page — dark
+Account settings screen
+Theme settings screen
+Accessibility settings screen
+Household billing / premium admin page
+Offline state
+Error state
+Loading state
+Empty notifications state
+21.1 Android notifications
+Show: - app icon - chore title - assignee or “You” label - due time - proof badge when relevant - quick actions:
+Mark Done, Snooze, View - collapsed and expanded states
+21.2 iOS notifications
+Show: - app icon - title - body text - optional preview image - action buttons concept if useful
+21.3 Notification examples
+“Next chore starts in 15 minutes”
+• 
+• 
+• 
+• 
+• 
+• 
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+11. 
+12. 
+13. 
+14. 
+15. 
+16. 
+17. 
+18. 
+19. 
+20. 
+• 
+45
+
+===== PAGE 46 =====
+
+“Kitchen cleanup is due at 6:00 PM”
+“Proof required for Trash Duty”
+“Emma completed Bathroom Cleaning”
+“You’re on a 7-day streak”
+21.4 Expanded dashboard
+Should include: - left navigation - top summary cards - central assignment board - right-side detail or
+context pane - visible charts without excessive scrolling
+22. Core Component Inventory
+Buttons
+Filled Button
+Outlined Button
+Filled Tonal Button
+Text Button
+FAB
+Extended FAB
+Icon Button
+destructive variant
+Chips and badges
+Filter Chip
+Suggestion Chip
+role badge
+proof required badge
+premium badge
+streak badge
+overdue badge
+completed badge
+Cards
+chore card
+summary card
+member card
+report card
+streak card
+paywall benefit card
+locked feature card
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+46
+
+===== PAGE 47 =====
+
+Inputs
+Outlined Text Field
+multiline field
+numeric stepper
+Exposed Dropdown Menu
+Date Picker
+Time Picker
+Segmented Button group
+switch row
+image upload slot
+invite code field
+Feedback surfaces
+Snackbar
+Dialog
+Modal Bottom Sheet
+success banner
+skeleton loader
+empty state
+error state
+Charts
+bar chart
+line chart
+donut chart
+comparison table
+yearly heatmap
+23. Suggested Key Screens to Mock in Both
+Compact and Expanded
+home dashboard
+today’s chores list
+chore detail
+create/edit chore
+family overview
+weekly report
+paywall flow
+settings
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+47
+
+===== PAGE 48 =====
+
+24. Accessibility Guidance
+maintain AA contrast minimum
+use large tap targets
+do not rely on color alone
+support dynamic type
+pair important icons with text labels
+keep success and error messages explicit
+25. Microinteractions
+Include notes for: - checking off a chore - uploading proof - approving completion - switching admin/
+member modes - upgrading to premium - reaching streak milestones - entering vacation mode
+Suggested motion style: - soft - springy but restrained - 150ms to 300ms - not overly playful in admin flows
+26. Empty States
+Create illustrated empty states for: - no chores today - no family members yet - no premium access for this
+feature - no notifications yet - no reports data yet - no proof submissions pending
+27. Layout Quality Guardrails
+The agent must follow these strictly.
+Do not leave large empty areas on tablet or desktop boards.
+If a screen is too sparse, add the missing supporting pane or reduce the board size.
+Expanded layouts must use meaningful adaptive patterns.
+Do not invent empty dashboard regions just to fill width.
+Keep headers, labels, and section titles within safe bounds.
+Verify that no content is clipped.
+Validate every imported board with screenshots before declaring completion.
+Never let the OS status bar visually collide with app UI or board labels.
+Never place board labels or milestone tags inside the actual product frame capture.
+Use one reusable top app bar system and one reusable drawer system for consistency.
+Recheck drawer padding, icon alignment, selected states, and color consistency across all expanded
+screens.
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+48
+
+===== PAGE 49 =====
+
+28. Agent Instructions for Building the Mockup
+28.1 Global rules
+follow Material 3 component logic and naming
+support both light and dark themes
+use the semantic color tokens in this document
+create compact, medium, and expanded variants for major screens
+reuse mobile layouts intelligently for larger widths
+do not stretch layouts thoughtlessly
+keep screens visually dense enough to feel finished
+emphasize task ownership, completion clarity, and family coordination
+any text visible inside the product UI must be app text, not prompt text
+instructions, notes, board labels, milestone labels, comments, or prompt fragments must never leak
+into the captured UI
+No prompt text leakage rule
+This is mandatory. Inside the actual app UI, only include text that belongs to the product experience, such
+as: - headlines - labels - captions - CTA text - empty-state text - chart labels - onboarding copy - premium
+copy
+Do not include inside the product UI: - implementation instructions - design notes - prompt commentary -
+milestone names - board labels - “must include” language - internal QA text unless it is placed outside the
+product frame for documentation purposes
+28.2 Layout rules
+compact frame examples: 390 x 844 and 412 x 915
+medium frame examples: 800 x 1280 and 840 x 900
+expanded frame examples: 1024 x 768 and 1440 x 1024
+use 8pt spacing
+outer padding: 16 compact, 24 medium, 24-32 expanded
+avoid oversized cards with weak hierarchy
+28.3 Theme rules
+define light and dark tokens first
+map all components to semantic roles, not raw colors
+derive dark from light via token swap and surface adjustment
+maintain the same layout and art family across both themes
+28.4 Component definition order
+app shell
+navigation
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+1. 
+2. 
+49
+
+===== PAGE 50 =====
+
+buttons
+cards
+inputs
+chips and badges
+dialogs and sheets
+report charts
+notification surfaces
+empty-state layouts
+28.5 Priority screen order
+foundations and design tokens
+onboarding flow lane
+auth and household entry
+dashboard and chores list
+chore detail and complete flow
+family and admin screens
+chore creation flow
+reports
+premium/paywall flow
+notifications
+adaptive expanded boards
+28.6 Content guidance
+Use realistic sample names and chores.
+Example names: - Mom - Dad - Emma - Noah - Mia
+Example chores: - Take out trash - Load dishwasher - Clean kitchen table - Feed the dog - Fold laundry -
+Sweep living room
+28.7 Anti-hallucination rule
+If a behavior , layout, or component is not specified, prefer: 1. the closest official Material 3 pattern 2. the
+most conservative adaptive behavior
+Do not invent desktop-only structures, unrelated modules, or unexplained new flows without a clear reason.
+29. Deliverables Checklist
+29.1 Screen and asset totals
+Use these totals as a final execution checkpoint.
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+11. 
+50
+
+===== PAGE 51 =====
+
+Execution lock
+Before  building,  the  agent  must  restate  these  totals  and  then  verify  them  again  before  declaring
+completion.
+Screen totals by section
+01 Hero + Onboarding: 13 required screens plus 1 optional review handoff
+02 Paywall + Premium Flow: 6 screens total (4 main flow + 2 rescue screens)
+03 Milestone 1 - Core Experience: 18 screens
+04 Milestone 2 - Family + Chore Management: 21 screens
+05 Milestone 3 - Reports + Premium: 15 screens
+06 Milestone 4 - Final Adaptive + Platform States: 20 screens
+Total app screen count
+93 required screens across the design pages above, not counting the optional review handoff
+94 total possible screens if the optional review handoff is included
+Minimum generated art totals
+onboarding page: 6 required generated support/hero assets
+premium page: 5 required generated support/hero assets
+milestone 1: 4 required generated assets
+milestone 2: 4 required generated assets
+milestone 3: 4 required generated assets
+milestone 4: 3 required generated assets
+reusable mini-illustrations/icons: 12 to 20
+Minimum total generated visual assets
+26 required larger/support generated assets
+plus 12 to 20 reusable mini-assets
+for a total of 38 to 46 generated visual assets
+29.2 Critical reusable systems and screen checklist
+The agent must verify all of these are explicitly designed and reused where needed: - reusable Top App Bar
+system - reusable Bottom Navigation Bar system - reusable Navigation Drawer system - day/date carousel
+for schedule-related compact screens - meaningful proof review queue and proof detail workflow - global
+chore library / template picker - onboarding roadmap infographic - premium trial clarity infographic - trust/
+testimonial screen - premium rescue gift box flow
+The final mockup package must include: - 7 Figma pages with the exact names defined above - light theme
+screens - dark theme screens - compact, medium, and expanded layouts for major screens - Material role
+mapping - component inventory - standalone Hero + Onboarding page - standalone Paywall + Premium
+Flow page - onboarding flow lane with 10 to 12 explicit screens - premium/paywall conversion flow lane -
+reusable Top App Bar system - reusable Bottom Navigation Bar system that is branded, polished, and
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+• 
+51
+
+===== PAGE 52 =====
+
+reused consistently across all eligible compact screens - reusable Navigation Drawer system - admin and
+member flows - chore creation and proof flow - daily, weekly, monthly, yearly reports - Android and iOS
+notifications - vacation mode, day off, and gone mode - exportable art and icons - screenshot-verified
+boards with no clipping - no prompt-text leakage inside any product UI frame
+30. Final Creative Direction Summary
+The app should feel: - helpful for parents - easy for kids and members - trustworthy for coordination -
+rewarding for completion - elegant in both light and dark themes - adaptive from phone to desktop without
+losing identity
+The output should look like a polished product UI system, not a generic spec board.
+31. Final Agent Review and Coverage Check
+Before considering the work complete, the agent must do one final careful pass over: - this full document -
+all updated sections - all screens it created - all reusable components - all generated assets - all milestone
+pages - both light and dark theme groups - compact, medium, and expanded variants
+31.1 Final self-audit rule
+The  agent  must  verify  that  everything  requested  in  this  document  has  been  covered  carefully  and
+completely. Do not assume something was handled just because it was mentioned once earlier .
+31.2 Final review checklist
+The agent must confirm: - no required screen is missing - no required page is missing - onboarding and
+premium  each  live  on  their  own  exact  page  -  light  and  dark  themes  are  separated  clearly  -  reusable
+navigation systems were actually reused - all text stays within bounds - HTML-to-Figma capture defects
+were corrected - all generated assets were saved in organized folders - the final result matches the latest
+revisions, not an older version of the brief
+31.3 Completion rule
+Only mark the work complete after doing a deliberate end-to-end review and making any last fixes needed
+so that nothing important is missed.
+52
+

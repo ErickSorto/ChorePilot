@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>04 Milestone 2 - Family + Chore Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="route route--milestone2">
+    <header class="route__header">
+      <div>
+        <p class="eyebrow">ChorePilot / page 04</p>
+        <h1>Milestone 2 - Family and chore management</h1>
+        <p class="route__copy">
+          The second milestone expands the product into family roles, admin and
+          member views, full chore creation and editing, proof review, availability
+          modes, and the real household management layer.
+        </p>
+      </div>
+      <a class="route__link" href="./milestone-3.html">Next: Milestone 3</a>
+    </header>
+
+    <main class="board board--light section-stack">
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Overview</span>
+            <h3>21 required milestone screens</h3>
+            <p>
+              This board deepens the app into real family operations: who belongs
+              to the household, who can approve or edit, how chores are built, and
+              how temporary availability modes rebalance assignments.
+            </p>
+          </div>
+          <div class="surface-card">
+            <strong>New systems introduced</strong>
+            <span>Chips, segmented controls, date and time pickers, switches, dropdowns, image upload cards, and approval badges.</span>
+          </div>
+        </header>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Family views</span>
+            <h3>Household overview, member profiles, and role-based dashboards</h3>
+            <p>
+              The family area should feel like a living control center with clear
+              role visibility, member balance, and stable expanded navigation.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--4">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Family overview - compact light</h4>
+                <p>Household header, member list, and fairness summary.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 01</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="support-block">
+                <img src="../imagegen/m2-family-overview-hero.png" alt="Family overview support art" />
+              </div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title">
+                    <h5>River House</h5>
+                    <span>4 active members</span>
+                  </div>
+                  <span class="badge badge--success">Balanced</span>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">ER</div>
+                    <div class="task-item__meta"><strong>Erick - Admin</strong><span>2 active chores, 1 approval pending</span></div>
+                    <span class="badge">Owner</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">EM</div>
+                    <div class="task-item__meta"><strong>Emma - Member</strong><span>3 chores today, streak 5</span></div>
+                    <span class="badge badge--success">On track</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">NW</div>
+                    <div class="task-item__meta"><strong>Noah - Member</strong><span>2 chores today, vacation off</span></div>
+                    <span class="badge badge--neutral">Available</span>
+                  </div>
+                </div>
+                <div class="summary-strip">
+                  <div class="summary-stat"><strong>Fair share</strong><span>92%</span></div>
+                  <div class="summary-stat"><strong>Invites</strong><span>1 pending</span></div>
+                  <div class="summary-stat"><strong>Approvals</strong><span>2 waiting</span></div>
+                  <div class="summary-stat"><strong>Streak</strong><span>7 days</span></div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Family overview - compact dark</h4>
+                <p>Dark variant with the same member hierarchy.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 02</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="support-block" style="background:linear-gradient(180deg,#172746 0%,#0b1220 100%);">
+                <img src="../imagegen/m2-family-overview-hero.png" alt="Family overview support art dark" />
+              </div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title">
+                    <h5>River House</h5>
+                    <span>Tonight's household pulse</span>
+                  </div>
+                  <span class="badge">Premium</span>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">FA</div>
+                    <div class="task-item__meta"><strong>Fairness snapshot</strong><span>Emma and Noah are within one chore of each other this week.</span></div>
+                    <span class="badge badge--success">Even</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">IV</div>
+                    <div class="task-item__meta"><strong>Invite member</strong><span>Add a grandparent or helper to special chores.</span></div>
+                    <span class="badge">Open</span>
+                  </div>
+                </div>
+                <div class="nav-bar nav-bar--5">
+                  <div class="nav-bar__item">Home</div>
+                  <div class="nav-bar__item">Chores</div>
+                  <div class="nav-bar__item is-active">Family</div>
+                  <div class="nav-bar__item">Reports</div>
+                  <div class="nav-bar__item">More</div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Family overview - expanded light with reusable drawer</h4>
+                <p>Drawer-led admin view with household summary in the center.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 03</span>
+            </div>
+            <section class="desktop desktop--light">
+              <div class="desktop__layout">
+                <aside class="drawer">
+                  <div class="drawer__header">
+                    <div class="household-mark__badge">CP</div>
+                    <div class="drawer__label"><strong>River House</strong><span>Admin household</span></div>
+                  </div>
+                  <div class="nav-list">
+                    <div class="drawer__item">
+                      <div class="drawer__icon">D</div>
+                      <div class="drawer__label"><strong>Dashboard</strong><span>Today and next up</span></div>
+                      <span class="badge">Now</span>
+                    </div>
+                    <div class="drawer__item is-active">
+                      <div class="drawer__icon">F</div>
+                      <div class="drawer__label"><strong>Family</strong><span>Members and roles</span></div>
+                      <span class="badge badge--success">4</span>
+                    </div>
+                    <div class="drawer__item">
+                      <div class="drawer__icon">R</div>
+                      <div class="drawer__label"><strong>Rules</strong><span>Auto-assign and proof</span></div>
+                      <span class="badge">3</span>
+                    </div>
+                  </div>
+                </aside>
+                <div class="desktop__main">
+                  <div class="top-bar">
+                    <div class="top-bar__title">
+                      <h5>Household overview</h5>
+                      <span>Balance, participation, and invite controls</span>
+                    </div>
+                    <div class="chip-row">
+                      <span class="chip">4 members</span>
+                      <span class="chip-ghost">1 invite pending</span>
+                    </div>
+                  </div>
+                  <div class="card-grid">
+                    <div class="surface-card surface-card--strong"><strong>Completion snapshot</strong><span>86% of assigned chores were completed on time this week.</span></div>
+                    <div class="surface-card"><strong>Admin controls</strong><span>Manage roles, invites, and assignment rules from one stable surface.</span></div>
+                  </div>
+                  <div class="task-list">
+                    <div class="task-item surface-card">
+                      <div class="task-item__icon">ER</div>
+                      <div class="task-item__meta"><strong>Erick</strong><span>Admin, proof approvals, weekly planning</span></div>
+                      <span class="badge">Admin</span>
+                    </div>
+                    <div class="task-item surface-card">
+                      <div class="task-item__icon">EM</div>
+                      <div class="task-item__meta"><strong>Emma</strong><span>3 chores today, strongest weekly streak</span></div>
+                      <span class="badge badge--success">Strong</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Selected household note</strong>
+                    <span>Kitchen cleanup is still pulling heavier toward Emma on weekdays.</span>
+                  </div>
+                  <div class="surface-card">
+                    <strong>Quick actions</strong>
+                    <span>Invite member, adjust role, or review auto-assign rules.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Family overview - expanded dark with reusable drawer</h4>
+                <p>Same drawer system reused with dark roles.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 04</span>
+            </div>
+            <section class="desktop desktop--dark">
+              <div class="desktop__layout">
+                <aside class="drawer">
+                  <div class="drawer__header">
+                    <div class="household-mark__badge">CP</div>
+                    <div class="drawer__label"><strong>River House</strong><span>Premium household</span></div>
+                  </div>
+                  <div class="nav-list">
+                    <div class="drawer__item is-active">
+                      <div class="drawer__icon">F</div>
+                      <div class="drawer__label"><strong>Family</strong><span>Members and roles</span></div>
+                      <span class="badge">4</span>
+                    </div>
+                    <div class="drawer__item">
+                      <div class="drawer__icon">C</div>
+                      <div class="drawer__label"><strong>Chores</strong><span>Schedule and templates</span></div>
+                      <span class="badge">12</span>
+                    </div>
+                    <div class="drawer__item">
+                      <div class="drawer__icon">P</div>
+                      <div class="drawer__label"><strong>Proof</strong><span>2 pending approvals</span></div>
+                      <span class="badge badge--warning">2</span>
+                    </div>
+                  </div>
+                </aside>
+                <div class="desktop__main">
+                  <div class="surface-card">
+                    <strong>Household momentum</strong>
+                    <span>Streak is still holding, but midweek kitchen work is trending high.</span>
+                  </div>
+                  <div class="compare-grid">
+                    <div class="surface-card"><strong>Emma</strong><span>Highest completion rate</span></div>
+                    <div class="surface-card"><strong>Noah</strong><span>Most improved follow-through</span></div>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Admin prompt</strong>
+                    <span>Consider shifting Friday laundry from Emma to Erick for better balance.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Member profile - compact</h4>
+                <p>Personal summary with role, streak, and active chores.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 05</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="surface-card surface-card--strong">
+                  <strong>Emma</strong>
+                  <span>Member - age-friendly household view</span>
+                </div>
+                <div class="summary-strip">
+                  <div class="summary-stat"><strong>3</strong><span>Today</span></div>
+                  <div class="summary-stat"><strong>5</strong><span>Streak</span></div>
+                  <div class="summary-stat"><strong>92%</strong><span>On-time</span></div>
+                  <div class="summary-stat"><strong>18</strong><span>Points</span></div>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">KC</div>
+                    <div class="task-item__meta"><strong>Kitchen cleanup</strong><span>Due 6:00 PM with proof photo</span></div>
+                    <span class="badge">Next</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">DL</div>
+                    <div class="task-item__meta"><strong>Load dishwasher</strong><span>Recurring every Tue and Thu</span></div>
+                    <span class="badge badge--success">Recurring</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Member profile - expanded detail view</h4>
+                <p>Large detail view with member trend and notes.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 06</span>
+            </div>
+            <section class="desktop desktop--light">
+              <div class="wide-report">
+                <div class="desktop__main">
+                  <div class="surface-card surface-card--strong">
+                    <strong>Emma's household profile</strong>
+                    <span>Role, participation trend, and active assignments.</span>
+                  </div>
+                  <div class="line-chart">
+                    <span style="height:44px;"></span>
+                    <span style="height:72px;"></span>
+                    <span style="height:60px;"></span>
+                    <span style="height:88px;"></span>
+                    <span style="height:84px;"></span>
+                    <span style="height:96px;"></span>
+                  </div>
+                  <div class="task-list">
+                    <div class="task-item surface-card">
+                      <div class="task-item__icon">SC</div>
+                      <div class="task-item__meta"><strong>Strongest category</strong><span>Kitchen resets are consistently completed on time.</span></div>
+                      <span class="badge badge--success">High</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="desktop__aside">
+                  <div class="surface-card">
+                    <strong>Admin note</strong>
+                    <span>Emma responds well to visible points and short reminder windows.</span>
+                  </div>
+                  <div class="surface-card">
+                    <strong>Availability</strong>
+                    <span>No vacation or day-off mode active.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Admin dashboard variant</h4>
+                <p>Admin gets approvals, rules, and household-wide controls.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 07</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Admin dashboard</h5><span>Household-wide management</span></div>
+                  <span class="badge badge--warning">2 approvals</span>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">PR</div>
+                    <div class="task-item__meta"><strong>Review proof</strong><span>2 pending kitchen and bathroom submissions</span></div>
+                    <span class="badge">Open</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">AR</div>
+                    <div class="task-item__meta"><strong>Assignment rules</strong><span>Friday laundry still needs balancing</span></div>
+                    <span class="badge badge--warning">Check</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Member dashboard variant</h4>
+                <p>Member view stays focused on assigned chores and availability.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 08</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="surface-card">
+                  <strong>Noah's dashboard</strong>
+                  <span>2 chores left, one note-proof task, day-off request available.</span>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">FD</div>
+                    <div class="task-item__meta"><strong>Feed the dog</strong><span>6:15 PM - note proof</span></div>
+                    <span class="badge">Next</span>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">SW</div>
+                    <div class="task-item__meta"><strong>Sweep living room</strong><span>7:30 PM - no proof</span></div>
+                    <span class="badge badge--success">Ready</span>
+                  </div>
+                </div>
+                <button class="button button--gold">Set my availability</button>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Chore building</span>
+            <h3>Create, edit, template, and assign household rules</h3>
+            <p>
+              The chore creation flow is structured into meaningful groups rather
+              than a pile of blank inputs, with visible reward, proof, and timing
+              logic.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--3">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Create chore screen - compact</h4>
+                <p>Grouped setup flow for quick mobile creation.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 09</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Create chore</h5><span>Kitchen task template</span></div>
+                  <span class="badge">Draft</span>
+                </div>
+                <div class="form-section">
+                  <h5>Basics</h5>
+                  <div class="field">
+                    <label>Chore name</label>
+                    <div class="field__input">Wipe kitchen counters</div>
+                  </div>
+                  <div class="field">
+                    <label>Description</label>
+                    <div class="field__textarea">Clear crumbs, wipe counters, and reset the sink before dinner.</div>
+                  </div>
+                  <div class="chip-row">
+                    <span class="chip chip--selected">Kitchen</span>
+                    <span class="chip-ghost">Shared space</span>
+                    <span class="chip-ghost">Quick reset</span>
+                  </div>
+                </div>
+                <div class="form-section">
+                  <h5>Timing and proof</h5>
+                  <div class="segmented"><span class="is-active">Tue</span><span>Thu</span><span>Sat</span></div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">PH</div>
+                    <div class="task-item__meta"><strong>Photo proof required</strong><span>Admins can review before marking complete.</span></div>
+                    <div class="toggle is-on"></div>
+                  </div>
+                </div>
+                <div class="cta-stack">
+                  <button class="button">Publish chore</button>
+                  <button class="button-secondary">Save draft</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Create chore screen - expanded</h4>
+                <p>Wider form with grouped logic and sticky action column.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 10</span>
+            </div>
+            <section class="tablet tablet--light">
+              <div class="split-grid">
+                <div class="stack">
+                  <div class="form-section">
+                    <h5>Basics</h5>
+                    <div class="field"><label>Name</label><div class="field__input">Load dishwasher</div></div>
+                    <div class="field"><label>Category</label><div class="field__input">Kitchen</div></div>
+                    <div class="field"><label>Assignee</label><div class="field__input">Emma</div></div>
+                  </div>
+                  <div class="form-section">
+                    <h5>Timing</h5>
+                    <div class="chip-row">
+                      <span class="chip chip--selected">Mon</span><span class="chip chip--selected">Wed</span><span class="chip chip--selected">Fri</span>
+                    </div>
+                    <div class="compare-grid">
+                      <div class="field"><label>Preferred time</label><div class="field__input">7:00 PM</div></div>
+                      <div class="field"><label>Due time</label><div class="field__input">8:00 PM</div></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="stack">
+                  <div class="form-section">
+                    <h5>Proof and rewards</h5>
+                    <div class="task-item surface-card">
+                      <div class="task-item__icon">AP</div>
+                      <div class="task-item__meta"><strong>Admin approval</strong><span>Needed for photo or video proof.</span></div>
+                      <div class="toggle is-on"></div>
+                    </div>
+                    <div class="task-item surface-card">
+                      <div class="task-item__icon">PT</div>
+                      <div class="task-item__meta"><strong>Reward points</strong><span>Set to 5 for a daily routine task.</span></div>
+                      <span class="badge badge--success">5 pts</span>
+                    </div>
+                  </div>
+                  <div class="surface-card surface-card--strong">
+                    <strong>Sticky actions</strong>
+                    <span>Publish, save draft, and preview assignment load before pushing the chore live.</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Edit chore screen - compact</h4>
+                <p>Existing chore edited with prefilled settings.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 11</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="surface-card">
+                  <strong>Edit kitchen cleanup</strong>
+                  <span>Auto-assign is off, proof is on, and Friday duration was increased.</span>
+                </div>
+                <div class="form-section">
+                  <h5>Timing update</h5>
+                  <div class="chip-row">
+                    <span class="chip">Tue</span>
+                    <span class="chip">Thu</span>
+                    <span class="chip chip--selected">Fri</span>
+                  </div>
+                  <div class="field"><label>Estimated duration</label><div class="field__input">18 min</div></div>
+                </div>
+                <div class="cta-stack">
+                  <button class="button button--gold">Save changes</button>
+                  <button class="button-secondary">Delete chore</button>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Global chore library / template picker</h4>
+                <p>Searchable starter library for common household tasks.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 12</span>
+            </div>
+            <section class="tablet tablet--light">
+              <div class="stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Template library</h5><span>Start from common chores</span></div>
+                  <span class="badge badge--success">24 templates</span>
+                </div>
+                <div class="field"><label>Search templates</label><div class="field__input">Kitchen cleanup</div></div>
+                <div class="chip-row">
+                  <span class="chip chip--selected">Kitchen</span>
+                  <span class="chip-ghost">Bathroom</span>
+                  <span class="chip-ghost">Laundry</span>
+                  <span class="chip-ghost">Pets</span>
+                  <span class="chip-ghost">Bedroom</span>
+                </div>
+                <div class="queue-list">
+                  <div class="template-row surface-card">
+                    <div class="task-item__icon">KC</div>
+                    <div class="template-row__meta"><strong>Kitchen cleanup</strong><span>Counter wipe, table reset, and dishwasher check.</span></div>
+                    <span class="badge">Use</span>
+                  </div>
+                  <div class="template-row surface-card">
+                    <div class="task-item__icon">TR</div>
+                    <div class="template-row__meta"><strong>Take out trash</strong><span>Evening curb prep with recurring schedule support.</span></div>
+                    <span class="badge">Use</span>
+                  </div>
+                  <div class="template-row surface-card">
+                    <div class="task-item__icon">FD</div>
+                    <div class="template-row__meta"><strong>Fold laundry</strong><span>Shared room reset with optional proof note.</span></div>
+                    <span class="badge">Use</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Assign rules screen</h4>
+                <p>Balance rules, auto-assign, and late policy settings.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 13</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="surface-card surface-card--strong">
+                  <strong>Assignment rules</strong>
+                  <span>Keep recurring work fair and avoid back-to-back overload.</span>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">EQ</div>
+                    <div class="task-item__meta"><strong>Even weekly load</strong><span>Distribute recurring chores within one task difference.</span></div>
+                    <div class="toggle is-on"></div>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">NS</div>
+                    <div class="task-item__meta"><strong>No same-day repeats</strong><span>Do not assign two heavy chores to the same person.</span></div>
+                    <div class="toggle is-on"></div>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">LT</div>
+                    <div class="task-item__meta"><strong>Late policy</strong><span>Escalate after 30 minutes and notify admin.</span></div>
+                    <span class="badge badge--warning">30 min</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-card">
+        <header class="section-card__header">
+          <div>
+            <span class="section-card__eyebrow">Review and availability</span>
+            <h3>Proof review, member modes, preferences, and invites</h3>
+            <p>
+              Admin review and member availability need believable context and
+              clear rebalancing logic. These screens avoid empty placeholders and
+              show how the household would actually adapt.
+            </p>
+          </div>
+        </header>
+        <div class="screen-grid screen-grid--3">
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Proof review queue list</h4>
+                <p>Pending proof items with preview, type, and status.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 14</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Proof review</h5><span>2 pending submissions</span></div>
+                  <span class="badge badge--warning">Queue</span>
+                </div>
+                <div class="queue-list">
+                  <div class="queue-item surface-card">
+                    <div class="task-item__icon">PH</div>
+                    <div class="queue-item__meta"><strong>Kitchen cleanup</strong><span>Emma - photo proof - submitted 5:54 PM</span></div>
+                    <span class="badge">Pending</span>
+                  </div>
+                  <div class="queue-item surface-card">
+                    <div class="task-item__icon">NT</div>
+                    <div class="queue-item__meta"><strong>Feed the dog</strong><span>Noah - note proof - submitted 6:14 PM</span></div>
+                    <span class="badge">Pending</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Proof review detail pane</h4>
+                <p>Preview, note, context, and decision actions all visible.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 15</span>
+            </div>
+            <section class="tablet tablet--light">
+              <div class="review-layout">
+                <div class="proof-frame">
+                  <img src="../imagegen/m2-proof-review-empty.png" alt="Proof review preview support art" />
+                </div>
+                <div class="stack">
+                  <div class="surface-card surface-card--strong">
+                    <strong>Kitchen cleanup - Emma</strong>
+                    <span>Submitted 5:54 PM with photo proof and a short note.</span>
+                  </div>
+                  <div class="quote-card">
+                    <strong>Member note</strong>
+                    <span>Counter, table, and sink are all reset. I checked the floor for crumbs too.</span>
+                  </div>
+                  <div class="surface-card">
+                    <strong>Requirement reminder</strong>
+                    <span>Need full counter and sink visible from one angle.</span>
+                  </div>
+                  <div class="button-row">
+                    <span class="button-chip button-chip--filled">Approve</span>
+                    <span class="button-chip button-chip--outline">Ask redo</span>
+                    <span class="button-chip button-chip--tonal">Leave note</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Vacation mode setup screen</h4>
+                <p>Shows date controls and how chores rebalance.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 16</span>
+            </div>
+            <section class="phone phone--warm">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="state-illustration">
+                <img src="../imagegen/m2-vacation-helper.png" alt="Vacation mode helper art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Vacation mode</p>
+                  <h4 class="screen-title">Pause Emma's chores while she is away.</h4>
+                </div>
+                <div class="surface-card">
+                  <strong>Dates</strong>
+                  <span>Apr 18 through Apr 23</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Rebalance preview</strong>
+                  <span>Kitchen cleanup shifts to Erick, pet care shifts to Noah.</span>
+                </div>
+                <button class="button button--teal">Apply vacation mode</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Day off setup screen</h4>
+                <p>Single-day pause with lighter reassignment rules.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 17</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="state-illustration">
+                <img src="../imagegen/m2-vacation-helper.png" alt="Day off helper art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Day off</p>
+                  <h4 class="screen-title">Give Noah a break tomorrow.</h4>
+                </div>
+                <div class="surface-card">
+                  <strong>Date</strong>
+                  <span>Friday, Apr 19</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Impact</strong>
+                  <span>Feed the dog moves to Erick. Laundry remains unchanged.</span>
+                </div>
+                <button class="button">Confirm day off</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Gone mode setup screen</h4>
+                <p>Longer absence with stronger rebalance messaging.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 18</span>
+            </div>
+            <section class="phone phone--dark">
+              <div class="statusbar statusbar--dark"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="state-illustration">
+                <img src="../imagegen/m2-vacation-helper.png" alt="Gone mode helper art" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Gone mode</p>
+                  <h4 class="screen-title">Remove Erick from assignments during travel.</h4>
+                </div>
+                <div class="surface-card">
+                  <strong>Window</strong>
+                  <span>Apr 24 through Apr 28</span>
+                </div>
+                <div class="surface-card">
+                  <strong>Household effect</strong>
+                  <span>Admin approval falls back to Emma for proof, and late reminders stay active.</span>
+                </div>
+                <button class="button button--gold">Activate gone mode</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Notification preferences screen</h4>
+                <p>Member control over reminder intensity and proof alerts.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 19</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div class="top-bar">
+                  <div class="top-bar__title"><h5>Notification preferences</h5><span>Keep reminders helpful</span></div>
+                </div>
+                <div class="task-list">
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">DS</div>
+                    <div class="task-item__meta"><strong>Due soon reminders</strong><span>15 minutes before start time</span></div>
+                    <div class="toggle is-on"></div>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">PF</div>
+                    <div class="task-item__meta"><strong>Proof approval updates</strong><span>Alert when a submission is reviewed</span></div>
+                    <div class="toggle is-on"></div>
+                  </div>
+                  <div class="task-item surface-card">
+                    <div class="task-item__icon">QT</div>
+                    <div class="task-item__meta"><strong>Quiet hours</strong><span>Hold non-urgent household pings after 8:30 PM</span></div>
+                    <div class="toggle"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Invite member screen</h4>
+                <p>Invite flow with role selection and code sharing.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 20</span>
+            </div>
+            <section class="phone phone--light">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Invite a household member</p>
+                  <h4 class="screen-title">Choose the role before sharing the code.</h4>
+                </div>
+                <div class="input-card">
+                  <label>Invite code</label>
+                  <div class="input-shell mono">RIVER-82</div>
+                </div>
+                <div class="choice-stack">
+                  <div class="choice-row is-selected">
+                    <div class="choice-row__icon">MB</div>
+                    <div><h4>Member</h4><p>Can complete chores, upload proof, and manage personal availability.</p></div>
+                    <div class="choice-row__check"></div>
+                  </div>
+                  <div class="choice-row">
+                    <div class="choice-row__icon">AD</div>
+                    <div><h4>Admin</h4><p>Can edit chores, approve proof, and manage the household.</p></div>
+                    <div class="choice-row__check"></div>
+                  </div>
+                </div>
+                <button class="button">Share invite</button>
+              </div>
+            </section>
+          </article>
+
+          <article class="screen-tile">
+            <div class="screen-tile__meta">
+              <div>
+                <h4>Family empty state if no members yet</h4>
+                <p>Helpful empty state with a clear next action.</p>
+              </div>
+              <span class="screen-tile__label">M2 / 21</span>
+            </div>
+            <section class="phone phone--warm">
+              <div class="statusbar"><span>9:41</span><div class="statusbar__icons"><span></span><span></span><span></span></div></div>
+              <div class="empty-illustration">
+                <img src="../imagegen/m2-family-empty.png" alt="Family empty state illustration" />
+              </div>
+              <div class="content-stack">
+                <div>
+                  <p class="eyebrow">Start building the household</p>
+                  <h4 class="screen-title">No family members have joined yet.</h4>
+                  <p class="screen-copy">Share an invite code so the household can actually split tasks, view progress, and build momentum together.</p>
+                </div>
+                <button class="button">Invite the first member</button>
+              </div>
+            </section>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
