@@ -5,9 +5,11 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -18,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -108,6 +111,7 @@ fun ChorePilotNavHost() {
             val pendingNotificationTap by NotificationTapBridge.pendingOpenRequest.collectAsStateWithLifecycle()
             val coroutineScope = rememberCoroutineScope()
             val snackbarHostState = LocalAppSnackbarHostState.current
+            val modalSlideOffsetY = rememberModalSlideOffsetY()
 
             LaunchedEffect(session.signedIn, backStackEntry?.destination) {
                 val destination = backStackEntry?.destination ?: return@LaunchedEffect
@@ -339,19 +343,19 @@ fun ChorePilotNavHost() {
                     composable<AppRoute.Premium>(
                         enterTransition = {
                             slideInVertically(
-                                initialOffsetY = { fullHeight -> fullHeight },
+                                initialOffsetY = modalSlideOffsetY,
                                 animationSpec = tween(durationMillis = 320),
                             )
                         },
                         exitTransition = {
                             slideOutVertically(
-                                targetOffsetY = { fullHeight -> fullHeight },
+                                targetOffsetY = modalSlideOffsetY,
                                 animationSpec = tween(durationMillis = 320),
                             )
                         },
                         popExitTransition = {
                             slideOutVertically(
-                                targetOffsetY = { fullHeight -> fullHeight },
+                                targetOffsetY = modalSlideOffsetY,
                                 animationSpec = tween(durationMillis = 320),
                             )
                         },
@@ -511,19 +515,19 @@ fun ChorePilotNavHost() {
                     composable<AppRoute.ChoreCapture>(
                         enterTransition = {
                             slideInVertically(
-                                initialOffsetY = { fullHeight -> fullHeight },
+                                initialOffsetY = modalSlideOffsetY,
                                 animationSpec = tween(durationMillis = 320),
                             )
                         },
                         exitTransition = {
                             slideOutVertically(
-                                targetOffsetY = { fullHeight -> fullHeight },
+                                targetOffsetY = modalSlideOffsetY,
                                 animationSpec = tween(durationMillis = 320),
                             )
                         },
                         popExitTransition = {
                             slideOutVertically(
-                                targetOffsetY = { fullHeight -> fullHeight },
+                                targetOffsetY = modalSlideOffsetY,
                                 animationSpec = tween(durationMillis = 320),
                             )
                         },
@@ -767,6 +771,15 @@ fun ChorePilotNavHost() {
         }
     }
 }
+}
+
+@Composable
+private fun rememberModalSlideOffsetY(): (Int) -> Int {
+    val density = LocalDensity.current
+    val navigationBarHeight = WindowInsets.navigationBars.getBottom(density)
+    return remember(navigationBarHeight) {
+        { fullHeight -> fullHeight + navigationBarHeight }
+    }
 }
 
 private fun navigateToNotificationTarget(
