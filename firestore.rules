@@ -65,10 +65,13 @@ service cloud.firestore {
     }
 
     function isHouseholdAdmin(householdId) {
-      return isActiveHouseholdMember(householdId)
-        && (
-          currentMemberDoc(householdId).data.role == 'Owner'
-          || currentMemberDoc(householdId).data.role == 'Admin'
+      return isHouseholdOwner(householdId)
+        || (
+          isActiveHouseholdMember(householdId)
+          && (
+            currentMemberDoc(householdId).data.role == 'Owner'
+            || currentMemberDoc(householdId).data.role == 'Admin'
+          )
         );
     }
 
@@ -356,6 +359,11 @@ service cloud.firestore {
         allow create: if isHouseholdAdmin(householdId);
         allow update: if isHouseholdAdmin(householdId) || isNotificationReadReceiptUpdate(householdId);
         allow delete: if isHouseholdAdmin(householdId);
+      }
+
+      match /feedbackItems/{feedbackId} {
+        allow get, list: if isHouseholdAdmin(householdId);
+        allow create, update, delete: if false;
       }
 
       match /rewards/{rewardId} {

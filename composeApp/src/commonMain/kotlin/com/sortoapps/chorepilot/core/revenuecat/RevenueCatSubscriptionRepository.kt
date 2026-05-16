@@ -19,6 +19,7 @@ import com.revenuecat.purchases.kmp.result.awaitOfferingsResult
 import com.revenuecat.purchases.kmp.ktx.awaitPurchase
 import com.revenuecat.purchases.kmp.result.awaitRestoreResult
 import com.sortoapps.chorepilot.core.firebase.FirebaseHouseholdStore
+import com.sortoapps.chorepilot.core.platform.AppBuildInfo
 import com.sortoapps.chorepilot.features.auth.domain.SessionRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -74,7 +75,11 @@ class RevenueCatSubscriptionRepository(
     }
 
     override suspend fun refresh() {
-        ensureConfigured(currentRevenueCatAppUserId())
+        if (!ensureConfigured(currentRevenueCatAppUserId())) {
+            _snapshot.update { it.copy(isConfigured = false, isLoading = false) }
+            return
+        }
+
         _snapshot.update { state ->
             state.copy(
                 isConfigured = Purchases.isConfigured,
@@ -112,7 +117,12 @@ class RevenueCatSubscriptionRepository(
     }
 
     override suspend fun purchasePlan(planId: SubscriptionPlanId): Result<Unit> {
-        ensureConfigured(currentRevenueCatAppUserId())
+        if (!ensureConfigured(currentRevenueCatAppUserId())) {
+            val error = revenueCatConfigurationError(RevenueCatConfig.apiKey) ?: revenueCatUnavailableError()
+            updateError(error)
+            return Result.failure(error)
+        }
+
         val offering = latestOfferings?.resolveLiveOffering()
         val packageToPurchase = when (planId) {
             SubscriptionPlanId.Monthly -> offering?.resolveMonthlyPackage()
@@ -134,7 +144,12 @@ class RevenueCatSubscriptionRepository(
     }
 
     override suspend fun restorePurchases(): Result<Unit> {
-        ensureConfigured(currentRevenueCatAppUserId())
+        if (!ensureConfigured(currentRevenueCatAppUserId())) {
+            val error = revenueCatConfigurationError(RevenueCatConfig.apiKey) ?: revenueCatUnavailableError()
+            updateError(error)
+            return Result.failure(error)
+        }
+
         _snapshot.update { it.copy(isRestoring = true, errorMessage = null) }
 
         return Purchases.sharedInstance.awaitRestoreResult()
@@ -178,7 +193,7 @@ class RevenueCatSubscriptionRepository(
         }
     }
 
-    private suspend fun ensureConfigured(appUserId: String?) {
+    private suspend fun ensureConfigured(appUserId: String?): Boolean {
         configurationMutex.withLock {
             if (Purchases.isConfigured) {
                 Purchases.sharedInstance.delegate = this
@@ -188,11 +203,19 @@ class RevenueCatSubscriptionRepository(
                         appUserId = Purchases.sharedInstance.appUserID,
                     )
                 }
-                return
+                return true
+            }
+
+            val apiKey = RevenueCatConfig.apiKey
+            val configurationError = revenueCatConfigurationError(apiKey)
+            if (configurationError != null) {
+                updateError(configurationError)
+                _snapshot.update { it.copy(isConfigured = false, isLoading = false) }
+                return false
             }
 
             Purchases.logLevel = LogLevel.INFO
-            val configuration = PurchasesConfiguration.Builder(RevenueCatConfig.apiKey).apply {
+            val configuration = PurchasesConfiguration.Builder(apiKey).apply {
                 appUserId?.let { this.appUserId = it }
             }.build()
 
@@ -203,6 +226,7 @@ class RevenueCatSubscriptionRepository(
                     appUserId = Purchases.sharedInstance.appUserID,
                 )
             }
+            return true
         }
     }
 
@@ -326,6 +350,18 @@ class RevenueCatSubscriptionRepository(
         _snapshot.update { it.copy(errorMessage = message) }
     }
 
+    private fun revenueCatConfigurationError(apiKey: String): IllegalStateException? = when {
+        apiKey.isBlank() -> revenueCatUnavailableError()
+        !AppBuildInfo.isDebugBuild && apiKey.startsWith("test_") -> IllegalStateException(
+            "RevenueCat release builds must use a production API key. Set REVENUECAT_ANDROID_API_KEY for Android release builds and RevenueCatApiKey in the iOS app Info.plist/build settings.",
+        )
+        else -> null
+    }
+
+    private fun revenueCatUnavailableError(): IllegalStateException = IllegalStateException(
+        "RevenueCat is not configured for this build. Add a production RevenueCat API key and rebuild.",
+    )
+
     private fun currentRevenueCatAppUserId(): String? {
         val session = sessionRepository.session.value
         return session.userId.takeIf { session.signedIn && it.isNotBlank() }
@@ -350,22 +386,24 @@ private fun Offerings.resolveLiveOffering(): com.revenuecat.purchases.kmp.models
 private fun com.revenuecat.purchases.kmp.models.Offering.resolveMonthlyPackage(): Package? = monthly
     ?: getPackage(RevenueCatConfig.monthlyPackageId)
     ?: availablePackages.firstOrNull { rcPackage ->
-        rcPackage.packageType == PackageType.MONTHLY ||
-            rcPackage.identifier.equals(RevenueCatConfig.monthlyPackageId, ignoreCase = true) ||
-            rcPackage.storeProduct.id == RevenueCatConfig.monthlyProductId ||
-            rcPackage.identifier.contains("month", ignoreCase = true) ||
-            rcPackage.storeProduct.id.contains("month", ignoreCase = true)
-    }
+            rcPackage.packageType == PackageType.MONTHLY ||
+                rcPackage.identifier.equals(RevenueCatConfig.monthlyPackageId, ignoreCase = true) ||
+                rcPackage.storeProduct.id == RevenueCatConfig.monthlyProductId ||
+                rcPackage.storeProduct.id == RevenueCatConfig.monthlyStoreSubscriptionId ||
+                rcPackage.identifier.contains("month", ignoreCase = true) ||
+                rcPackage.storeProduct.id.contains("month", ignoreCase = true)
+        }
 
 private fun com.revenuecat.purchases.kmp.models.Offering.resolveYearlyPackage(): Package? = annual
     ?: getPackage(RevenueCatConfig.yearlyPackageId)
     ?: availablePackages.firstOrNull { rcPackage ->
-        rcPackage.packageType == PackageType.ANNUAL ||
-            rcPackage.identifier.equals(RevenueCatConfig.yearlyPackageId, ignoreCase = true) ||
-            rcPackage.storeProduct.id == RevenueCatConfig.yearlyProductId ||
-            rcPackage.identifier.contains("year", ignoreCase = true) ||
-            rcPackage.identifier.contains("annual", ignoreCase = true) ||
-            rcPackage.storeProduct.id.contains("year", ignoreCase = true) ||
+            rcPackage.packageType == PackageType.ANNUAL ||
+                rcPackage.identifier.equals(RevenueCatConfig.yearlyPackageId, ignoreCase = true) ||
+                rcPackage.storeProduct.id == RevenueCatConfig.yearlyProductId ||
+                rcPackage.storeProduct.id == RevenueCatConfig.yearlyStoreSubscriptionId ||
+                rcPackage.identifier.contains("year", ignoreCase = true) ||
+                rcPackage.identifier.contains("annual", ignoreCase = true) ||
+                rcPackage.storeProduct.id.contains("year", ignoreCase = true) ||
             rcPackage.storeProduct.id.contains("annual", ignoreCase = true)
     }
 

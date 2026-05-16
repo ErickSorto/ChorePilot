@@ -73,15 +73,16 @@ class ChorePilotFirebaseMessagingService : FirebaseMessagingService() {
         super.onMessageReceived(message)
         val title = message.notification?.title ?: message.data["title"] ?: return
         val body = message.notification?.body ?: message.data["body"] ?: return
+        val notificationDocumentId = message.data["notificationId"]
+            ?: message.messageId
+            ?: (title + body)
         AndroidNotificationDeliveryGateway.showNotification(
             context = applicationContext,
-            notificationId = (message.messageId ?: title + body).hashCode(),
+            notificationId = notificationDocumentId.hashCode(),
             title = title,
             body = body,
             payload = NotificationTapPayload(
-                notificationId = message.data["notificationId"]
-                    ?: message.messageId
-                    ?: (title + body),
+                notificationId = notificationDocumentId,
                 choreId = message.data["choreId"].orEmpty(),
                 type = notificationTypeOrDefault(message.data["type"].orEmpty()),
             ),

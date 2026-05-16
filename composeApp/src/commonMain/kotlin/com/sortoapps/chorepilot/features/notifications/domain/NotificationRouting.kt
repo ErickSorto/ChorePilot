@@ -39,8 +39,6 @@ fun NotificationTapPayload.toOpenRequest(): NotificationOpenRequest = Notificati
 fun NotificationItem.toOpenTarget(): NotificationOpenTarget = when (type) {
     NotificationType.ProofSubmitted,
     NotificationType.ProofApproved,
-    -> NotificationOpenTarget.Inbox
-
     NotificationType.ProofRejected,
     NotificationType.DiscoverySubmitted,
     NotificationType.DiscoveryApproved,
@@ -54,8 +52,6 @@ fun NotificationItem.toOpenTarget(): NotificationOpenTarget = when (type) {
 fun NotificationTapPayload.toOpenTarget(): NotificationOpenTarget = when (type) {
     NotificationType.ProofSubmitted,
     NotificationType.ProofApproved,
-    -> NotificationOpenTarget.Inbox
-
     NotificationType.ProofRejected,
     NotificationType.DiscoverySubmitted,
     NotificationType.DiscoveryApproved,

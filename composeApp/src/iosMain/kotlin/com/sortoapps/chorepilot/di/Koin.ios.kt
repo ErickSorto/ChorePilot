@@ -1,5 +1,7 @@
 package com.sortoapps.chorepilot.di
 
+import dev.brewkits.grant.GrantFactory
+import dev.brewkits.grant.GrantManager
 import com.sortoapps.chorepilot.core.firebase.FirebaseAvailability
 import com.sortoapps.chorepilot.core.firebase.FirebaseAvailabilityStatus
 import com.sortoapps.chorepilot.core.platform.IosPlatformPreferences
@@ -20,6 +22,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 actual val platformModule: Module = module {
+    single<GrantManager> { GrantFactory.create() }
     single { IosPlatformPreferences() } bind PlatformPreferences::class
     single<VibratorUtil> { VibratorUtilImpl() }
     single<SystemTextActions> { IosSystemTextActions() }

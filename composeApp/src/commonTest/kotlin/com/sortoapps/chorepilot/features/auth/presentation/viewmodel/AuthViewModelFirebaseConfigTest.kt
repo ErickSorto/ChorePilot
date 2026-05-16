@@ -6,20 +6,38 @@ import com.sortoapps.chorepilot.features.auth.domain.InvitePreview
 import com.sortoapps.chorepilot.features.auth.domain.SessionRepository
 import com.sortoapps.chorepilot.features.auth.domain.SessionSnapshot
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AuthViewModelFirebaseConfigTest {
+    private val dispatcher = StandardTestDispatcher()
+
+    @BeforeTest
+    fun setUp() {
+        Dispatchers.setMain(dispatcher)
+    }
+
+    @AfterTest
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
+
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun serviceErrorFromSessionDisablesGoogleSignIn() = runTest {
+    fun serviceErrorFromSessionDisablesGoogleSignIn() = runTest(dispatcher) {
         val sessionRepository = FakeSessionRepository(
             SessionSnapshot(
                 serviceErrorMessage = "Firebase isn't configured on Android. Add composeApp/google-services.json and rebuild the app.",
@@ -40,8 +58,7 @@ class AuthViewModelFirebaseConfigTest {
     }
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun invitePreviewLoadsForCompleteCodes() = runTest {
+    fun invitePreviewLoadsForCompleteCodes() = runTest(dispatcher) {
         val sessionRepository = FakeSessionRepository(
             initialSnapshot = SessionSnapshot(),
             invitePreview = InvitePreview(
@@ -66,8 +83,7 @@ class AuthViewModelFirebaseConfigTest {
     }
 
     @Test
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun shortInviteCodesClearPreviewWithoutLoading() = runTest {
+    fun shortInviteCodesClearPreviewWithoutLoading() = runTest(dispatcher) {
         val sessionRepository = FakeSessionRepository(
             initialSnapshot = SessionSnapshot(),
         )

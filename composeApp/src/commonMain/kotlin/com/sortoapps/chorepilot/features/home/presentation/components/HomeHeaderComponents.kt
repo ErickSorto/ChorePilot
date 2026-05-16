@@ -102,16 +102,52 @@ fun GreetingSection(
     eyebrow: String,
     headline: String,
     modifier: Modifier = Modifier,
+    compact: Boolean = false,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(0.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Text(
-            text = headline,
-            style = MaterialTheme.typography.headlineLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+        if (headline.isNotBlank()) {
+            Text(
+                text = headline,
+                style = if (compact) MaterialTheme.typography.titleLarge else MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
+            )
+        }
+        if (eyebrow.isNotBlank()) {
+            Text(
+                text = eyebrow,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeScheduleReveal(
+    headline: String,
+    message: String,
+    days: List<HomeDayUiModel>,
+    onDaySelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        GreetingSection(
+            eyebrow = message.takeUnless { headline.startsWith("Nice work") }.orEmpty(),
+            headline = headline,
+            compact = false,
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
+        DayCarousel(
+            days = days,
+            onDaySelected = onDaySelected,
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -120,12 +156,13 @@ fun GreetingSection(
 fun DayCarousel(
     days: List<HomeDayUiModel>,
     onDaySelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     if (days.isEmpty()) return
 
     val selectedIndex = days.indexOfFirst { it.isSelected }.coerceAtLeast(0)
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = selectedIndex)
-    val itemWidth = 58.dp
+    val itemWidth = 46.dp
 
     LaunchedEffect(selectedIndex) {
         if (days.indices.contains(selectedIndex)) {
@@ -145,19 +182,19 @@ fun DayCarousel(
             }
     }
 
-    BoxWithConstraints {
+    BoxWithConstraints(modifier = modifier) {
         val sidePadding = (maxWidth / 2f) - (itemWidth / 2f)
 
         LazyRow(
             state = listState,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = sidePadding.coerceAtLeast(20.dp)),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            contentPadding = PaddingValues(horizontal = sidePadding.coerceAtLeast(16.dp)),
             flingBehavior = rememberSnapFlingBehavior(lazyListState = listState),
         ) {
             itemsIndexed(days, key = { _, day -> day.id }) { index, day ->
                 DayCarouselCard(
                     day = day,
-                    displayNumber = dayNumber(day.id, index),
+                    displayNumber = dayNumber(day.dateKey, index),
                     width = itemWidth,
                     onClick = { onDaySelected(day.id) },
                 )
@@ -188,7 +225,7 @@ private fun DayCarouselCard(
     Surface(
         modifier = Modifier
             .width(width)
-            .height(74.dp)
+            .height(60.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(8.dp),
         color = if (day.isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface.copy(alpha = 0.96f),
@@ -206,12 +243,12 @@ private fun DayCarouselCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(vertical = 8.dp),
+                .padding(vertical = 6.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = if (day.isToday) "Today" else day.label.uppercase(),
+                text = if (day.isToday) "Today" else day.label.take(3).uppercase(),
                 style = MaterialTheme.typography.labelSmall,
                 color = if (day.isSelected) {
                     MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.82f)
@@ -222,7 +259,7 @@ private fun DayCarouselCard(
             )
             Text(
                 text = displayNumber,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.labelLarge,
                 color = if (day.isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
                 fontWeight = androidx.compose.ui.text.font.FontWeight.ExtraBold,
             )
@@ -230,16 +267,9 @@ private fun DayCarouselCard(
     }
 }
 
-private fun dayNumber(dayId: String, fallbackIndex: Int): String = when (dayId) {
-    "sun" -> "12"
-    "mon" -> "13"
-    "tue" -> "14"
-    "wed" -> "15"
-    "thu" -> "16"
-    "fri" -> "17"
-    "sat" -> "18"
-    else -> (12 + fallbackIndex).toString()
-}
+private fun dayNumber(dateKey: String, fallbackIndex: Int): String =
+    dateKey.substringAfterLast('-').toIntOrNull()?.toString()
+        ?: (fallbackIndex + 1).toString()
 
 private fun initialsFor(name: String): String = name
     .trim()

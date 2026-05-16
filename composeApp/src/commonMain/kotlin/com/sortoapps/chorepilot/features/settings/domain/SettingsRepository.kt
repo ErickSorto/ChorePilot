@@ -1,5 +1,6 @@
 package com.sortoapps.chorepilot.features.settings.domain
 
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import kotlinx.coroutines.flow.StateFlow
 
 interface SettingsRepository {
@@ -20,4 +21,6 @@ interface SettingsRepository {
     suspend fun updateLargerText(enabled: Boolean)
 
     suspend fun updateAlwaysShowLabels(enabled: Boolean)
+
+    suspend fun updateFeedbackPalKind(kind: FeedbackPalKind)
 }

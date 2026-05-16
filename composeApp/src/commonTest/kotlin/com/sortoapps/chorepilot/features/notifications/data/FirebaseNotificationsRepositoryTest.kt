@@ -5,6 +5,7 @@ import com.sortoapps.chorepilot.features.auth.domain.HouseholdRole
 import com.sortoapps.chorepilot.features.auth.domain.InvitePreview
 import com.sortoapps.chorepilot.features.auth.domain.SessionRepository
 import com.sortoapps.chorepilot.features.auth.domain.SessionSnapshot
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationAuthorizationStatus
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationDeliveryGateway
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationEvent
@@ -502,6 +503,9 @@ private class FakeBackendSettingsRepository : SettingsRepository {
     override suspend fun updateAutoAssignSuggestions(enabled: Boolean) = Unit
     override suspend fun updateLargerText(enabled: Boolean) = Unit
     override suspend fun updateAlwaysShowLabels(enabled: Boolean) = Unit
+    override suspend fun updateFeedbackPalKind(kind: FeedbackPalKind) {
+        TODO("Not yet implemented")
+    }
 }
 
 private class FakeBackendNotificationGateway : NotificationDeliveryGateway {

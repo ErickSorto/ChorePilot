@@ -667,7 +667,10 @@ private fun rebuildUiState(
     selectedMemberId: String?,
 ): FamilyUiState {
     val allMembers = snapshot.members.map(::toMemberUiModel)
-    val canManageInvites = session.role.canManageFamilyInviteFlow()
+    val isHouseholdOwner = session.userId.isNotBlank() &&
+        snapshot.ownerUserId.equals(session.userId, ignoreCase = true)
+    val effectiveViewerRole = if (isHouseholdOwner) HouseholdRole.Owner else session.role
+    val canManageInvites = effectiveViewerRole.canManageFamilyInviteFlow()
     val members = if (canManageInvites) {
         allMembers
     } else {
@@ -676,7 +679,7 @@ private fun rebuildUiState(
     val activeMembers = members.filter { it.isActiveSeat }
     val inactiveMembers = members.filterNot { it.isActiveSeat }
     val selectedMember = members.firstOrNull {
-        it.id == session.role.resolveAccessibleFamilyMemberId(
+        it.id == effectiveViewerRole.resolveAccessibleFamilyMemberId(
             viewerId = session.userId,
             requestedMemberId = selectedMemberId,
         )
@@ -688,18 +691,18 @@ private fun rebuildUiState(
     val selectedRole = current.invite.selectedRole
     val memberAdmin = buildMemberAdminUiState(
         viewerId = session.userId,
-        viewerRole = session.role,
+        viewerRole = effectiveViewerRole,
         selectedMember = selectedMember,
     )
     val canManageSelectedMemberAvailability = selectedMember != null &&
-        session.role.canManageFamilyAvailabilityFor(session.userId, selectedMember.id)
+        effectiveViewerRole.canManageFamilyAvailabilityFor(session.userId, selectedMember.id)
     val isSelectedMemberViewer = selectedMember?.id.equals(session.userId, ignoreCase = true)
     val ownerCanDeleteHousehold = session.householdId.isNotBlank() &&
-        session.role == HouseholdRole.Owner &&
+        effectiveViewerRole == HouseholdRole.Owner &&
         allMembers.count { it.isActiveSeat && it.id != session.userId } == 0 &&
         allMembers.any { it.isActiveSeat && it.id == session.userId }
     val canLeaveHousehold = session.householdId.isNotBlank() &&
-        (session.role != HouseholdRole.Owner || ownerCanDeleteHousehold)
+        (effectiveViewerRole != HouseholdRole.Owner || ownerCanDeleteHousehold)
     return current.copy(
         householdName = snapshot.householdName,
         pulseLabel = snapshot.pulseLabel,
@@ -751,7 +754,7 @@ private fun rebuildUiState(
             )
         } ?: FamilyAvailabilityEditorUiState(mode = FamilyAvailabilityMode.GoneMode),
         selectedMemberAdmin = memberAdmin,
-        viewerRole = session.role,
+        viewerRole = effectiveViewerRole,
         isSelectedMemberViewer = isSelectedMemberViewer,
         canOpenInviteFlow = canManageInvites,
         canShowInviteSummary = canManageInvites,
@@ -766,7 +769,7 @@ private fun rebuildUiState(
             ""
         } else if (ownerCanDeleteHousehold) {
             "You're the last active member. Deleting the household removes chores, proofs, invites, and saved household images."
-        } else if (session.role == HouseholdRole.Owner) {
+        } else if (effectiveViewerRole == HouseholdRole.Owner) {
             "Transfer ownership before leaving this household."
         } else {
             "Leaving removes this household from your account until you're invited back."

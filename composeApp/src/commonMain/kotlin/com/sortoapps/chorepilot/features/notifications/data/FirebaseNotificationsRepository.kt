@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -60,12 +61,21 @@ internal class FirebaseNotificationsRepository(
                             sharedStore.observeNotifications(
                                 householdId = scope.householdId,
                                 recipientUserId = scope.userId,
-                            ).collectLatest { documents ->
-                                applyDocuments(
-                                    scope = scope,
-                                    documents = documents,
-                                )
-                            }
+                            )
+                                .catch { error ->
+                                    _state.value = NotificationsRepositoryState(
+                                        isLoading = false,
+                                        items = emptyList(),
+                                        errorMessage = error.message
+                                            ?.takeUnless { it.contains("PERMISSION_DENIED", ignoreCase = true) },
+                                    )
+                                }
+                                .collectLatest { documents ->
+                                    applyDocuments(
+                                        scope = scope,
+                                        documents = documents,
+                                    )
+                                }
                         }
                         refresh()
                     }

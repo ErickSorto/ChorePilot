@@ -95,7 +95,7 @@ class ProductionHomeRepository(
         val viewerId = session.userId
         val viewerRole = viewer?.role ?: session.role
 
-        val days = buildWeekDays()
+        val days = buildScheduleWindowDays()
         val choresByDay = days.associate { day ->
             day.id to choreRepository.getScheduledChores(day.toScheduleDay())
         }
@@ -169,16 +169,16 @@ private data class HomeDayContext(
     val isToday: Boolean,
 )
 
-private fun buildWeekDays(
+private const val HomePastDayCount = 7
+private const val HomeFutureDayCount = 14
+
+private fun buildScheduleWindowDays(
     today: LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault()),
 ): List<HomeDayContext> {
-    val todayIndex = sundayStartIndex(today.dayOfWeek)
-    val sunday = today.plus(DatePeriod(days = -todayIndex))
-    return (0..6).map { index ->
-        val date = sunday.plus(DatePeriod(days = index))
-        val dayOffset = index - todayIndex
+    return (-HomePastDayCount..HomeFutureDayCount).map { dayOffset ->
+        val date = today.plus(DatePeriod(days = dayOffset))
         HomeDayContext(
-            id = weekdayId(date.dayOfWeek),
+            id = date.toString(),
             label = weekdayLabel(date.dayOfWeek),
             shortLabel = weekdayShortLabel(date.dayOfWeek),
             dayOffset = dayOffset,
@@ -226,10 +226,10 @@ private fun buildSupportingText(
     val weeklyTotal = weeklyChores.size
     return when {
         pendingProof > 0 -> "$pendingProof proof submission${pluralize(pendingProof)} still need a quick review."
-        weeklyTotal == 0 -> "Nothing is scheduled for the next 7 days yet."
-        memberCount > 1 -> "$memberCount members are keeping the rhythm steady this week."
-        weeklyCompleted > 0 -> "$weeklyCompleted of $weeklyTotal chores are already finished this week."
-        else -> "Your next 7 days are lined up and ready."
+        weeklyTotal == 0 -> "Nothing is scheduled in this date window yet."
+        memberCount > 1 -> "$memberCount members are keeping the rhythm steady."
+        weeklyCompleted > 0 -> "$weeklyCompleted of $weeklyTotal chores are already finished in this window."
+        else -> "Your upcoming schedule is lined up and ready."
     }
 }
 
@@ -281,26 +281,6 @@ private fun buildMetrics(
             tone = DemoTone.Primary,
         ),
     )
-}
-
-private fun sundayStartIndex(dayOfWeek: DayOfWeek): Int = when (dayOfWeek) {
-    DayOfWeek.SUNDAY -> 0
-    DayOfWeek.MONDAY -> 1
-    DayOfWeek.TUESDAY -> 2
-    DayOfWeek.WEDNESDAY -> 3
-    DayOfWeek.THURSDAY -> 4
-    DayOfWeek.FRIDAY -> 5
-    DayOfWeek.SATURDAY -> 6
-}
-
-private fun weekdayId(dayOfWeek: DayOfWeek): String = when (dayOfWeek) {
-    DayOfWeek.SUNDAY -> "sun"
-    DayOfWeek.MONDAY -> "mon"
-    DayOfWeek.TUESDAY -> "tue"
-    DayOfWeek.WEDNESDAY -> "wed"
-    DayOfWeek.THURSDAY -> "thu"
-    DayOfWeek.FRIDAY -> "fri"
-    DayOfWeek.SATURDAY -> "sat"
 }
 
 private fun weekdayLabel(dayOfWeek: DayOfWeek): String = when (dayOfWeek) {

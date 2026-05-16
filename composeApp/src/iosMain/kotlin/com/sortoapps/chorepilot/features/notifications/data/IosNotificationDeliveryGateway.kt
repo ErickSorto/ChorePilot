@@ -63,6 +63,7 @@ class IosNotificationDeliveryGateway(
         GrantStatus.PARTIAL_GRANTED -> NotificationAuthorizationStatus.Granted
         GrantStatus.DENIED -> NotificationAuthorizationStatus.Denied
         GrantStatus.DENIED_ALWAYS -> NotificationAuthorizationStatus.DeniedAlways
-        GrantStatus.NOT_DETERMINED -> NotificationAuthorizationStatus.NotDetermined
+        GrantStatus.NOT_DETERMINED,
+        GrantStatus.BUSY -> NotificationAuthorizationStatus.NotDetermined
     }
 }

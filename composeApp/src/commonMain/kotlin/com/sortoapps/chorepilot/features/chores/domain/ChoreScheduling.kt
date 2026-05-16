@@ -6,7 +6,9 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.todayIn
+import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlin.math.absoluteValue
 
 data class ChoreScheduleDay(
@@ -390,6 +392,40 @@ fun defaultStatusForDay(
     day: ChoreScheduleDay,
 ): ChoreItemStatus = if (day.isToday) baseStatus else ChoreItemStatus.Scheduled
 
+fun resolvedStatusForDay(
+    baseStatus: ChoreItemStatus,
+    completedAtEpochMs: Long,
+    day: ChoreScheduleDay,
+): ChoreItemStatus = when (baseStatus) {
+    ChoreItemStatus.Completed,
+    ChoreItemStatus.PendingProof,
+    -> if (runtimeStateAppliesToDay(baseStatus, completedAtEpochMs, day)) {
+        baseStatus
+    } else if (day.isToday) {
+        ChoreItemStatus.DueSoon
+    } else {
+        ChoreItemStatus.Scheduled
+    }
+
+    else -> defaultStatusForDay(baseStatus, day)
+}
+
+fun runtimeStateAppliesToDay(
+    baseStatus: ChoreItemStatus,
+    completedAtEpochMs: Long,
+    day: ChoreScheduleDay,
+): Boolean = when (baseStatus) {
+    ChoreItemStatus.Completed,
+    ChoreItemStatus.PendingProof,
+    -> if (completedAtEpochMs <= 0L) {
+        day.isToday
+    } else {
+        dateKeyForEpochMillis(completedAtEpochMs) == day.dateKey
+    }
+
+    else -> day.isToday
+}
+
 fun approveProofStatus(
     currentStatus: ChoreItemStatus,
 ): ChoreItemStatus = if (currentStatus == ChoreItemStatus.PendingProof) {
@@ -752,6 +788,12 @@ private fun occurrenceStartOffset(
     label = if (draft.repeatsEnabled) draft.repeatStartDate else draft.selectedOneTimeDate,
     todayWeekdayName = todayWeekdayName,
 )
+
+private fun dateKeyForEpochMillis(epochMillis: Long): String =
+    Instant.fromEpochMilliseconds(epochMillis)
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .date
+        .toString()
 
 private fun weekdayNames(): Set<String> = setOf(
     "Monday",

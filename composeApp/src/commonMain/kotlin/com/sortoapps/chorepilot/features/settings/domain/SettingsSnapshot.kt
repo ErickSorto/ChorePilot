@@ -1,5 +1,6 @@
 package com.sortoapps.chorepilot.features.settings.domain
 
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -22,4 +23,5 @@ data class SettingsSnapshot(
     val autoAssignSuggestions: Boolean = true,
     val largerText: Boolean = false,
     val alwaysShowLabels: Boolean = true,
+    val feedbackPalKind: FeedbackPalKind = FeedbackPalKind.Squirrel,
 )

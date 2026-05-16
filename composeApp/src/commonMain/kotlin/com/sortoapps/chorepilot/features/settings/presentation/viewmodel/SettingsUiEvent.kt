@@ -2,6 +2,7 @@ package com.sortoapps.chorepilot.features.settings.presentation.viewmodel
 
 import com.sortoapps.chorepilot.features.settings.domain.AppearancePreset
 import com.sortoapps.chorepilot.features.settings.domain.ThemeMode
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 
 sealed interface SettingsUiEvent {
     data object TriggerVibration : SettingsUiEvent
@@ -23,6 +24,8 @@ sealed interface SettingsUiEvent {
     data class ToggleLargerText(val enabled: Boolean) : SettingsUiEvent
 
     data class ToggleAlwaysShowLabels(val enabled: Boolean) : SettingsUiEvent
+
+    data class FeedbackPalSelected(val kind: FeedbackPalKind) : SettingsUiEvent
 
     data object ResetDemo : SettingsUiEvent
 

@@ -19,7 +19,6 @@ import com.sortoapps.chorepilot.features.chores.domain.appearsOnDay
 import com.sortoapps.chorepilot.features.chores.domain.availabilitySuggestionId
 import com.sortoapps.chorepilot.features.chores.domain.buildAvailabilitySuggestion
 import com.sortoapps.chorepilot.features.chores.domain.currentWeekdayName
-import com.sortoapps.chorepilot.features.chores.domain.defaultStatusForDay
 import com.sortoapps.chorepilot.features.chores.domain.nextCompletionStatusForDay
 import com.sortoapps.chorepilot.features.chores.domain.ProofUploadPayload
 import com.sortoapps.chorepilot.features.chores.domain.ProofEvidence
@@ -32,6 +31,8 @@ import com.sortoapps.chorepilot.features.chores.domain.ChoreAvailabilityMode
 import com.sortoapps.chorepilot.features.chores.domain.HouseholdSchedulingMember
 import com.sortoapps.chorepilot.features.chores.domain.resolveAssignmentForDay
 import com.sortoapps.chorepilot.features.chores.domain.resolveAssignmentsForDay
+import com.sortoapps.chorepilot.features.chores.domain.resolvedStatusForDay
+import com.sortoapps.chorepilot.features.chores.domain.runtimeStateAppliesToDay
 import com.sortoapps.chorepilot.features.notifications.domain.AssignmentChangedNotification
 import com.sortoapps.chorepilot.features.notifications.domain.DiscoveryChoreApprovedNotification
 import com.sortoapps.chorepilot.features.notifications.domain.DiscoveryChoreRejectedNotification
@@ -172,15 +173,34 @@ class InMemoryChoreRepository(
             backingChores
             .filter { chore ->
                 val draft = draftsById[chore.id] ?: return@filter true
-                draft.appearsOnDay(day = day, todayWeekdayName = todayWeekdayName)
+                draft.appearsOnDay(day = day, todayWeekdayName = todayWeekdayName) ||
+                    hasRecordedOccurrenceForDay(
+                        choreId = chore.id,
+                        dateKey = day.dateKey,
+                    )
             }
             .map { chore ->
                 val draft = draftsById[chore.id]
                 val occurrence = occurrenceStates[chore.id]?.get(day.dateKey)
-                val status = occurrence?.status ?: defaultStatusForDay(chore.status, day)
-                val proofPhotoCount = occurrence?.proofPhotoCount ?: if (day.isToday) chore.proofPhotoCount else 0
+                val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+                    baseStatus = chore.status,
+                    completedAtEpochMs = chore.completedAtEpochMs,
+                    day = day,
+                )
+                val status = occurrence?.status ?: resolvedStatusForDay(
+                    baseStatus = chore.status,
+                    completedAtEpochMs = chore.completedAtEpochMs,
+                    day = day,
+                )
+                val proofPhotoCount = occurrence?.proofPhotoCount ?: if (baseRuntimeStateApplies) chore.proofPhotoCount else 0
                 val dueLabel = occurrence?.dueLabel?.takeIf(String::isNotBlank)
-                    ?: if (day.isToday) chore.dueLabel else "Scheduled for ${day.weekdayName}"
+                    ?: if (baseRuntimeStateApplies) {
+                        chore.dueLabel
+                    } else if (day.isToday) {
+                        "Due later today"
+                    } else {
+                        "Scheduled for ${day.weekdayName}"
+                    }
                 val latestProof = latestProofFor(chore.id, day.dateKey)
                 val resolution = resolvedAssignments[chore.id] ?: draft?.let {
                     resolveAssignmentForDay(
@@ -211,8 +231,8 @@ class InMemoryChoreRepository(
                         dueLabel
                     },
                     proofPhotoCount = proofPhotoCount,
-                    completedByName = occurrence?.completedByName ?: if (day.isToday) chore.completedByName else "",
-                    completedAtEpochMs = occurrence?.completedAtEpochMs ?: if (day.isToday) chore.completedAtEpochMs else 0L,
+                    completedByName = occurrence?.completedByName ?: if (baseRuntimeStateApplies) chore.completedByName else "",
+                    completedAtEpochMs = occurrence?.completedAtEpochMs ?: if (baseRuntimeStateApplies) chore.completedAtEpochMs else 0L,
                 )
             },
         )
@@ -397,7 +417,16 @@ class InMemoryChoreRepository(
         val targetDay = day ?: todayScheduleDay()
         val scheduledChore = getScheduledChores(targetDay).firstOrNull { it.id == choreId } ?: existing
         val occurrence = occurrenceStates[choreId]?.get(targetDay.dateKey)
-        val currentStatus = occurrence?.status ?: defaultStatusForDay(existing.status, targetDay)
+        val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
+        val currentStatus = occurrence?.status ?: resolvedStatusForDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
         val requiresConfirmation = existing.assignee.isNotBlank() &&
             !scheduledChore.assignee.equals(viewerName, ignoreCase = true)
         if (requiresConfirmation && !allowCompletingForSomeoneElse) return
@@ -436,7 +465,7 @@ class InMemoryChoreRepository(
             proofPhotoCount = if (shouldDeleteProof) {
                 0
             } else {
-                occurrence?.proofPhotoCount ?: if (targetDay.isToday) existing.proofPhotoCount else 0
+                occurrence?.proofPhotoCount ?: if (baseRuntimeStateApplies) existing.proofPhotoCount else 0
             },
         )
         if (targetDay.isToday) {
@@ -466,15 +495,20 @@ class InMemoryChoreRepository(
         )
         if (proofIndex == -1) return
         val reviewedAtEpochMs = Clock.System.now().toEpochMilliseconds()
+        val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
         occurrenceStates.getOrPut(choreId) { mutableMapOf() }[targetDay.dateKey] = OccurrenceState(
             status = ChoreItemStatus.Completed,
             dueLabel = "Approved",
             completedByName = occurrenceStates[choreId]?.get(targetDay.dateKey)?.completedByName
-                ?: if (targetDay.isToday) existing.completedByName else "",
+                ?: if (baseRuntimeStateApplies) existing.completedByName else "",
             completedAtEpochMs = occurrenceStates[choreId]?.get(targetDay.dateKey)?.completedAtEpochMs
-                ?: if (targetDay.isToday) existing.completedAtEpochMs else Clock.System.now().toEpochMilliseconds(),
+                ?: if (baseRuntimeStateApplies) existing.completedAtEpochMs else Clock.System.now().toEpochMilliseconds(),
             proofPhotoCount = occurrenceStates[choreId]?.get(targetDay.dateKey)?.proofPhotoCount
-                ?: if (targetDay.isToday) existing.proofPhotoCount else 0,
+                ?: if (baseRuntimeStateApplies) existing.proofPhotoCount else 0,
         )
         proofEvidence[proofIndex] = proofEvidence[proofIndex].copy(
             reviewStatus = ProofReviewStatus.Approved,
@@ -513,12 +547,17 @@ class InMemoryChoreRepository(
         )
         if (proofIndex == -1) return
         val occurrence = occurrenceStates[choreId]?.get(targetDay.dateKey)
+        val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
         occurrenceStates.getOrPut(choreId) { mutableMapOf() }[targetDay.dateKey] = OccurrenceState(
             status = if (targetDay.isToday) ChoreItemStatus.DueSoon else ChoreItemStatus.Scheduled,
             dueLabel = "Needs new proof",
-            completedByName = occurrence?.completedByName ?: if (targetDay.isToday) existing.completedByName else "",
-            completedAtEpochMs = occurrence?.completedAtEpochMs ?: if (targetDay.isToday) existing.completedAtEpochMs else 0L,
-            proofPhotoCount = occurrence?.proofPhotoCount ?: if (targetDay.isToday) existing.proofPhotoCount else 0,
+            completedByName = occurrence?.completedByName ?: if (baseRuntimeStateApplies) existing.completedByName else "",
+            completedAtEpochMs = occurrence?.completedAtEpochMs ?: if (baseRuntimeStateApplies) existing.completedAtEpochMs else 0L,
+            proofPhotoCount = occurrence?.proofPhotoCount ?: if (baseRuntimeStateApplies) existing.proofPhotoCount else 0,
         )
         proofEvidence[proofIndex] = proofEvidence[proofIndex].copy(
             reviewStatus = ProofReviewStatus.Rejected,
@@ -567,7 +606,16 @@ class InMemoryChoreRepository(
         val targetDay = day ?: todayScheduleDay()
         val scheduledChore = getScheduledChores(targetDay).firstOrNull { it.id == choreId } ?: existing
         val currentOccurrence = occurrenceStates[choreId]?.get(targetDay.dateKey)
-        val currentProofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (targetDay.isToday) existing.proofPhotoCount else 0
+        val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
+        val currentProofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (baseRuntimeStateApplies) {
+            existing.proofPhotoCount
+        } else {
+            0
+        }
         val proofId = "proof-${existing.id}-${currentProofPhotoCount + 1}"
         val createdAt = Clock.System.now().toEpochMilliseconds()
         occurrenceStates.getOrPut(choreId) { mutableMapOf() }[targetDay.dateKey] = OccurrenceState(
@@ -733,6 +781,12 @@ class InMemoryChoreRepository(
         .asSequence()
         .filter { it.choreId == choreId && it.dateKey == dateKey }
         .maxByOrNull { it.createdAtEpochMs }
+
+    private fun hasRecordedOccurrenceForDay(
+        choreId: String,
+        dateKey: String,
+    ): Boolean = occurrenceStates[choreId]?.containsKey(dateKey) == true ||
+        proofEvidence.any { proof -> proof.choreId == choreId && proof.dateKey == dateKey }
 
     private fun latestProofIndexFor(
         choreId: String,

@@ -22,6 +22,10 @@ import com.sortoapps.chorepilot.features.family.domain.FamilyAvailabilityMode
 import com.sortoapps.chorepilot.features.family.domain.FamilyInviteSnapshot
 import com.sortoapps.chorepilot.features.family.domain.FamilyRepository
 import com.sortoapps.chorepilot.features.family.domain.FamilyRepositoryState
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackIntent
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalRepository
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalTriageResult
 import com.sortoapps.chorepilot.features.reports.domain.ReportsBarPoint
 import com.sortoapps.chorepilot.features.reports.domain.ReportsLegendItem
 import com.sortoapps.chorepilot.features.reports.domain.ReportsNavigationSnapshot
@@ -166,6 +170,20 @@ class FirebaseUnavailableDiscoveryAnalysisRepository(
         discoverySessionId: String,
         payload: ProofUploadPayload,
     ): DiscoverySourceImage = error(unavailableMessage)
+}
+
+class FirebaseUnavailableFeedbackPalRepository(
+    private val firebaseAvailability: FirebaseAvailability,
+) : FeedbackPalRepository {
+    private val unavailableMessage = firebaseAvailability.message
+        ?: "Firebase is not configured for this build."
+
+    override suspend fun submitFeedback(
+        reportedIntent: FeedbackIntent,
+        message: String,
+        screenRoute: String,
+        palKind: FeedbackPalKind,
+    ): FeedbackPalTriageResult = error(unavailableMessage)
 }
 
 class FirebaseUnavailableFamilyRepository(

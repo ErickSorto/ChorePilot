@@ -6,6 +6,7 @@ import com.sortoapps.chorepilot.features.auth.domain.HouseholdRole
 import com.sortoapps.chorepilot.features.auth.domain.InvitePreview
 import com.sortoapps.chorepilot.features.auth.domain.SessionRepository
 import com.sortoapps.chorepilot.features.auth.domain.SessionSnapshot
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationAuthorizationStatus
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationDeliveryGateway
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationItem
@@ -237,6 +238,10 @@ private class FakeSettingsRepository(
 
     override suspend fun updateAlwaysShowLabels(enabled: Boolean) {
         state.value = state.value.copy(alwaysShowLabels = enabled)
+    }
+
+    override suspend fun updateFeedbackPalKind(kind: FeedbackPalKind) {
+        state.value = state.value.copy(feedbackPalKind = kind)
     }
 }
 

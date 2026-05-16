@@ -18,6 +18,7 @@ import com.sortoapps.chorepilot.features.chores.domain.ProofUploadPayload
 import com.sortoapps.chorepilot.features.chores.domain.ProofUploadResult
 import com.sortoapps.chorepilot.features.chores.domain.RoomDefinition
 import com.sortoapps.chorepilot.features.chores.domain.todayScheduleDay
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import com.sortoapps.chorepilot.features.settings.domain.SettingsRepository
 import com.sortoapps.chorepilot.features.settings.domain.SettingsSnapshot
 import com.sortoapps.chorepilot.features.settings.domain.ThemeMode
@@ -512,6 +513,9 @@ private class FakeSuggestionSettingsRepository : SettingsRepository {
     override suspend fun updateAutoAssignSuggestions(enabled: Boolean) = Unit
     override suspend fun updateLargerText(enabled: Boolean) = Unit
     override suspend fun updateAlwaysShowLabels(enabled: Boolean) = Unit
+    override suspend fun updateFeedbackPalKind(kind: FeedbackPalKind) {
+        TODO("Not yet implemented")
+    }
 }
 
 private class FakeSuggestionVibratorUtil : VibratorUtil {

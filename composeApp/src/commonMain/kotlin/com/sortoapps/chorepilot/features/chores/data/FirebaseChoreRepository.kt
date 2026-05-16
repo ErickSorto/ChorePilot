@@ -38,19 +38,18 @@ import com.sortoapps.chorepilot.features.chores.domain.ChoreAvailabilityMode
 import com.sortoapps.chorepilot.features.chores.domain.appearsOnDay
 import com.sortoapps.chorepilot.features.chores.domain.approveProofStatus
 import com.sortoapps.chorepilot.features.chores.domain.currentWeekdayName
-import com.sortoapps.chorepilot.features.chores.domain.defaultStatusForDay
 import com.sortoapps.chorepilot.features.chores.domain.HouseholdSchedulingMember
 import com.sortoapps.chorepilot.features.chores.domain.availabilitySuggestionId
 import com.sortoapps.chorepilot.features.chores.domain.buildAvailabilitySuggestion
 import com.sortoapps.chorepilot.features.chores.domain.canManageHouseholdChores
 import com.sortoapps.chorepilot.features.chores.domain.canUndoChoreCompletion
-import com.sortoapps.chorepilot.features.chores.domain.nextCompletionStatus
 import com.sortoapps.chorepilot.features.chores.domain.nextCompletionStatusForDay
 import com.sortoapps.chorepilot.features.chores.domain.recordedCompletionName
 import com.sortoapps.chorepilot.features.chores.domain.resolveAssignmentForDay
 import com.sortoapps.chorepilot.features.chores.domain.resolveAssignmentsForDay
-import com.sortoapps.chorepilot.features.chores.domain.resolvedAssigneeForDay
+import com.sortoapps.chorepilot.features.chores.domain.resolvedStatusForDay
 import com.sortoapps.chorepilot.features.chores.domain.requiresCompletionConfirmation
+import com.sortoapps.chorepilot.features.chores.domain.runtimeStateAppliesToDay
 import com.sortoapps.chorepilot.features.chores.domain.sortScheduledChores
 import com.sortoapps.chorepilot.features.chores.domain.todayScheduleDay
 import com.sortoapps.chorepilot.features.notifications.domain.AssignmentChangedNotification
@@ -157,10 +156,15 @@ class FirebaseChoreRepository(
         return sortScheduledChores(
             choreDocuments.values
             .filter { document ->
-                document.toDraft().appearsOnDay(
+                val draft = document.toDraft()
+                draft.appearsOnDay(
                     day = day,
                     todayWeekdayName = todayWeekdayName,
-                )
+                ) || document.occurrences.containsKey(day.dateKey) ||
+                    latestProofDocumentFor(
+                        choreId = document.id,
+                        dateKey = day.dateKey,
+                    ) != null
             }
             .map { document ->
                 val resolution = resolvedAssignments[document.id]
@@ -175,15 +179,26 @@ class FirebaseChoreRepository(
                         todayWeekdayName = todayWeekdayName,
                     )
                 val occurrence = document.occurrences[day.dateKey]
-                val scheduledStatus = occurrence?.status ?: defaultStatusForDay(document.status, day)
-                val proofPhotoCount = occurrence?.proofPhotoCount ?: if (day.isToday) document.proofPhotoCount else 0
-                val completedByName = occurrence?.completedByName ?: if (day.isToday) document.completedByName else ""
-                val completedAtEpochMs = occurrence?.completedAtEpochMs ?: if (day.isToday) document.completedAtEpochMs else 0L
+                val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+                    baseStatus = document.status,
+                    completedAtEpochMs = document.completedAtEpochMs,
+                    day = day,
+                )
+                val scheduledStatus = occurrence?.status ?: resolvedStatusForDay(
+                    baseStatus = document.status,
+                    completedAtEpochMs = document.completedAtEpochMs,
+                    day = day,
+                )
+                val proofPhotoCount = occurrence?.proofPhotoCount ?: if (baseRuntimeStateApplies) document.proofPhotoCount else 0
+                val completedByName = occurrence?.completedByName ?: if (baseRuntimeStateApplies) document.completedByName else ""
+                val completedAtEpochMs = occurrence?.completedAtEpochMs ?: if (baseRuntimeStateApplies) document.completedAtEpochMs else 0L
                 val latestProof = latestProofDocumentFor(document.id, day.dateKey)
                 val dueLabel = occurrence?.dueLabel
                     ?.takeIf(String::isNotBlank)
-                    ?: if (day.isToday) {
+                    ?: if (baseRuntimeStateApplies) {
                         document.toChoreItem().dueLabel
+                    } else if (day.isToday) {
+                        refreshedDueLabel(scheduledStatus, day)
                     } else {
                         "Scheduled for ${day.weekdayName}"
                     }
@@ -447,8 +462,21 @@ class FirebaseChoreRepository(
         val scheduledChore = getScheduledChores(targetDay).firstOrNull { it.id == choreId } ?: existing.toChoreItem()
         ensureCanMutateChoreProgress(scheduledChore)
         val currentOccurrence = existing.occurrences[targetDay.dateKey]
-        val currentStatus = currentOccurrence?.status ?: defaultStatusForDay(existing.status, targetDay)
-        val currentProofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (targetDay.isToday) existing.proofPhotoCount else 0
+        val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
+        val currentStatus = currentOccurrence?.status ?: resolvedStatusForDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
+        val currentProofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (baseRuntimeStateApplies) {
+            existing.proofPhotoCount
+        } else {
+            0
+        }
         if (
             requiresCompletionConfirmation(scheduledChore, viewerName) &&
             !allowCompletingForSomeoneElse
@@ -511,7 +539,16 @@ class FirebaseChoreRepository(
         val existing = choreDocuments[choreId] ?: return
         val targetDay = day ?: todayScheduleDay()
         val currentOccurrence = existing.occurrences[targetDay.dateKey]
-        val currentStatus = currentOccurrence?.status ?: defaultStatusForDay(existing.status, targetDay)
+        val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
+        val currentStatus = currentOccurrence?.status ?: resolvedStatusForDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
         if (currentStatus != ChoreItemStatus.PendingProof) return
         val proofToApprove = latestProofDocumentFor(
             choreId = choreId,
@@ -524,10 +561,10 @@ class FirebaseChoreRepository(
         val updatedOccurrence = ChoreOccurrenceDocument(
             status = approveProofStatus(currentStatus),
             dueLabel = "Approved",
-            completedByName = currentOccurrence?.completedByName ?: if (targetDay.isToday) existing.completedByName else "",
+            completedByName = currentOccurrence?.completedByName ?: if (baseRuntimeStateApplies) existing.completedByName else "",
             completedAtEpochMs = currentOccurrence?.completedAtEpochMs
-                ?: if (targetDay.isToday) existing.completedAtEpochMs else Clock.System.now().toEpochMilliseconds(),
-            proofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (targetDay.isToday) existing.proofPhotoCount else 0,
+                ?: if (baseRuntimeStateApplies) existing.completedAtEpochMs else Clock.System.now().toEpochMilliseconds(),
+            proofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (baseRuntimeStateApplies) existing.proofPhotoCount else 0,
         )
         val reviewedProof = proofToApprove.copy(
             reviewStatus = ProofReviewStatus.Approved,
@@ -569,7 +606,16 @@ class FirebaseChoreRepository(
         val existing = choreDocuments[choreId] ?: return
         val targetDay = day ?: todayScheduleDay()
         val currentOccurrence = existing.occurrences[targetDay.dateKey]
-        val currentStatus = currentOccurrence?.status ?: defaultStatusForDay(existing.status, targetDay)
+        val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
+        val currentStatus = currentOccurrence?.status ?: resolvedStatusForDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
         if (currentStatus != ChoreItemStatus.PendingProof) return
         val proofToReject = latestProofDocumentFor(
             choreId = choreId,
@@ -582,9 +628,9 @@ class FirebaseChoreRepository(
         val updatedOccurrence = ChoreOccurrenceDocument(
             status = if (targetDay.isToday) ChoreItemStatus.DueSoon else ChoreItemStatus.Scheduled,
             dueLabel = "Needs new proof",
-            completedByName = currentOccurrence?.completedByName ?: if (targetDay.isToday) existing.completedByName else "",
-            completedAtEpochMs = currentOccurrence?.completedAtEpochMs ?: if (targetDay.isToday) existing.completedAtEpochMs else 0L,
-            proofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (targetDay.isToday) existing.proofPhotoCount else 0,
+            completedByName = currentOccurrence?.completedByName ?: if (baseRuntimeStateApplies) existing.completedByName else "",
+            completedAtEpochMs = currentOccurrence?.completedAtEpochMs ?: if (baseRuntimeStateApplies) existing.completedAtEpochMs else 0L,
+            proofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (baseRuntimeStateApplies) existing.proofPhotoCount else 0,
         )
         val rejectedProof = proofToReject.copy(
             reviewStatus = ProofReviewStatus.Rejected,
@@ -686,7 +732,16 @@ class FirebaseChoreRepository(
         val scheduledChore = getScheduledChores(targetDay).firstOrNull { it.id == choreId } ?: existing.toChoreItem()
         ensureCanMutateChoreProgress(scheduledChore)
         val currentOccurrence = existing.occurrences[targetDay.dateKey]
-        val currentProofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (targetDay.isToday) existing.proofPhotoCount else 0
+        val baseRuntimeStateApplies = runtimeStateAppliesToDay(
+            baseStatus = existing.status,
+            completedAtEpochMs = existing.completedAtEpochMs,
+            day = targetDay,
+        )
+        val currentProofPhotoCount = currentOccurrence?.proofPhotoCount ?: if (baseRuntimeStateApplies) {
+            existing.proofPhotoCount
+        } else {
+            0
+        }
         val proofRef = householdStore.householdRef(householdId).collection(FirestorePaths.Proofs).document
         val extension = payload.fileExtension.trimStart('.').ifBlank { "jpg" }
         val storagePath = StoragePaths.proofImage(

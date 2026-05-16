@@ -44,7 +44,7 @@ class NotificationRoutingTest {
     }
 
     @Test
-    fun proofPayloadRoutesBackToInbox() {
+    fun proofPayloadRoutesToChoreDetail() {
         val request = NotificationTapPayload(
             notificationId = "proof-1",
             choreId = "chore-1",
@@ -52,14 +52,25 @@ class NotificationRoutingTest {
         ).toOpenRequest()
 
         assertEquals("proof-1", request.notificationId)
-        assertEquals(NotificationOpenTarget.Inbox, request.target)
+        assertEquals(NotificationOpenTarget.Chore("chore-1"), request.target)
     }
 
     @Test
-    fun proofApprovedPayloadRoutesBackToInbox() {
+    fun proofApprovedPayloadRoutesToChoreDetail() {
         val request = NotificationTapPayload(
             notificationId = "proof-approved-1",
             choreId = "chore-1",
+            type = NotificationType.ProofApproved,
+        ).toOpenRequest()
+
+        assertEquals(NotificationOpenTarget.Chore("chore-1"), request.target)
+    }
+
+    @Test
+    fun payloadWithoutChoreIdRoutesBackToInbox() {
+        val request = NotificationTapPayload(
+            notificationId = "proof-approved-1",
+            choreId = "",
             type = NotificationType.ProofApproved,
         ).toOpenRequest()
 

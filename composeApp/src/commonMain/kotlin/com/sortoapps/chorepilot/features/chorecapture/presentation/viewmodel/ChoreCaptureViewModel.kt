@@ -94,6 +94,35 @@ class ChoreCaptureViewModel(
             is ChoreCaptureUiEvent.DiscoveryDraftEffortChanged -> updateDraft(event.draftId) { copy(effort = event.value) }
             is ChoreCaptureUiEvent.DiscoveryDraftProofRequiredChanged -> updateDraft(event.draftId) { copy(proofNeededSuggested = event.enabled) }
             is ChoreCaptureUiEvent.DiscoveryDraftRepeatsChanged -> updateDraft(event.draftId) { copy(repeatsEnabled = event.enabled) }
+            is ChoreCaptureUiEvent.DiscoveryDraftRepeatFrequencyChanged -> updateDraft(event.draftId) {
+                copy(
+                    repeatFrequency = event.value,
+                    selectedWeekdays = when (event.value) {
+                        ChoreRepeatFrequencyValue.Daily -> selectedWeekdays.ifEmpty { setOf("Monday", "Wednesday", "Friday") }
+                        ChoreRepeatFrequencyValue.Weekly -> selectedWeekdays.ifEmpty { setOf("Saturday") }
+                        ChoreRepeatFrequencyValue.Monthly,
+                        ChoreRepeatFrequencyValue.Custom,
+                        -> selectedWeekdays
+                    },
+                )
+            }
+            is ChoreCaptureUiEvent.DiscoveryDraftDailyModeChanged -> updateDraft(event.draftId) {
+                copy(
+                    dailyMode = event.value,
+                    selectedWeekdays = when (event.value) {
+                        ChoreDailyModeValue.SpecificDays -> selectedWeekdays.ifEmpty { setOf("Monday", "Wednesday", "Friday") }
+                        else -> selectedWeekdays
+                    },
+                )
+            }
+            is ChoreCaptureUiEvent.DiscoveryDraftWeekdayToggled -> updateDraft(event.draftId) {
+                val updated = selectedWeekdays.toMutableSet()
+                if (!updated.add(event.value)) {
+                    updated.remove(event.value)
+                }
+                copy(selectedWeekdays = updated)
+            }
+            is ChoreCaptureUiEvent.DiscoveryDraftOneTimeDateChanged -> updateDraft(event.draftId) { copy(selectedOneTimeDate = event.value) }
             ChoreCaptureUiEvent.SaveDiscoveryDrafts -> saveDiscoveryDrafts()
             ChoreCaptureUiEvent.PremiumNavigationHandled -> _uiState.update { it.copy(shouldOpenPremium = false) }
             ChoreCaptureUiEvent.DiscoveryReturnHandled -> _uiState.update { it.copy(shouldReturnToList = false) }

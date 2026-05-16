@@ -86,6 +86,7 @@ fun SnackbarHandler(
                     duration = currentEvent.toComposeDuration(),
                     style = currentEvent.style,
                     icon = currentEvent.icon,
+                    celebration = currentEvent.celebration,
                 ),
             )
             if (result == SnackbarResult.ActionPerformed) {

@@ -1,13 +1,19 @@
 package com.sortoapps.chorepilot.features.notifications.data
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import com.sortoapps.chorepilot.R
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationAuthorizationStatus
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationDeliveryGateway
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationItem
@@ -42,16 +48,19 @@ class AndroidNotificationDeliveryGateway(
         const val EXTRA_NOTIFICATION_ID = "chorepilot.notification_id"
         const val EXTRA_CHORE_ID = "chorepilot.chore_id"
         const val EXTRA_NOTIFICATION_TYPE = "chorepilot.notification_type"
+        private const val FCM_NOTIFICATION_ID = "notificationId"
+        private const val FCM_CHORE_ID = "choreId"
+        private const val FCM_NOTIFICATION_TYPE = "type"
 
         fun ensureChannel(context: Context) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
                 PROOF_LIFECYCLE_CHANNEL_ID,
-                "Proof updates",
+                "Household updates",
                 NotificationManager.IMPORTANCE_DEFAULT,
             ).apply {
-                description = "Proof submissions and approvals for your household chores."
+                description = "Due chores, proof reviews, assignments, and discovery approvals."
             }
             notificationManager.createNotificationChannel(channel)
         }
@@ -82,27 +91,60 @@ class AndroidNotificationDeliveryGateway(
                 )
             }
             val notification = NotificationCompat.Builder(context, PROOF_LIFECYCLE_CHANNEL_ID)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setSmallIcon(R.drawable.ic_stat_chorepilot_notification)
+                .setColor(Color.rgb(85, 84, 177))
                 .setContentTitle(title)
                 .setContentText(body)
                 .setStyle(NotificationCompat.BigTextStyle().bigText(body))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setAutoCancel(true)
                 .setContentIntent(contentIntent)
                 .build()
-            NotificationManagerCompat.from(context).notify(notificationId, notification)
+            notifyIfAllowed(context, notificationId, notification)
+        }
+
+        @SuppressLint("MissingPermission")
+        private fun notifyIfAllowed(
+            context: Context,
+            notificationId: Int,
+            notification: android.app.Notification,
+        ) {
+            if (!canPostNotifications(context)) return
+            runCatching {
+                NotificationManagerCompat.from(context).notify(notificationId, notification)
+            }
+        }
+
+        private fun canPostNotifications(context: Context): Boolean {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                return ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS,
+                ) == PackageManager.PERMISSION_GRANTED
+            }
+            return NotificationManagerCompat.from(context).areNotificationsEnabled()
         }
 
         fun payloadFromIntent(intent: Intent?): NotificationTapPayload? {
             val source = intent ?: return null
-            val notificationId = source.getStringExtra(EXTRA_NOTIFICATION_ID).orEmpty()
+            val notificationId = source.notificationExtra(EXTRA_NOTIFICATION_ID, FCM_NOTIFICATION_ID)
             if (notificationId.isBlank()) return null
             return NotificationTapPayload(
                 notificationId = notificationId,
-                choreId = source.getStringExtra(EXTRA_CHORE_ID).orEmpty(),
-                type = notificationTypeOrDefault(source.getStringExtra(EXTRA_NOTIFICATION_TYPE).orEmpty()),
+                choreId = source.notificationExtra(EXTRA_CHORE_ID, FCM_CHORE_ID),
+                type = notificationTypeOrDefault(source.notificationExtra(EXTRA_NOTIFICATION_TYPE, FCM_NOTIFICATION_TYPE)),
             )
         }
+
+        private fun Intent.notificationExtra(
+            namespacedKey: String,
+            fcmKey: String,
+        ): String = getStringExtra(namespacedKey)
+            ?: getStringExtra(fcmKey)
+            ?: extras?.get(namespacedKey)?.toString()
+            ?: extras?.get(fcmKey)?.toString()
+            ?: ""
     }
 
     private fun GrantStatus.toAuthorizationStatus(): NotificationAuthorizationStatus = when (this) {
@@ -110,6 +152,7 @@ class AndroidNotificationDeliveryGateway(
         GrantStatus.PARTIAL_GRANTED -> NotificationAuthorizationStatus.Granted
         GrantStatus.DENIED -> NotificationAuthorizationStatus.Denied
         GrantStatus.DENIED_ALWAYS -> NotificationAuthorizationStatus.DeniedAlways
-        GrantStatus.NOT_DETERMINED -> NotificationAuthorizationStatus.NotDetermined
+        GrantStatus.NOT_DETERMINED,
+        GrantStatus.BUSY -> NotificationAuthorizationStatus.NotDetermined
     }
 }

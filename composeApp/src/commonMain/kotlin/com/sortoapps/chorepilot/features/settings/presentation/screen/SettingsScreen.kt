@@ -18,10 +18,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.Label
 import androidx.compose.material.icons.rounded.AutoAwesome
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.FormatSize
 import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material.icons.rounded.WbSunny
 import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material.icons.rounded.SmartToy
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +51,11 @@ import com.sortoapps.chorepilot.core.preview.ChorePilotPreviewTheme
 import com.sortoapps.chorepilot.core.preview.CompactPreviewShell
 import com.sortoapps.chorepilot.features.settings.domain.AppearancePreset
 import com.sortoapps.chorepilot.features.settings.domain.ThemeMode
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalPose
+import com.sortoapps.chorepilot.features.feedbackpal.presentation.components.FeedbackPalSprite
+import com.sortoapps.chorepilot.features.feedbackpal.presentation.components.description
+import com.sortoapps.chorepilot.features.feedbackpal.presentation.components.displayName
 import com.sortoapps.chorepilot.features.settings.presentation.viewmodel.SettingsUiEvent
 import com.sortoapps.chorepilot.features.settings.presentation.viewmodel.SettingsUiState
 import com.sortoapps.chorepilot.navigation.AppRoute
@@ -154,9 +161,147 @@ fun SettingsScreen(
                                     ),
                                 )
                             }
+                            AppearanceSection(title = "Feedback pal") {
+                                FeedbackPalPickerCard(
+                                    selectedPal = state.feedbackPalKind,
+                                    onSelect = { kind ->
+                                        onEvent(SettingsUiEvent.TriggerVibration)
+                                        onEvent(SettingsUiEvent.FeedbackPalSelected(kind))
+                                    },
+                                )
+                            }
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FeedbackPalPickerCard(
+    selectedPal: FeedbackPalKind,
+    onSelect: (FeedbackPalKind) -> Unit,
+) {
+    Surface(
+        shape = RoundedCornerShape(8.dp),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.96f),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+    ) {
+        Column(
+            modifier = Modifier.padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Surface(
+                    modifier = Modifier.size(40.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                    tonalElevation = 0.dp,
+                    shadowElevation = 0.dp,
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Rounded.SmartToy,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                }
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    Text(
+                        text = "Pick your feedback companion",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Text(
+                        text = "This pal floats in the app and helps collect bugs, ideas, and screenshots for review.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                FeedbackPalKind.entries.forEach { kind ->
+                    FeedbackPalChoiceRow(
+                        kind = kind,
+                        selected = kind == selectedPal,
+                        onClick = { onSelect(kind) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun FeedbackPalChoiceRow(
+    kind: FeedbackPalKind,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
+        color = if (selected) {
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.10f)
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.24f)
+        },
+        border = BorderStroke(
+            1.dp,
+            if (selected) {
+                MaterialTheme.colorScheme.primary.copy(alpha = 0.26f)
+            } else {
+                MaterialTheme.colorScheme.outline.copy(alpha = 0.10f)
+            },
+        ),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp,
+        onClick = onClick,
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            FeedbackPalSprite(
+                kind = kind,
+                pose = FeedbackPalPose.Front,
+                size = 52.dp,
+                animated = selected,
+            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(
+                    text = kind.displayName(),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = kind.description(),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            if (selected) {
+                Icon(
+                    imageVector = Icons.Rounded.Check,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                )
             }
         }
     }

@@ -330,14 +330,20 @@ class FirebaseFamilyRepository(
         val members = householdStore.listMembers(householdId)
         val viewer = members.firstOrNull { it.userId == session.userId && it.active }
             ?: error("We couldn't verify your household access right now.")
-        if (viewer.role != HouseholdRole.Owner && viewer.role != HouseholdRole.Admin) {
+        val viewerIsHouseholdOwner = household.ownerUserId.equals(session.userId, ignoreCase = true)
+        if (!viewerIsHouseholdOwner && viewer.role != HouseholdRole.Owner && viewer.role != HouseholdRole.Admin) {
             error("Only owners and admins can manage the household.")
+        }
+        val effectiveViewer = if (viewerIsHouseholdOwner && viewer.role != HouseholdRole.Owner) {
+            viewer.copy(role = HouseholdRole.Owner)
+        } else {
+            viewer
         }
         return FamilyAdminContext(
             session = session,
             household = household,
             members = members,
-            viewer = viewer,
+            viewer = effectiveViewer,
         )
     }
 

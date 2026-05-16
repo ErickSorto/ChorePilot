@@ -5,3 +5,7 @@ PRODUCT_BUNDLE_IDENTIFIER=com.sortoapps.chorepilot
 
 CURRENT_PROJECT_VERSION=1
 MARKETING_VERSION=1.0
+
+// Set this to your RevenueCat Apple production key (appl_...) for iOS release builds.
+// Debug builds fall back to the shared RevenueCat test key when this is blank.
+REVENUECAT_API_KEY=

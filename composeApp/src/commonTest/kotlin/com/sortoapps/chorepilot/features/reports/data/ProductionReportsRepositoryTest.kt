@@ -10,6 +10,7 @@ import com.sortoapps.chorepilot.features.chores.domain.ProofUploadPayload
 import com.sortoapps.chorepilot.features.chores.domain.ProofUploadResult
 import com.sortoapps.chorepilot.features.chores.domain.RoomDefinition
 import com.sortoapps.chorepilot.features.chores.domain.scheduleDateKey
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import com.sortoapps.chorepilot.features.reports.domain.ReportsPeriodSelection
 import com.sortoapps.chorepilot.features.reports.presentation.viewmodel.ReportsRange
 import com.sortoapps.chorepilot.features.settings.domain.SettingsRepository
@@ -290,6 +291,8 @@ private class FakeSettingsRepository(
     override suspend fun updateLargerText(enabled: Boolean) = Unit
 
     override suspend fun updateAlwaysShowLabels(enabled: Boolean) = Unit
+
+    override suspend fun updateFeedbackPalKind(kind: FeedbackPalKind) = Unit
 }
 
 private class FakeChoreRepository(

@@ -1,14 +1,21 @@
 package com.sortoapps.chorepilot.navigation
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,9 +30,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -34,6 +47,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.Notifications
 import com.sortoapps.chorepilot.app.presentation.LocalAppSnackbarHostState
 import com.sortoapps.chorepilot.core.designsystem.ChorePilotSnackbarHost
@@ -88,6 +102,14 @@ fun MainScreen(
     val settingsRepository = koinInject<SettingsRepository>()
     val settings by settingsRepository.settings.collectAsStateWithLifecycle()
     val snackbarHostState = LocalAppSnackbarHostState.current
+    var homeScheduleHeaderExpanded by rememberSaveable { mutableStateOf(false) }
+    val isCompactHome = sizeClass == ChorePilotWindowSizeClass.Compact &&
+        currentDestination.isHomeDestination()
+    val showHomeScheduleHeader = sizeClass != ChorePilotWindowSizeClass.Compact || homeScheduleHeaderExpanded
+    val toggleHomeScheduleHeader = {
+        vibratorUtil.triggerVibration()
+        homeScheduleHeaderExpanded = !homeScheduleHeaderExpanded
+    }
 
     val content: @Composable (Modifier) -> Unit = { modifier ->
         NavHost(
@@ -105,6 +127,9 @@ fun MainScreen(
                         onOpenChoreCapture(choreId, day)
                     },
                     onOpenChore = onOpenChore,
+                    showScheduleHeader = showHomeScheduleHeader,
+                    reserveScheduleToggleSpace = isCompactHome,
+                    onToggleScheduleHeader = if (isCompactHome) toggleHomeScheduleHeader else null,
                 )
             }
 
@@ -301,21 +326,27 @@ private fun MainTopBar(
         currentDestination?.hasRoute(AppRoute.More::class) == true -> "Settings"
         else -> "Home"
     }
-    ChorePilotTopAppBar(
-        sectionTitle = title,
-        navigationIcon = { ChorePilotTopBarBrandBadge() },
-        actionIcon = {
-            if (currentDestination?.hasRoute(AppRoute.Home::class) == true) {
-                ChorePilotTopBarIconButton(
-                    icon = Icons.Rounded.Notifications,
-                    contentDescription = "Notifications",
-                    emphasized = true,
-                    onClick = onOpenNotifications,
-                )
-            }
-        },
-    )
+    val isHome = currentDestination.isHomeDestination()
+    Box {
+        ChorePilotTopAppBar(
+            sectionTitle = title,
+            navigationIcon = { ChorePilotTopBarBrandBadge() },
+            actionIcon = {
+                if (isHome) {
+                    ChorePilotTopBarIconButton(
+                        icon = Icons.Rounded.Notifications,
+                        contentDescription = "Notifications",
+                        emphasized = true,
+                        onClick = onOpenNotifications,
+                    )
+                }
+            },
+        )
+    }
 }
+
+private fun androidx.navigation.NavDestination?.isHomeDestination(): Boolean =
+    this?.hasRoute(AppRoute.Home::class) ?: true
 
 @Composable
 private fun FloatingBottomBar(
@@ -349,6 +380,7 @@ private fun FloatingBottomBar(
                         selected = selected,
                         alwaysShowLabel = alwaysShowLabels,
                         onClick = { onNavigate(destination.route) },
+                        modifier = Modifier.weight(1f),
                     )
                 }
             }
@@ -362,44 +394,69 @@ private fun FloatingBottomBarItem(
     selected: Boolean,
     alwaysShowLabel: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    androidx.compose.foundation.layout.Column(
-        modifier = Modifier
+    val showLabel = alwaysShowLabel || selected
+
+    Surface(
+        modifier = modifier
             .clickable(onClick = onClick)
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+            .height(if (showLabel) 56.dp else 42.dp),
+        color = if (selected) {
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.28f)
+        } else {
+            Color.Transparent
+        },
+        shape = RoundedCornerShape(18.dp),
     ) {
-        Surface(
-            color = if (selected) {
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f)
-            } else {
-                androidx.compose.ui.graphics.Color.Transparent
-            },
-            shape = CircleShape,
-        ) {
-            Box(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
+        Box(modifier = Modifier.fillMaxSize()) {
+            androidx.compose.foundation.layout.Column(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(
+                        start = 4.dp,
+                        end = 4.dp,
+                        bottom = if (selected && showLabel) 5.dp else 0.dp,
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = if (showLabel) {
+                    Arrangement.spacedBy(3.dp, Alignment.CenterVertically)
+                } else {
+                    Arrangement.Center
+                },
             ) {
                 Icon(
                     imageVector = destination.icon,
                     contentDescription = destination.label,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(19.dp),
                     tint = if (selected) {
                         MaterialTheme.colorScheme.primary
                     } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.82f)
                     },
                 )
+
+                if (showLabel) {
+                    Text(
+                        text = destination.label,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
+                    )
+                }
             }
-        }
-        if (alwaysShowLabel || selected) {
-            Text(
-                text = destination.label.uppercase(),
-                style = MaterialTheme.typography.labelSmall,
-                color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
-            )
+
+            if (selected && showLabel) {
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 2.dp)
+                        .width(24.dp)
+                        .height(3.dp),
+                    shape = RoundedCornerShape(99.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                ) {}
+            }
         }
     }
 }

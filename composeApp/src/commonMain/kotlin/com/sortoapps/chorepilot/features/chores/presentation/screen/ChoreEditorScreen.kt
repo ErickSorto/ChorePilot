@@ -18,15 +18,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.Bathtub
 import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Checklist
 import androidx.compose.material.icons.rounded.CleaningServices
 import androidx.compose.material.icons.rounded.DeleteOutline
@@ -48,6 +51,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -78,6 +85,16 @@ import com.sortoapps.chorepilot.features.settings.domain.ThemeMode
 
 private val EditorCardShape = RoundedCornerShape(8.dp)
 
+private enum class EditorStep(
+    val title: String,
+    val shortTitle: String,
+) {
+    Overview("Create chore", "Start"),
+    Details("Task details", "Details"),
+    Ownership("Ownership", "Owner"),
+    ScheduleChecks("Repeats & Checks", "Checks"),
+}
+
 @Composable
 fun ChoreEditorScreen(
     state: ChoreEditorUiState,
@@ -87,6 +104,24 @@ fun ChoreEditorScreen(
     onOpenPremium: () -> Unit,
 ) {
     val canSave = state.title.isNotBlank() && if (state.creatingRoom) state.newRoomName.isNotBlank() else state.selectedRoom.isNotBlank()
+    var selectedStepIndex by rememberSaveable(state.choreId) { mutableIntStateOf(0) }
+    val selectedStep = EditorStep.entries[selectedStepIndex.coerceIn(EditorStep.entries.indices)]
+    val detailsComplete = state.title.isNotBlank() && if (state.creatingRoom) state.newRoomName.isNotBlank() else state.selectedRoom.isNotBlank()
+    val ownershipComplete = state.autoAssign || state.assignee.isNotBlank() || state.assigneeOptions.isEmpty()
+    val primaryActionEnabled = when (selectedStep) {
+        EditorStep.Overview -> canSave
+        EditorStep.Details -> detailsComplete
+        EditorStep.Ownership -> ownershipComplete
+        EditorStep.ScheduleChecks -> canSave && !state.isApplyingLifecycleAction
+    }
+    val leaveOrPrevious = {
+        onEvent(ChoreEditorUiEvent.TriggerVibration)
+        if (selectedStepIndex > 0) {
+            selectedStepIndex -= 1
+        } else {
+            onBack()
+        }
+    }
 
     ChorePilotGradientBackground {
         ChoreLifecycleConfirmationDialog(
@@ -109,15 +144,25 @@ fun ChoreEditorScreen(
             ) {
                 item {
                     EditorTopBar(
-                        title = if (state.choreId == null) "Create chore" else "Edit chore",
-                        onBack = {
-                            onEvent(ChoreEditorUiEvent.TriggerVibration)
-                            onBack()
-                        },
+                        title = if (state.choreId == null) selectedStep.title else "Edit chore",
+                        subtitle = editorStepSubtitle(selectedStep, state.choreId != null),
+                        onBack = leaveOrPrevious,
                     )
                 }
 
-                item {
+                if (selectedStep != EditorStep.Overview) {
+                    item {
+                        EditorStepProgress(
+                            selectedStep = selectedStep,
+                            onStepSelected = { step ->
+                                onEvent(ChoreEditorUiEvent.TriggerVibration)
+                                selectedStepIndex = step.ordinal
+                            },
+                        )
+                    }
+                }
+
+                if (selectedStep == EditorStep.Overview) item {
                     EditorHero(
                         title = state.title,
                         repeatSummary = repeatSummary(state),
@@ -127,6 +172,20 @@ fun ChoreEditorScreen(
                         isActive = state.isActive,
                         pendingApproval = state.pendingApproval,
                     )
+                }
+
+                if (selectedStep == EditorStep.Overview) {
+                    item {
+                        EditorStepList(
+                            state = state,
+                            detailsComplete = detailsComplete,
+                            ownershipComplete = ownershipComplete,
+                            onSelect = { step ->
+                                onEvent(ChoreEditorUiEvent.TriggerVibration)
+                                selectedStepIndex = step.ordinal
+                            },
+                        )
+                    }
                 }
 
                 state.errorMessage?.let { message ->
@@ -139,7 +198,7 @@ fun ChoreEditorScreen(
                     }
                 }
 
-                item {
+                if (selectedStep == EditorStep.Details) item {
                     EditorSection(
                         title = "Task details",
                         subtitle = "What it is and where it lives",
@@ -184,7 +243,7 @@ fun ChoreEditorScreen(
                     }
                 }
 
-                item {
+                if (selectedStep == EditorStep.Ownership) item {
                     EditorSection(
                         title = "Ownership",
                         subtitle = "Keep it fixed or let the app handle fair rotation",
@@ -313,7 +372,7 @@ fun ChoreEditorScreen(
                     }
                 }
 
-                item {
+                if (selectedStep == EditorStep.ScheduleChecks) item {
                     EditorSection(
                         title = "Repeats",
                         subtitle = "Keep it one-time or let it come back automatically",
@@ -427,7 +486,7 @@ fun ChoreEditorScreen(
                     }
                 }
 
-                item {
+                if (selectedStep == EditorStep.ScheduleChecks) item {
                     EditorSection(
                         title = "Checks",
                         subtitle = "Only add the controls that help the household",
@@ -471,7 +530,7 @@ fun ChoreEditorScreen(
                     }
                 }
 
-                if (state.choreId != null && state.canManageLifecycle) {
+                if (selectedStep == EditorStep.ScheduleChecks && state.choreId != null && state.canManageLifecycle) {
                     item {
                         LifecycleSection(
                             state = state,
@@ -483,14 +542,23 @@ fun ChoreEditorScreen(
 
             EditorFooter(
                 modifier = Modifier.align(Alignment.BottomCenter),
-                canSave = canSave && !state.isApplyingLifecycleAction,
-                onCancel = {
-                    onEvent(ChoreEditorUiEvent.TriggerVibration)
-                    onBack()
+                secondaryText = if (selectedStep == EditorStep.Overview) "Cancel" else "Back",
+                primaryText = when (selectedStep) {
+                    EditorStep.Overview,
+                    EditorStep.ScheduleChecks,
+                    -> if (state.isSaving) "Saving..." else "Save chore"
+
+                    else -> "Next"
                 },
-                onSave = {
+                primaryEnabled = primaryActionEnabled && !state.isSaving,
+                onSecondary = leaveOrPrevious,
+                onPrimary = {
                     onEvent(ChoreEditorUiEvent.TriggerVibration)
-                    onSave()
+                    if (selectedStep == EditorStep.Overview || selectedStep == EditorStep.ScheduleChecks) {
+                        onSave()
+                    } else {
+                        selectedStepIndex = (selectedStepIndex + 1).coerceAtMost(EditorStep.entries.lastIndex)
+                    }
                 },
                 isSaving = state.isSaving,
             )
@@ -501,6 +569,7 @@ fun ChoreEditorScreen(
 @Composable
 private fun EditorTopBar(
     title: String,
+    subtitle: String,
     onBack: () -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -540,12 +609,23 @@ private fun EditorTopBar(
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                text = "Build a clear routine once, then let the household follow it.",
+                text = subtitle,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }
+}
+
+private fun editorStepSubtitle(
+    step: EditorStep,
+    editing: Boolean,
+): String = when {
+    editing -> "Tune the chore without breaking the household rhythm."
+    step == EditorStep.Overview -> "Build a clear routine once, then let the household follow it."
+    step == EditorStep.Details -> "Name it clearly and place it in the right room."
+    step == EditorStep.Ownership -> "Decide who owns it, or let ChorePilot rotate fairly."
+    else -> "Choose when it happens and what proof or time estimate it needs."
 }
 
 @Composable
@@ -597,6 +677,162 @@ private fun EditorHero(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+    }
+}
+
+@Composable
+private fun EditorStepProgress(
+    selectedStep: EditorStep,
+    onStepSelected: (EditorStep) -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            EditorStep.entries.drop(1).forEachIndexed { index, step ->
+                val selected = step == selectedStep
+                Surface(
+                    modifier = Modifier
+                        .size(if (selected) 10.dp else 8.dp)
+                        .clickable { onStepSelected(step) },
+                    shape = CircleShape,
+                    color = if (selected) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.56f)
+                    },
+                    tonalElevation = 0.dp,
+                    shadowElevation = 0.dp,
+                ) {}
+                if (index < EditorStep.entries.drop(1).lastIndex) {
+                    Box(
+                        modifier = Modifier
+                            .width(28.dp)
+                            .height(2.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.36f)),
+                    )
+                }
+            }
+        }
+        Text(
+            text = selectedStep.shortTitle,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold,
+        )
+    }
+}
+
+@Composable
+private fun EditorStepList(
+    state: ChoreEditorUiState,
+    detailsComplete: Boolean,
+    ownershipComplete: Boolean,
+    onSelect: (EditorStep) -> Unit,
+) {
+    EditorCard {
+        Column {
+            EditorStepRow(
+                icon = Icons.Rounded.Checklist,
+                title = "Task details",
+                body = if (detailsComplete) {
+                    "${state.title.ifBlank { "Named" }} · ${if (state.creatingRoom) state.newRoomName else state.selectedRoom}"
+                } else {
+                    "What it is and where it lives"
+                },
+                complete = detailsComplete,
+                onClick = { onSelect(EditorStep.Details) },
+            )
+            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.42f))
+            EditorStepRow(
+                icon = Icons.Rounded.Groups,
+                title = "Ownership",
+                body = if (state.autoAssign) assignmentSummary(state) else state.assignee.ifBlank { "Who will do this" },
+                complete = ownershipComplete,
+                onClick = { onSelect(EditorStep.Ownership) },
+            )
+            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.42f))
+            EditorStepRow(
+                icon = Icons.Rounded.CalendarMonth,
+                title = "Repeats",
+                body = repeatSummary(state).removeSuffix("."),
+                complete = true,
+                onClick = { onSelect(EditorStep.ScheduleChecks) },
+            )
+            HorizontalDivider(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.42f))
+            EditorStepRow(
+                icon = Icons.Rounded.Shield,
+                title = "Checks",
+                body = checksSummary(state),
+                complete = true,
+                onClick = { onSelect(EditorStep.ScheduleChecks) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun EditorStepRow(
+    icon: ImageVector,
+    title: String,
+    body: String,
+    complete: Boolean,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 14.dp, vertical = 14.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Surface(
+            modifier = Modifier.size(38.dp),
+            shape = CircleShape,
+            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.26f),
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp,
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    modifier = Modifier.size(19.dp),
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = body,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        Icon(
+            imageVector = if (complete) Icons.Rounded.CheckCircle else Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+            contentDescription = null,
+            modifier = Modifier.size(22.dp),
+            tint = if (complete) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
@@ -1554,9 +1790,11 @@ private fun ToggleRow(
 @Composable
 private fun EditorFooter(
     modifier: Modifier = Modifier,
-    canSave: Boolean,
-    onCancel: () -> Unit,
-    onSave: () -> Unit,
+    secondaryText: String,
+    primaryText: String,
+    primaryEnabled: Boolean,
+    onSecondary: () -> Unit,
+    onPrimary: () -> Unit,
     isSaving: Boolean,
 ) {
     Surface(
@@ -1573,13 +1811,13 @@ private fun EditorFooter(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "Cancel",
+                text = secondaryText,
                 modifier = Modifier
                     .weight(1f)
                     .clickable(
                         interactionSource = MutableInteractionSource(),
                         indication = null,
-                        onClick = onCancel,
+                        onClick = onSecondary,
                     ),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -1587,10 +1825,10 @@ private fun EditorFooter(
             )
             Spacer(modifier = Modifier.weight(1f))
             PrimaryButton(
-                text = if (isSaving) "Saving..." else "Save chore",
+                text = primaryText,
                 modifier = Modifier.weight(2f),
-                enabled = canSave && !isSaving,
-                onClick = onSave,
+                enabled = primaryEnabled && !isSaving,
+                onClick = onPrimary,
             )
         }
     }
@@ -1627,6 +1865,14 @@ private fun assignmentChipLabel(
 ): String = when (state.smartAssignmentMode) {
     SmartAssignmentMode.FairRotation -> "Fair rotation on"
     SmartAssignmentMode.DayPlan -> "Day plan active"
+}
+
+private fun checksSummary(
+    state: ChoreEditorUiState,
+): String {
+    val proof = if (state.proofRequired) "Proof required" else "No proof"
+    val duration = if (state.durationEnabled) "${state.durationMinutes} min" else "No time estimate"
+    return "$proof · $duration"
 }
 
 private fun effortLabel(

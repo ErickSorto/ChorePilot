@@ -6,6 +6,7 @@ import com.sortoapps.chorepilot.features.auth.domain.HouseholdRole
 import com.sortoapps.chorepilot.features.auth.domain.InvitePreview
 import com.sortoapps.chorepilot.features.auth.domain.SessionRepository
 import com.sortoapps.chorepilot.features.auth.domain.SessionSnapshot
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import com.sortoapps.chorepilot.features.notifications.data.PushDeviceRegistrationDocument
 import com.sortoapps.chorepilot.features.notifications.data.PushDeviceRegistrationRepository
 import com.sortoapps.chorepilot.features.settings.domain.SettingsRepository
@@ -171,4 +172,5 @@ private class FakePushSettingsRepository(
     override suspend fun updateAutoAssignSuggestions(enabled: Boolean) = Unit
     override suspend fun updateLargerText(enabled: Boolean) = Unit
     override suspend fun updateAlwaysShowLabels(enabled: Boolean) = Unit
+    override suspend fun updateFeedbackPalKind(kind: FeedbackPalKind) = Unit
 }

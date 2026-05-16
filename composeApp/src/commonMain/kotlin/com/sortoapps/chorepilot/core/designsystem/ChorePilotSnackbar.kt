@@ -1,5 +1,8 @@
 package com.sortoapps.chorepilot.core.designsystem
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,6 +29,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,15 +41,19 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import chorepilot.composeapp.generated.resources.Res
 import chorepilot.composeapp.generated.resources.chore_complete_squirrel_cheer
 import com.sortoapps.chorepilot.core.preview.ChorePilotPreviewTheme
+import com.sortoapps.chorepilot.core.ui.SnackbarCelebrationContent
 import com.sortoapps.chorepilot.core.ui.SnackbarStyle
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import kotlin.math.roundToInt
 
 data class ChorePilotSnackbarVisuals(
     override val message: String,
@@ -54,6 +62,7 @@ data class ChorePilotSnackbarVisuals(
     override val duration: SnackbarDuration = SnackbarDuration.Short,
     val style: SnackbarStyle = SnackbarStyle.Standard,
     val icon: DrawableResource? = null,
+    val celebration: SnackbarCelebrationContent? = null,
 ) : SnackbarVisuals
 
 private val SnackbarShape = RoundedCornerShape(8.dp)
@@ -188,15 +197,20 @@ private fun CelebrationSnackbar(
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(2.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Text(
+                    visuals.celebration?.let { celebration ->
+                        CompletionCelebrationMessage(
+                            choreName = celebration.choreName,
+                            points = celebration.points,
+                        )
+                    } ?: Text(
                         text = visuals.message,
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(8.dp),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                        textAlign = TextAlign.Center,
                     )
                 }
                 visuals.actionLabel?.let { actionLabel ->
@@ -260,6 +274,76 @@ private fun CelebrationSnackbar(
     }
 }
 
+@Composable
+private fun CompletionCelebrationMessage(
+    choreName: String,
+    points: Int,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 18.dp, vertical = 6.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(3.dp),
+    ) {
+        if (choreName.isNotBlank()) {
+            Text(
+                text = choreName,
+                modifier = Modifier.fillMaxWidth(),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center,
+            )
+        }
+
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = "Completed +",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.ExtraBold,
+            )
+            AnimatedPointsNumber(points = points)
+            Text(
+                text = " ${if (points == 1) "point" else "points"}",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.ExtraBold,
+            )
+        }
+    }
+}
+
+@Composable
+private fun AnimatedPointsNumber(
+    points: Int,
+) {
+    var started by remember(points) { mutableStateOf(false) }
+    LaunchedEffect(points) {
+        started = true
+    }
+    val animatedPoints by animateFloatAsState(
+        targetValue = if (started) points.toFloat() else 0f,
+        animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing),
+        label = "snackbar-completion-points",
+    )
+    Text(
+        text = animatedPoints
+            .roundToInt()
+            .coerceIn(0, points.coerceAtLeast(0))
+            .toString(),
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onSurface,
+        fontWeight = FontWeight.ExtraBold,
+    )
+}
+
 private class PreviewSnackbarData(
     override val visuals: SnackbarVisuals,
 ) : SnackbarData {
@@ -304,15 +388,23 @@ private fun CelebrationSnackbarPreview() {
             CelebrationSnackbar(
                 data = PreviewSnackbarData(
                     ChorePilotSnackbarVisuals(
-                        message = "Chore completed +12 points!",
+                        message = "Completed +12 points",
                         style = SnackbarStyle.Celebration,
                         icon = Res.drawable.chore_complete_squirrel_cheer,
+                        celebration = SnackbarCelebrationContent(
+                            choreName = "Kitchen reset",
+                            points = 12,
+                        ),
                     ),
                 ),
                 visuals = ChorePilotSnackbarVisuals(
-                    message = "Chore completed +12 points!",
+                    message = "Completed +12 points",
                     style = SnackbarStyle.Celebration,
                     icon = Res.drawable.chore_complete_squirrel_cheer,
+                    celebration = SnackbarCelebrationContent(
+                        choreName = "Kitchen reset",
+                        points = 12,
+                    ),
                 ),
             )
         }

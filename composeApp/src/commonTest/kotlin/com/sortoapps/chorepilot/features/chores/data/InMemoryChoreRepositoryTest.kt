@@ -1,6 +1,7 @@
 package com.sortoapps.chorepilot.features.chores.data
 
 import com.sortoapps.chorepilot.features.chores.domain.ChoreDailyModeValue
+import com.sortoapps.chorepilot.features.chores.domain.ChoreAvailabilityMode
 import com.sortoapps.chorepilot.features.chores.domain.ChoreDraft
 import com.sortoapps.chorepilot.features.chores.domain.ChoreEffortValue
 import com.sortoapps.chorepilot.features.chores.domain.ChoreItemStatus
@@ -258,6 +259,91 @@ class InMemoryChoreRepositoryTest {
         assertEquals(suggestion.recommendedCoverMember, fromList.assignee)
         assertEquals(fromList.assignee, fromSingle?.assignee)
         assertEquals(fromList.assignmentReason, fromSingle?.assignmentReason)
+    }
+
+    @Test
+    fun completedOccurrenceDoesNotCarryIntoNextDate() = runTest {
+        val repository = InMemoryChoreRepository(
+            initialHouseholdMembers = listOf(
+                HouseholdSchedulingMember(
+                    userId = "ava",
+                    displayName = "Ava",
+                    active = true,
+                    availabilityMode = ChoreAvailabilityMode.DayOff,
+                    availabilityStartDate = scheduleDateKey(0),
+                    availabilityEndDate = scheduleDateKey(0),
+                ),
+                HouseholdSchedulingMember(userId = "liam", displayName = "Liam", active = true),
+            ),
+        )
+        val choreId = repository.saveChore(
+            baseDraft(
+                assignee = "Ava",
+                autoAssign = false,
+            ).copy(
+                repeatFrequency = ChoreRepeatFrequencyValue.Daily,
+                dailyRepeatMode = ChoreDailyModeValue.EveryDay,
+                selectedWeekdays = emptySet(),
+            ),
+        )
+        val today = dayAtOffset(0)
+        val nextDateAsToday = dayAtOffset(1).copy(
+            id = "next-date-as-today",
+            dayOffset = 0,
+            isToday = true,
+        )
+
+        assertEquals("Liam", repository.getScheduledChores(today).first { it.id == choreId }.assignee)
+        repository.toggleCompletion(
+            choreId = choreId,
+            viewerName = "Liam",
+            day = today,
+        )
+
+        val completedToday = repository.getScheduledChores(today).first { it.id == choreId }
+        val nextDate = repository.getScheduledChores(nextDateAsToday).first { it.id == choreId }
+
+        assertEquals(ChoreItemStatus.Completed, completedToday.status)
+        assertEquals(ChoreItemStatus.DueSoon, nextDate.status)
+        assertEquals("Ava", nextDate.assignee)
+        assertEquals("", nextDate.completedByName)
+        assertEquals(0L, nextDate.completedAtEpochMs)
+    }
+
+    @Test
+    fun completedOccurrenceRemainsVisibleWhenSelectedDateBecomesPast() = runTest {
+        val repository = InMemoryChoreRepository(
+            initialHouseholdMembers = listOf(
+                HouseholdSchedulingMember(userId = "ava", displayName = "Ava", active = true),
+            ),
+        )
+        val choreId = repository.saveChore(
+            baseDraft(
+                assignee = "Ava",
+                autoAssign = false,
+            ).copy(
+                repeatFrequency = ChoreRepeatFrequencyValue.Daily,
+                dailyRepeatMode = ChoreDailyModeValue.EveryDay,
+                selectedWeekdays = emptySet(),
+            ),
+        )
+        val occurrenceDay = dayAtOffset(0)
+
+        repository.toggleCompletion(
+            choreId = choreId,
+            viewerName = "Ava",
+            day = occurrenceDay,
+        )
+
+        val sameDateAfterToday = occurrenceDay.copy(
+            id = "past-${occurrenceDay.dateKey}",
+            dayOffset = -1,
+            isToday = false,
+        )
+        val pastChore = repository.getScheduledChores(sameDateAfterToday).first { it.id == choreId }
+
+        assertEquals(ChoreItemStatus.Completed, pastChore.status)
+        assertEquals("Completed", pastChore.dueLabel)
     }
 
     @Test

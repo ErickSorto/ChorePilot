@@ -62,6 +62,7 @@ import com.sortoapps.chorepilot.features.family.presentation.screen.InviteMember
 import com.sortoapps.chorepilot.features.family.presentation.screen.MemberProfileScreen
 import com.sortoapps.chorepilot.features.family.presentation.viewmodel.FamilyUiEvent
 import com.sortoapps.chorepilot.features.family.presentation.viewmodel.FamilyViewModel
+import com.sortoapps.chorepilot.features.feedbackpal.presentation.components.FeedbackPalHost
 import com.sortoapps.chorepilot.features.notifications.presentation.screen.NotificationsScreen
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationOpenRequest
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationOpenTarget
@@ -78,6 +79,7 @@ import com.sortoapps.chorepilot.features.rewards.presentation.screen.RewardsScre
 import com.sortoapps.chorepilot.features.rewards.presentation.viewmodel.RewardsViewModel
 import com.sortoapps.chorepilot.features.settings.presentation.screen.SettingsScreen
 import com.sortoapps.chorepilot.features.settings.presentation.screen.PreviewGalleryScreen
+import com.sortoapps.chorepilot.features.settings.domain.SettingsRepository
 import com.sortoapps.chorepilot.features.settings.presentation.viewmodel.SettingsHubViewModel
 import com.sortoapps.chorepilot.features.settings.presentation.viewmodel.SettingsUiEvent
 import com.sortoapps.chorepilot.features.settings.presentation.viewmodel.SettingsViewModel
@@ -100,7 +102,9 @@ fun ChorePilotNavHost() {
             val currentDestination = backStackEntry?.destination
             val sessionRepository = koinInject<SessionRepository>()
             val notificationsRepository = koinInject<NotificationsRepository>()
+            val settingsRepository = koinInject<SettingsRepository>()
             val session by sessionRepository.session.collectAsStateWithLifecycle()
+            val settings by settingsRepository.settings.collectAsStateWithLifecycle()
             val pendingNotificationTap by NotificationTapBridge.pendingOpenRequest.collectAsStateWithLifecycle()
             val coroutineScope = rememberCoroutineScope()
             val snackbarHostState = LocalAppSnackbarHostState.current
@@ -112,6 +116,29 @@ fun ChorePilotNavHost() {
                     destination.hasRoute(AppRoute.Premium::class)
                 if (!session.signedIn && !canStaySignedOut) {
                     navController.navigate(AppRoute.SignIn) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
+            }
+
+            LaunchedEffect(
+                session.signedIn,
+                session.needsHouseholdSetup,
+                session.needsOnboardingFlow,
+                backStackEntry?.destination,
+            ) {
+                val destination = backStackEntry?.destination ?: return@LaunchedEffect
+                if (!session.signedIn || !session.needsHouseholdSetup || session.needsOnboardingFlow) {
+                    return@LaunchedEffect
+                }
+                val alreadyInHouseholdSetupFlow = destination.hasRoute(AppRoute.Launch::class) ||
+                    destination.hasRoute(AppRoute.HouseholdChoice::class) ||
+                    destination.hasRoute(AppRoute.CreateHousehold::class) ||
+                    destination.hasRoute(AppRoute.JoinHousehold::class) ||
+                    destination.hasRoute(AppRoute.Onboarding::class)
+                if (!alreadyInHouseholdSetupFlow) {
+                    navController.navigate(AppRoute.CreateHousehold) {
                         popUpTo(navController.graph.id) { inclusive = true }
                         launchSingleTop = true
                     }
@@ -152,34 +179,37 @@ fun ChorePilotNavHost() {
                     }
                 },
             ) { innerPadding ->
-                NavHost(
-                    navController = navController,
-                    startDestination = AppRoute.Launch,
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
-                        .consumeWindowInsets(innerPadding)
+                        .consumeWindowInsets(innerPadding),
                 ) {
-                    composable<AppRoute.Launch> {
-                        LaunchedEffect(
-                            session.signedIn,
-                            session.needsHouseholdSetup,
-                            session.needsOnboardingFlow,
-                            session.needsInitialPremiumFlow,
-                        ) {
-                            val target = when {
-                                session.signedIn && session.needsOnboardingFlow -> AppRoute.Onboarding
-                                session.signedIn && session.needsHouseholdSetup -> AppRoute.HouseholdChoice
-                                session.signedIn && session.needsInitialPremiumFlow -> AppRoute.Premium(PremiumOrigin.InitialOnboarding)
-                                session.signedIn -> AppRoute.Main
-                                else -> AppRoute.SignIn
+                    NavHost(
+                        navController = navController,
+                        startDestination = AppRoute.Launch,
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        composable<AppRoute.Launch> {
+                            LaunchedEffect(
+                                session.signedIn,
+                                session.needsHouseholdSetup,
+                                session.needsOnboardingFlow,
+                                session.needsInitialPremiumFlow,
+                            ) {
+                                val target = when {
+                                    session.signedIn && session.needsOnboardingFlow -> AppRoute.Onboarding
+                                    session.signedIn && session.needsHouseholdSetup -> AppRoute.HouseholdChoice
+                                    session.signedIn && session.needsInitialPremiumFlow -> AppRoute.Premium(PremiumOrigin.InitialOnboarding)
+                                    session.signedIn -> AppRoute.Main
+                                    else -> AppRoute.SignIn
+                                }
+                                navController.navigate(target) {
+                                    popUpTo(AppRoute.Launch) { inclusive = true }
+                                }
                             }
-                            navController.navigate(target) {
-                                popUpTo(AppRoute.Launch) { inclusive = true }
-                            }
+                            Box(modifier = Modifier.fillMaxSize())
                         }
-                        Box(modifier = Modifier.fillMaxSize())
-                    }
 
                     composable<AppRoute.Onboarding> {
                         val onboardingViewModel = koinViewModel<OnboardingViewModel>()
@@ -721,9 +751,22 @@ fun ChorePilotNavHost() {
                         )
                     }
                 }
+
+                if (session.signedIn && currentDestination?.hasRoute(AppRoute.Main::class) == true) {
+                    FeedbackPalHost(
+                        selectedPal = settings.feedbackPalKind,
+                        bottomPadding = if (sizeClass == com.sortoapps.chorepilot.core.designsystem.ChorePilotWindowSizeClass.Compact) {
+                            132.dp
+                        } else {
+                            36.dp
+                        },
+                        endPadding = 18.dp,
+                    )
+                }
             }
         }
     }
+}
 }
 
 private fun navigateToNotificationTarget(

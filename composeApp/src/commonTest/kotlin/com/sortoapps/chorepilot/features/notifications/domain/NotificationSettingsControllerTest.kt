@@ -1,5 +1,6 @@
 package com.sortoapps.chorepilot.features.notifications.domain
 
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import com.sortoapps.chorepilot.features.settings.domain.SettingsRepository
 import com.sortoapps.chorepilot.features.settings.domain.SettingsSnapshot
 import com.sortoapps.chorepilot.features.settings.domain.ThemeMode
@@ -122,6 +123,9 @@ private class FakeControllerSettingsRepository(
     override suspend fun updateLargerText(enabled: Boolean) = Unit
 
     override suspend fun updateAlwaysShowLabels(enabled: Boolean) = Unit
+    override suspend fun updateFeedbackPalKind(kind: FeedbackPalKind) {
+        TODO("Not yet implemented")
+    }
 }
 
 private class FakeControllerGateway(

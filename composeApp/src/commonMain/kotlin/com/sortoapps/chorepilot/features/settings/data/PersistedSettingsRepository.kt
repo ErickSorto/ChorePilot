@@ -1,6 +1,7 @@
 package com.sortoapps.chorepilot.features.settings.data
 
 import com.sortoapps.chorepilot.core.platform.PlatformPreferences
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import com.sortoapps.chorepilot.features.settings.domain.AppearancePreset
 import com.sortoapps.chorepilot.features.settings.domain.SettingsRepository
 import com.sortoapps.chorepilot.features.settings.domain.SettingsSnapshot
@@ -66,6 +67,10 @@ class PersistedSettingsRepository(
 
     override suspend fun updateAlwaysShowLabels(enabled: Boolean) {
         updateSettings { it.copy(alwaysShowLabels = enabled) }
+    }
+
+    override suspend fun updateFeedbackPalKind(kind: FeedbackPalKind) {
+        updateSettings { it.copy(feedbackPalKind = kind) }
     }
 
     private fun loadState(): SettingsSnapshot {

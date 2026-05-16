@@ -51,6 +51,7 @@ class SettingsViewModel(
                         autoAssignSuggestions = settings.autoAssignSuggestions,
                         largerText = settings.largerText,
                         alwaysShowLabels = settings.alwaysShowLabels,
+                        feedbackPalKind = settings.feedbackPalKind,
                         isUpdatingNotifications = it.isUpdatingNotifications,
                         showDebugActions = AppBuildInfo.isDebugBuild,
                     )
@@ -131,6 +132,10 @@ class SettingsViewModel(
                             "Bottom navigation labels now stay compact"
                         },
                     )
+                }
+                is SettingsUiEvent.FeedbackPalSelected -> {
+                    settingsRepository.updateFeedbackPalKind(event.kind)
+                    showSaveFeedback("${event.kind.name} pal selected")
                 }
                 SettingsUiEvent.ResetDemo -> {
                     sessionRepository.resetDemo()

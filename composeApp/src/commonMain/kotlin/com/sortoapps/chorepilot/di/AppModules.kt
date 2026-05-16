@@ -5,6 +5,7 @@ import com.sortoapps.chorepilot.core.firebase.FirebaseAvailability
 import com.sortoapps.chorepilot.core.firebase.FirebaseUnavailableChoreRepository
 import com.sortoapps.chorepilot.core.firebase.FirebaseUnavailableDiscoveryAnalysisRepository
 import com.sortoapps.chorepilot.core.firebase.FirebaseUnavailableFamilyRepository
+import com.sortoapps.chorepilot.core.firebase.FirebaseUnavailableFeedbackPalRepository
 import com.sortoapps.chorepilot.core.firebase.FirebaseUnavailableReportsRepository
 import com.sortoapps.chorepilot.core.firebase.FirebaseUnavailableRewardsRepository
 import com.sortoapps.chorepilot.core.firebase.FirebaseUnavailableSessionRepository
@@ -28,6 +29,8 @@ import com.sortoapps.chorepilot.features.chores.presentation.viewmodel.ChoresVie
 import com.sortoapps.chorepilot.features.family.domain.FamilyRepository
 import com.sortoapps.chorepilot.features.family.data.FirebaseFamilyRepository
 import com.sortoapps.chorepilot.features.family.presentation.viewmodel.FamilyViewModel
+import com.sortoapps.chorepilot.features.feedbackpal.data.FirebaseFeedbackPalRepository
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalRepository
 import com.sortoapps.chorepilot.features.home.data.ProductionHomeRepository
 import com.sortoapps.chorepilot.features.home.presentation.viewmodel.HomeViewModel
 import com.sortoapps.chorepilot.features.home.domain.HomeRepository
@@ -99,6 +102,13 @@ val appModule = module {
         }
     }
     singleOf(::InMemoryDemoContentRepository)
+    single<FeedbackPalRepository> {
+        if (get<FirebaseAvailability>().isConfigured) {
+            FirebaseFeedbackPalRepository(get())
+        } else {
+            FirebaseUnavailableFeedbackPalRepository(get())
+        }
+    }
     singleOf(::RevenueCatSubscriptionRepository) bind SubscriptionRepository::class
     singleOf(::ProductionHomeRepository) bind HomeRepository::class
     single<FamilyRepository> {

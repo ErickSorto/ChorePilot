@@ -6,6 +6,8 @@
 	<true/>
 	<key>NSUserNotificationsUsageDescription</key>
 	<string>ChorePilot uses notifications to let your household know when proof is submitted or approved.</string>
+	<key>RevenueCatApiKey</key>
+	<string>$(REVENUECAT_API_KEY)</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

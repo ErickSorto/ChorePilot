@@ -17,6 +17,7 @@ import com.sortoapps.chorepilot.features.chores.domain.ProofUploadPayload
 import com.sortoapps.chorepilot.features.chores.domain.ProofEvidence
 import com.sortoapps.chorepilot.features.chores.domain.ProofUploadResult
 import com.sortoapps.chorepilot.features.chores.domain.RoomDefinition
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import com.sortoapps.chorepilot.features.home.domain.HomeDaySnapshot
 import com.sortoapps.chorepilot.features.home.domain.HomeRepository
 import com.sortoapps.chorepilot.features.home.domain.HomeRepositoryState
@@ -415,6 +416,9 @@ private class FakeSettingsRepository(
     override suspend fun updateLargerText(enabled: Boolean) = Unit
 
     override suspend fun updateAlwaysShowLabels(enabled: Boolean) = Unit
+    override suspend fun updateFeedbackPalKind(kind: FeedbackPalKind) {
+        TODO("Not yet implemented")
+    }
 }
 
 private class FakeChoreRepository(

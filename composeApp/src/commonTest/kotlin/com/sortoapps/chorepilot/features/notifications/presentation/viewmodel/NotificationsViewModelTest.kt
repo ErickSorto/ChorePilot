@@ -1,5 +1,6 @@
 package com.sortoapps.chorepilot.features.notifications.presentation.viewmodel
 
+import com.sortoapps.chorepilot.features.feedbackpal.domain.FeedbackPalKind
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationItem
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationOpenTarget
 import com.sortoapps.chorepilot.features.notifications.domain.NotificationType
@@ -90,7 +91,7 @@ class NotificationsViewModelTest {
     }
 
     @Test
-    fun openingProofNotificationMarksItReadAndKeepsInboxTarget() = runTest(dispatcher) {
+    fun openingProofNotificationMarksItReadAndExposesChoreNavigation() = runTest(dispatcher) {
         val repository = FakeNotificationsRepository(
             listOf(
                 notification(
@@ -111,14 +112,14 @@ class NotificationsViewModelTest {
         advanceUntilIdle()
 
         assertEquals("proof-1", repository.lastMarkedReadId)
-        assertEquals(NotificationOpenTarget.Inbox, viewModel.uiState.value.pendingOpenRequest?.target)
+        assertEquals(NotificationOpenTarget.Chore("chore-9"), viewModel.uiState.value.pendingOpenRequest?.target)
 
         viewModel.onEvent(NotificationsUiEvent.PendingOpenHandled)
         assertNull(viewModel.uiState.value.pendingOpenRequest)
     }
 
     @Test
-    fun openingProofApprovedNotificationKeepsInboxTarget() = runTest(dispatcher) {
+    fun openingProofApprovedNotificationExposesChoreNavigation() = runTest(dispatcher) {
         val repository = FakeNotificationsRepository(
             listOf(
                 notification(
@@ -139,7 +140,7 @@ class NotificationsViewModelTest {
         advanceUntilIdle()
 
         assertEquals("proof-approved-1", repository.lastMarkedReadId)
-        assertEquals(NotificationOpenTarget.Inbox, viewModel.uiState.value.pendingOpenRequest?.target)
+        assertEquals(NotificationOpenTarget.Chore("chore-9"), viewModel.uiState.value.pendingOpenRequest?.target)
     }
 
     @Test
@@ -218,6 +219,7 @@ private class FakeVmSettingsRepository : SettingsRepository {
     override suspend fun updateAutoAssignSuggestions(enabled: Boolean) = Unit
     override suspend fun updateLargerText(enabled: Boolean) = Unit
     override suspend fun updateAlwaysShowLabels(enabled: Boolean) = Unit
+    override suspend fun updateFeedbackPalKind(kind: FeedbackPalKind) = Unit
 }
 
 private fun notification(

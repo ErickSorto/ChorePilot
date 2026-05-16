@@ -3,6 +3,8 @@ package com.sortoapps.chorepilot.di
 import android.content.Context
 import android.util.Log
 import com.google.firebase.FirebaseApp
+import dev.brewkits.grant.GrantFactory
+import dev.brewkits.grant.GrantManager
 import com.sortoapps.chorepilot.core.platform.AndroidSystemTextActions
 import com.sortoapps.chorepilot.core.firebase.FirebaseAvailability
 import com.sortoapps.chorepilot.core.firebase.FirebaseAvailabilityStatus
@@ -23,6 +25,7 @@ import org.koin.dsl.module
 private const val FirebaseLogTag = "ChorePilotFirebase"
 
 actual val platformModule: Module = module {
+    single<GrantManager> { GrantFactory.create(androidContext()) }
     single { AndroidPlatformPreferences(androidContext()) } bind PlatformPreferences::class
     single<VibratorUtil> { VibratorUtilImpl(context = androidContext()) }
     single<SystemTextActions> { AndroidSystemTextActions(androidContext()) }

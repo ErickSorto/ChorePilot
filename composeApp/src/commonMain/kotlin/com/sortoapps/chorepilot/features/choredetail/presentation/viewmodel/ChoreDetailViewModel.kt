@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import chorepilot.composeapp.generated.resources.Res
 import chorepilot.composeapp.generated.resources.snackbar_chore_completed_points
 import com.sortoapps.chorepilot.core.platform.VibratorUtil
+import com.sortoapps.chorepilot.core.ui.SnackbarCelebrationContent
 import com.sortoapps.chorepilot.core.ui.SnackbarController
 import com.sortoapps.chorepilot.core.ui.SnackbarEvent
 import com.sortoapps.chorepilot.core.ui.SnackbarMascotIcons
@@ -302,7 +303,10 @@ class ChoreDetailViewModel(
                 vibratorUtil.triggerVibration()
             } else {
                 vibratorUtil.triggerVibrationSuccess()
-                showChoreCompletedSnackbar(current.choreId)
+                showChoreCompletedSnackbar(
+                    choreId = current.choreId,
+                    choreTitle = current.title,
+                )
             }
             _uiState.value = refreshed ?: _uiState.value.copy(isMarkingComplete = false, feedbackMessage = feedback)
         }
@@ -310,15 +314,21 @@ class ChoreDetailViewModel(
 
     private suspend fun showChoreCompletedSnackbar(
         choreId: String,
+        choreTitle: String,
     ) {
+        val points = completionPoints()
         SnackbarController.sendEvent(
             SnackbarEvent(
                 message = StringValue.Resource(
                     Res.string.snackbar_chore_completed_points,
-                    completionPoints(),
+                    points,
                 ),
                 style = SnackbarStyle.Celebration,
                 icon = SnackbarMascotIcons.celebrationIconFor(choreId),
+                celebration = SnackbarCelebrationContent(
+                    choreName = choreTitle,
+                    points = points,
+                ),
             ),
         )
     }

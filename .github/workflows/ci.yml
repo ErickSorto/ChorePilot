@@ -1,0 +1,53 @@
+name: ChorePilot CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: chorepilot-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gradle-and-functions:
+    name: Gradle + Functions
+    runs-on: macos-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Run Gradle checks
+        run: ./gradlew check --stacktrace
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: iosApp/functions/package-lock.json
+
+      - name: Install Functions dependencies
+        working-directory: iosApp/functions
+        run: npm ci
+
+      - name: Run Functions tests
+        run: node --test iosApp/functions/index.test.js

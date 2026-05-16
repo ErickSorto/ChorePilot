@@ -17,6 +17,12 @@ data class SnackbarEvent(
     val style: SnackbarStyle = SnackbarStyle.Standard,
     val icon: DrawableResource? = null,
     val duration: SnackbarEventDuration = SnackbarEventDuration.Short,
+    val celebration: SnackbarCelebrationContent? = null,
+)
+
+data class SnackbarCelebrationContent(
+    val choreName: String,
+    val points: Int,
 )
 
 data class SnackbarAction(

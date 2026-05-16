@@ -1,6 +1,8 @@
 package com.sortoapps.chorepilot.features.chorecapture.presentation.viewmodel
 
 import com.sortoapps.chorepilot.features.chores.domain.ChoreEffortValue
+import com.sortoapps.chorepilot.features.chores.domain.ChoreDailyModeValue
+import com.sortoapps.chorepilot.features.chores.domain.ChoreRepeatFrequencyValue
 import com.sortoapps.chorepilot.features.chores.domain.ChoreScheduleDay
 import com.sortoapps.chorepilot.features.chores.domain.ProofUploadPayload
 
@@ -49,6 +51,26 @@ sealed interface ChoreCaptureUiEvent {
     data class DiscoveryDraftRepeatsChanged(
         val draftId: String,
         val enabled: Boolean,
+    ) : ChoreCaptureUiEvent
+
+    data class DiscoveryDraftRepeatFrequencyChanged(
+        val draftId: String,
+        val value: ChoreRepeatFrequencyValue,
+    ) : ChoreCaptureUiEvent
+
+    data class DiscoveryDraftDailyModeChanged(
+        val draftId: String,
+        val value: ChoreDailyModeValue,
+    ) : ChoreCaptureUiEvent
+
+    data class DiscoveryDraftWeekdayToggled(
+        val draftId: String,
+        val value: String,
+    ) : ChoreCaptureUiEvent
+
+    data class DiscoveryDraftOneTimeDateChanged(
+        val draftId: String,
+        val value: String,
     ) : ChoreCaptureUiEvent
 
     data object SaveDiscoveryDrafts : ChoreCaptureUiEvent

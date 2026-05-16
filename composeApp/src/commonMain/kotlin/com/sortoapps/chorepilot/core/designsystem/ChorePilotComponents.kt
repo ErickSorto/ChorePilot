@@ -255,6 +255,8 @@ fun PremiumTabSelector(
     cornerRadius: androidx.compose.ui.unit.Dp = 28.dp,
     indicatorCornerRadius: androidx.compose.ui.unit.Dp = 20.dp,
     indicatorInset: androidx.compose.ui.unit.Dp = 6.dp,
+    labelTextStyle: TextStyle = MaterialTheme.typography.labelLarge,
+    iconSize: androidx.compose.ui.unit.Dp = 24.dp,
     flatStyle: Boolean = false,
 ) {
     if (items.isEmpty()) return
@@ -334,13 +336,14 @@ fun PremiumTabSelector(
                                 Icon(
                                     imageVector = icon,
                                     contentDescription = null,
+                                    modifier = Modifier.size(iconSize),
                                     tint = tabContentColor,
                                 )
                             }
                             Text(
                                 text = item.label,
                                 color = tabContentColor,
-                                style = MaterialTheme.typography.labelLarge,
+                                style = labelTextStyle,
                                 fontWeight = if (selected) FontWeight.Bold else FontWeight.SemiBold,
                             )
                         }

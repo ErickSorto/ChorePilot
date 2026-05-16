@@ -1057,16 +1057,16 @@ private fun OfferSheetSection(
             PremiumPlanCard(
                 modifier = Modifier.weight(1f),
                 title = "Yearly",
-                priceLabel = "$2.08/mo",
-                billingLabel = "Billed as $24.96 yearly",
+                priceLabel = yearlyPlan?.compactMonthlyEquivalentLabel() ?: "$2.50/mo",
+                billingLabel = "Billed as ${yearlyPlan?.priceLabel ?: "$29.99"} yearly",
                 selected = selectedPlan == PremiumPlanOption.Annual,
                 onClick = { onPlanSelected(PremiumPlanOption.Annual) },
             )
             PremiumPlanCard(
                 modifier = Modifier.weight(1f),
                 title = "Monthly",
-                priceLabel = "$3.44/mo",
-                billingLabel = "Billed as $3.44 monthly",
+                priceLabel = monthlyPlan?.compactBillingLabel("/mo") ?: "$4.13/mo",
+                billingLabel = "Billed as ${monthlyPlan?.priceLabel ?: "$4.13"} monthly",
                 selected = selectedPlan == PremiumPlanOption.Monthly,
                 onClick = { onPlanSelected(PremiumPlanOption.Monthly) },
             )
@@ -1156,14 +1156,24 @@ private fun offerFootnoteText(
 
     return when (selectedPlan) {
         PremiumPlanOption.Annual -> {
-            "Unlimited free access for 7 days, then $24.96/year"
+            "Unlimited free access for 7 days, then ${yearlyPlan?.priceLabel ?: "$29.99"}/year"
         }
 
         PremiumPlanOption.Monthly -> {
-            "Unlimited free access for 7 days, then $3.44/month"
+            "Unlimited free access for 7 days, then ${monthlyPlan?.priceLabel ?: "$4.13"}/month"
         }
     }
 }
+
+private fun SubscriptionPlanSnapshot.compactBillingLabel(suffix: String): String =
+    priceLabel.takeIf(String::isNotBlank)?.let { "$it$suffix" } ?: title
+
+private fun SubscriptionPlanSnapshot.compactMonthlyEquivalentLabel(): String =
+    perMonthLabel
+        ?.substringBefore(" per month")
+        ?.takeIf(String::isNotBlank)
+        ?.let { "$it/mo" }
+        ?: compactBillingLabel("/yr")
 
 @Composable
 private fun ReminderTimelineSection() {

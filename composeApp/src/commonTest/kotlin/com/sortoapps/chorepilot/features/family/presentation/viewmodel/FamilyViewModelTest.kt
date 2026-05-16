@@ -101,7 +101,11 @@ class FamilyViewModelTest {
     @Test
     fun memberCannotManageInvites() = runTest(dispatcher) {
         val repository = FakeFamilyRepository()
-        val session = FakeFamilySessionRepository(role = HouseholdRole.Member)
+        val session = FakeFamilySessionRepository(
+            role = HouseholdRole.Member,
+            userId = "member-1",
+            displayName = "Mila",
+        )
         val viewModel = FamilyViewModel(
             familyRepository = repository,
             sessionRepository = session,

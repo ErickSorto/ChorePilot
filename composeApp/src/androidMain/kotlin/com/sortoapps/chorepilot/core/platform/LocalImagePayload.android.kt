@@ -30,7 +30,7 @@ private fun optimizedImageBytes(
     val bitmap = BitmapFactory.decodeFile(
         localPath,
         BitmapFactory.Options().apply { inSampleSize = sampleSize },
-    ) ?: return File(localPath).inputStream().use { it.readAllBytes() }
+    ) ?: return File(localPath).readBytes()
     val scaled = bitmap.scaleDownIfNeeded()
     return ByteArrayOutputStream().use { output ->
         scaled.compress(Bitmap.CompressFormat.JPEG, UploadJpegQuality, output)

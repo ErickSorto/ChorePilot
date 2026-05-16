@@ -7,12 +7,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -40,20 +42,26 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import chorepilot.composeapp.generated.resources.Res
 import chorepilot.composeapp.generated.resources.found_something_observer
 import chorepilot.composeapp.generated.resources.proof_capture_mascot_camera
+import com.sortoapps.chorepilot.core.designsystem.ChorePilotTheme
 import com.sortoapps.chorepilot.core.designsystem.ChorePilotGradientBackground
 import com.sortoapps.chorepilot.core.designsystem.ChorePilotTopAppBar
 import com.sortoapps.chorepilot.core.designsystem.ChorePilotTopBarIconButton
+import com.sortoapps.chorepilot.core.preview.PreviewDeviceFrame
 import com.sortoapps.chorepilot.features.chorecapture.presentation.platform.ProofPreviewImage
 import com.sortoapps.chorepilot.features.chorecapture.presentation.platform.rememberProofCameraHandler
 import com.sortoapps.chorepilot.features.chorecapture.presentation.viewmodel.ChoreCaptureUiEvent
 import com.sortoapps.chorepilot.features.chorecapture.presentation.viewmodel.ChoreCaptureUiState
 import com.sortoapps.chorepilot.features.chorecapture.presentation.viewmodel.DiscoveryCapturePhase
 import com.sortoapps.chorepilot.features.chorecapture.presentation.viewmodel.DiscoveryDraftUiModel
+import com.sortoapps.chorepilot.features.chores.domain.ChoreDailyModeValue
 import com.sortoapps.chorepilot.features.chores.domain.ChoreEffortValue
+import com.sortoapps.chorepilot.features.chores.domain.ChoreRepeatFrequencyValue
+import com.sortoapps.chorepilot.features.settings.domain.ThemeMode
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 
@@ -258,6 +266,10 @@ fun ChoreCaptureScreen(
                                     onEffortChanged = { onEvent(ChoreCaptureUiEvent.DiscoveryDraftEffortChanged(draft.id, it)) },
                                     onProofChanged = { onEvent(ChoreCaptureUiEvent.DiscoveryDraftProofRequiredChanged(draft.id, it)) },
                                     onRepeatsChanged = { onEvent(ChoreCaptureUiEvent.DiscoveryDraftRepeatsChanged(draft.id, it)) },
+                                    onRepeatFrequencyChanged = { onEvent(ChoreCaptureUiEvent.DiscoveryDraftRepeatFrequencyChanged(draft.id, it)) },
+                                    onDailyModeChanged = { onEvent(ChoreCaptureUiEvent.DiscoveryDraftDailyModeChanged(draft.id, it)) },
+                                    onWeekdayToggled = { onEvent(ChoreCaptureUiEvent.DiscoveryDraftWeekdayToggled(draft.id, it)) },
+                                    onOneTimeDateChanged = { onEvent(ChoreCaptureUiEvent.DiscoveryDraftOneTimeDateChanged(draft.id, it)) },
                                     onDelete = { onEvent(ChoreCaptureUiEvent.DeleteDiscoveryDraft(draft.id)) },
                                 )
                             }
@@ -509,20 +521,37 @@ private fun DiscoveryDraftCard(
     onEffortChanged: (ChoreEffortValue) -> Unit,
     onProofChanged: (Boolean) -> Unit,
     onRepeatsChanged: (Boolean) -> Unit,
+    onRepeatFrequencyChanged: (ChoreRepeatFrequencyValue) -> Unit,
+    onDailyModeChanged: (ChoreDailyModeValue) -> Unit,
+    onWeekdayToggled: (String) -> Unit,
+    onOneTimeDateChanged: (String) -> Unit,
     onDelete: () -> Unit,
 ) {
     ProofPanel {
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Top,
             ) {
-                Text(
-                    text = "Draft chore",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                )
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = draft.title.ifBlank { "Draft chore" },
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Text(
+                        text = draftStatusLine(draft),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
                 Icon(
                     imageVector = Icons.Rounded.DeleteOutline,
                     contentDescription = "Delete draft",
@@ -549,17 +578,25 @@ private fun DiscoveryDraftCard(
                 label = { Text("Room") },
                 singleLine = true,
             )
-            Text(
-                text = "Effort",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold,
+            if (draft.description.isNotBlank()) {
+                DiscoveryDraftNote(
+                    title = "AI note",
+                    body = draft.description,
+                )
+            }
+            DraftControlHeader(
+                title = "Effort",
+                value = effortLabel(draft.effort),
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 ChoreEffortValue.entries.forEach { effort ->
                     EffortPill(
-                        label = effort.name,
+                        label = effortLabel(effort),
                         selected = draft.effort == effort,
+                        enabled = enabled,
                         onClick = { onEffortChanged(effort) },
                     )
                 }
@@ -576,18 +613,230 @@ private fun DiscoveryDraftCard(
                 enabled = enabled,
                 onCheckedChange = onRepeatsChanged,
             )
-            Text(
-                text = if (draft.repeatsEnabled) {
-                    "Starts today and repeats ${draft.repeatFrequency.name.lowercase()}."
-                } else {
-                    "One-time chore on ${draft.selectedOneTimeDate}."
-                },
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            DiscoveryScheduleControls(
+                draft = draft,
+                enabled = enabled,
+                onRepeatFrequencyChanged = onRepeatFrequencyChanged,
+                onDailyModeChanged = onDailyModeChanged,
+                onWeekdayToggled = onWeekdayToggled,
+                onOneTimeDateChanged = onOneTimeDateChanged,
             )
         }
     }
 }
+
+@Composable
+private fun DiscoveryScheduleControls(
+    draft: DiscoveryDraftUiModel,
+    enabled: Boolean,
+    onRepeatFrequencyChanged: (ChoreRepeatFrequencyValue) -> Unit,
+    onDailyModeChanged: (ChoreDailyModeValue) -> Unit,
+    onWeekdayToggled: (String) -> Unit,
+    onOneTimeDateChanged: (String) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        DraftControlHeader(
+            title = if (draft.repeatsEnabled) "Schedule" else "One-time date",
+            value = scheduleSummary(draft),
+        )
+        if (draft.repeatsEnabled) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                ChoreRepeatFrequencyValue.entries.forEach { frequency ->
+                    SchedulePill(
+                        text = frequency.name,
+                        selected = draft.repeatFrequency == frequency,
+                        enabled = enabled,
+                        onClick = { onRepeatFrequencyChanged(frequency) },
+                    )
+                }
+            }
+            when (draft.repeatFrequency) {
+                ChoreRepeatFrequencyValue.Daily -> {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        ChoreDailyModeValue.entries.forEach { mode ->
+                            SchedulePill(
+                                text = dailyModeLabel(mode),
+                                selected = draft.dailyMode == mode,
+                                enabled = enabled,
+                                onClick = { onDailyModeChanged(mode) },
+                            )
+                        }
+                    }
+                    if (draft.dailyMode == ChoreDailyModeValue.SpecificDays) {
+                        WeekdayChipRow(
+                            selectedDays = draft.selectedWeekdays,
+                            enabled = enabled,
+                            onToggle = onWeekdayToggled,
+                        )
+                    }
+                }
+
+                ChoreRepeatFrequencyValue.Weekly -> {
+                    WeekdayChipRow(
+                        selectedDays = draft.selectedWeekdays,
+                        enabled = enabled,
+                        onToggle = onWeekdayToggled,
+                    )
+                }
+
+                ChoreRepeatFrequencyValue.Monthly,
+                ChoreRepeatFrequencyValue.Custom,
+                -> {
+                    DiscoveryDraftNote(
+                        title = "Saved cadence",
+                        body = scheduleSummary(draft),
+                    )
+                }
+            }
+        } else {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                oneTimeDateOptions(draft.selectedOneTimeDate).forEach { option ->
+                    SchedulePill(
+                        text = option,
+                        selected = draft.selectedOneTimeDate == option,
+                        enabled = enabled,
+                        onClick = { onOneTimeDateChanged(option) },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DraftControlHeader(
+    title: String,
+    value: String,
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = title,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            text = value,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
+@Composable
+private fun DiscoveryDraftNote(
+    title: String,
+    body: String,
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.24f),
+        shape = MaterialTheme.shapes.medium,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f)),
+        shadowElevation = 0.dp,
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                text = body,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
+        }
+    }
+}
+
+@Composable
+private fun WeekdayChipRow(
+    selectedDays: Set<String>,
+    enabled: Boolean,
+    onToggle: (String) -> Unit,
+) {
+    FlowRow(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        WeekdayOptions.forEach { day ->
+            Surface(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.small)
+                    .clickable(enabled = enabled, onClick = { onToggle(day.fullLabel) }),
+                color = if (day.fullLabel in selectedDays) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f)
+                },
+                shape = MaterialTheme.shapes.small,
+                border = BorderStroke(
+                    1.dp,
+                    if (day.fullLabel in selectedDays) {
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.84f)
+                    } else {
+                        MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+                    },
+                ),
+                shadowElevation = 0.dp,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(width = 38.dp, height = 34.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = day.shortLabel,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = if (day.fullLabel in selectedDays) {
+                            MaterialTheme.colorScheme.onPrimary
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        },
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
+        }
+    }
+}
+
+private data class WeekdayOption(
+    val fullLabel: String,
+    val shortLabel: String,
+)
+
+private val WeekdayOptions = listOf(
+    WeekdayOption("Sunday", "S"),
+    WeekdayOption("Monday", "M"),
+    WeekdayOption("Tuesday", "T"),
+    WeekdayOption("Wednesday", "W"),
+    WeekdayOption("Thursday", "T"),
+    WeekdayOption("Friday", "F"),
+    WeekdayOption("Saturday", "S"),
+)
 
 @Composable
 private fun ToggleRow(
@@ -618,24 +867,66 @@ private fun ToggleRow(
 private fun EffortPill(
     label: String,
     selected: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit,
 ) {
     Surface(
         shape = MaterialTheme.shapes.medium,
-        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+        color = if (selected) {
+            MaterialTheme.colorScheme.primary.copy(alpha = if (enabled) 1f else 0.42f)
+        } else {
+            MaterialTheme.colorScheme.surface
+        },
         border = BorderStroke(
             1.dp,
             if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
         ),
         modifier = Modifier
             .clip(MaterialTheme.shapes.medium)
-            .clickable(onClick = onClick),
+            .clickable(enabled = enabled, onClick = onClick),
     ) {
         Text(
             text = label,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
             style = MaterialTheme.typography.labelLarge,
             color = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
+            fontWeight = FontWeight.Bold,
+        )
+    }
+}
+
+@Composable
+private fun SchedulePill(
+    text: String,
+    selected: Boolean,
+    enabled: Boolean,
+    onClick: () -> Unit,
+) {
+    Surface(
+        modifier = Modifier
+            .clip(MaterialTheme.shapes.medium)
+            .clickable(enabled = enabled, onClick = onClick),
+        color = if (selected) {
+            MaterialTheme.colorScheme.primary.copy(alpha = if (enabled) 0.14f else 0.08f)
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.18f)
+        },
+        shape = MaterialTheme.shapes.medium,
+        border = BorderStroke(
+            1.dp,
+            if (selected) {
+                MaterialTheme.colorScheme.primary.copy(alpha = if (enabled) 0.32f else 0.18f)
+            } else {
+                MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.34f)
+            },
+        ),
+        shadowElevation = 0.dp,
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+            style = MaterialTheme.typography.labelMedium,
+            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = FontWeight.Bold,
         )
     }
@@ -733,6 +1024,67 @@ private fun proofSummaryLine(
     state.roomName.takeIf { it.isNotBlank() },
     state.dayLabel.takeIf { it.isNotBlank() },
 ).joinToString(" • ")
+
+private fun draftStatusLine(
+    draft: DiscoveryDraftUiModel,
+): String = listOf(
+    draft.roomName.ifBlank { "Room needed" },
+    effortLabel(draft.effort),
+    scheduleSummary(draft),
+).joinToString(" • ")
+
+private fun scheduleSummary(
+    draft: DiscoveryDraftUiModel,
+): String {
+    if (!draft.repeatsEnabled) {
+        return "Once on ${draft.selectedOneTimeDate.ifBlank { "Tomorrow" }}"
+    }
+    return when (draft.repeatFrequency) {
+        ChoreRepeatFrequencyValue.Daily -> when (draft.dailyMode) {
+            ChoreDailyModeValue.EveryDay -> "Daily"
+            ChoreDailyModeValue.Weekdays -> "Weekdays"
+            ChoreDailyModeValue.SpecificDays -> "Daily on ${weekdaySummary(draft.selectedWeekdays)}"
+        }
+
+        ChoreRepeatFrequencyValue.Weekly -> "Weekly on ${weekdaySummary(draft.selectedWeekdays)}"
+        ChoreRepeatFrequencyValue.Monthly -> "Monthly"
+        ChoreRepeatFrequencyValue.Custom -> "Custom"
+    }
+}
+
+private fun weekdaySummary(
+    weekdays: Set<String>,
+): String = weekdays
+    .ifEmpty { setOf("Saturday") }
+    .joinToString(", ") { day -> day.take(3) }
+
+private fun effortLabel(
+    effort: ChoreEffortValue,
+): String = when (effort) {
+    ChoreEffortValue.Light -> "Light"
+    ChoreEffortValue.Standard -> "Standard"
+    ChoreEffortValue.Heavy -> "Heavy"
+}
+
+private fun dailyModeLabel(
+    mode: ChoreDailyModeValue,
+): String = when (mode) {
+    ChoreDailyModeValue.EveryDay -> "Every day"
+    ChoreDailyModeValue.Weekdays -> "Weekdays"
+    ChoreDailyModeValue.SpecificDays -> "Specific days"
+}
+
+private fun oneTimeDateOptions(
+    selected: String,
+): List<String> = buildList {
+    add("Today")
+    add("Tomorrow")
+    add("This Friday")
+    add("Next Monday")
+    if (selected.isNotBlank() && selected !in this) {
+        add(selected)
+    }
+}
 
 @Composable
 private fun ProofSectionLabel(
@@ -849,3 +1201,199 @@ private fun heroBody(
     state.hasCapturedPhoto -> "This shot looks good. Submit it when you're ready."
     else -> state.helperBody
 }
+
+@Composable
+private fun ChoreCapturePreview(
+    state: ChoreCaptureUiState,
+    themeMode: ThemeMode = ThemeMode.Light,
+) {
+    ChorePilotTheme(themeMode = themeMode) {
+        PreviewDeviceFrame { modifier ->
+            Box(modifier = modifier.fillMaxSize()) {
+                ChoreCaptureScreen(
+                    state = state,
+                    onEvent = {},
+                    onBack = {},
+                    onOpenPremium = {},
+                )
+            }
+        }
+    }
+}
+
+@Preview(name = "Discovery Capture", widthDp = 393, heightDp = 852)
+@Composable
+private fun DiscoveryCapturePreview() {
+    ChoreCapturePreview(state = discoveryPreviewState())
+}
+
+@Preview(name = "Discovery Analyzing Dark", widthDp = 393, heightDp = 852)
+@Composable
+private fun DiscoveryAnalyzingDarkPreview() {
+    ChoreCapturePreview(
+        state = discoveryPreviewState(
+            phase = DiscoveryCapturePhase.Analyzing,
+            hasCapturedPhoto = true,
+            previewUri = PreviewPhotoUri,
+            captureLabel = "Analyzing your room photo…",
+            primaryActionLabel = "Analyzing…",
+        ),
+        themeMode = ThemeMode.Dark,
+    )
+}
+
+@Preview(name = "Discovery Review Drafts", widthDp = 393, heightDp = 852)
+@Composable
+private fun DiscoveryReviewDraftsPreview() {
+    ChoreCapturePreview(
+        state = discoveryPreviewState(
+            phase = DiscoveryCapturePhase.ReviewDrafts,
+            hasCapturedPhoto = true,
+            previewUri = PreviewPhotoUri,
+            discoveryDrafts = previewDiscoveryDrafts(),
+            discoverySummary = "We found 3 draft chores for you to review.",
+            captureLabel = "Review the drafts, tweak anything, then save them into chores.",
+        ),
+    )
+}
+
+@Preview(name = "Discovery Saving", widthDp = 393, heightDp = 852)
+@Composable
+private fun DiscoverySavingPreview() {
+    ChoreCapturePreview(
+        state = discoveryPreviewState(
+            phase = DiscoveryCapturePhase.Saving,
+            hasCapturedPhoto = true,
+            previewUri = PreviewPhotoUri,
+            discoveryDrafts = previewDiscoveryDrafts(),
+            discoverySummary = "We found 3 draft chores for you to review.",
+            captureLabel = "Activating these chores for the household…",
+            isSubmitting = true,
+        ),
+    )
+}
+
+@Preview(name = "Discovery Saved Dark", widthDp = 393, heightDp = 852)
+@Composable
+private fun DiscoverySavedDarkPreview() {
+    ChoreCapturePreview(
+        state = discoveryPreviewState(
+            phase = DiscoveryCapturePhase.Saved,
+            hasCapturedPhoto = true,
+            previewUri = PreviewPhotoUri,
+            discoveryDrafts = previewDiscoveryDrafts().take(2),
+            discoverySummary = "We found 2 draft chores for you to review.",
+            captureLabel = "Everything is active. Heading back to chores…",
+            successMessage = "New chores are now active in your household list.",
+        ),
+        themeMode = ThemeMode.Dark,
+    )
+}
+
+@Preview(name = "Discovery Error", widthDp = 393, heightDp = 852)
+@Composable
+private fun DiscoveryErrorPreview() {
+    ChoreCapturePreview(
+        state = discoveryPreviewState(
+            phase = DiscoveryCapturePhase.Error,
+            hasCapturedPhoto = true,
+            previewUri = PreviewPhotoUri,
+            captureLabel = "Try again with better light or a wider room shot.",
+            errorMessage = "We couldn't analyze that room photo yet.",
+        ),
+    )
+}
+
+@Preview(name = "Proof Upload Ready", widthDp = 393, heightDp = 852)
+@Composable
+private fun ProofUploadReadyPreview() {
+    ChoreCapturePreview(
+        state = ChoreCaptureUiState(
+            isDiscoveryMode = false,
+            choreId = "chore-entry-reset",
+            dayLabel = "Today",
+            choreTitle = "Reset the entryway",
+            assigneeName = "Erick",
+            roomName = "Entry",
+            dueLabel = "Due tonight",
+            title = "Upload proof",
+            subtitle = "Add one clear photo of the finished chore.",
+            helperTitle = "Show the finished result",
+            helperBody = "One clear photo is enough.",
+            previewUri = PreviewPhotoUri,
+            hasCapturedPhoto = true,
+            captureLabel = "Photo ready to submit.",
+            primaryActionLabel = "Submit for review",
+            hasChorePilotPro = true,
+        ),
+    )
+}
+
+private const val PreviewPhotoUri = "https://example.com/chorepilot-proof-preview.jpg"
+
+private fun discoveryPreviewState(
+    phase: DiscoveryCapturePhase = DiscoveryCapturePhase.Capture,
+    hasCapturedPhoto: Boolean = false,
+    previewUri: String? = null,
+    discoveryDrafts: List<DiscoveryDraftUiModel> = emptyList(),
+    discoverySummary: String = "",
+    captureLabel: String = "",
+    primaryActionLabel: String = "Take room photo",
+    isSubmitting: Boolean = false,
+    errorMessage: String? = null,
+    successMessage: String? = null,
+): ChoreCaptureUiState = ChoreCaptureUiState(
+    isDiscoveryMode = true,
+    isAdminFlow = true,
+    title = "Scan for chores",
+    subtitle = "Take one room photo and turn what you spot into editable chore drafts.",
+    helperTitle = "Show the full room",
+    helperBody = "Wider, brighter photos help AI catch more chores on the first pass.",
+    primaryActionLabel = primaryActionLabel,
+    previewUri = previewUri,
+    hasCapturedPhoto = hasCapturedPhoto,
+    captureLabel = captureLabel,
+    isSubmitting = isSubmitting,
+    errorMessage = errorMessage,
+    hasChorePilotPro = true,
+    discoveryPhase = phase,
+    discoveryDrafts = discoveryDrafts,
+    discoverySummary = discoverySummary,
+    discoverySaveActionLabel = "Activate chores",
+    successMessage = successMessage,
+)
+
+private fun previewDiscoveryDrafts(): List<DiscoveryDraftUiModel> = listOf(
+    DiscoveryDraftUiModel(
+        id = "draft-dishes",
+        title = "Clear the dinner dishes",
+        description = "Sink and counter both have visible dishes.",
+        roomName = "Kitchen",
+        effort = ChoreEffortValue.Standard,
+        proofNeededSuggested = true,
+        repeatsEnabled = true,
+        repeatFrequency = ChoreRepeatFrequencyValue.Daily,
+        dailyMode = ChoreDailyModeValue.Weekdays,
+        selectedWeekdays = setOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"),
+    ),
+    DiscoveryDraftUiModel(
+        id = "draft-couch",
+        title = "Reset couch pillows",
+        description = "Living room seating could use a quick reset.",
+        roomName = "Living room",
+        effort = ChoreEffortValue.Light,
+        proofNeededSuggested = false,
+        repeatsEnabled = true,
+        repeatFrequency = ChoreRepeatFrequencyValue.Weekly,
+        selectedWeekdays = setOf("Saturday"),
+    ),
+    DiscoveryDraftUiModel(
+        id = "draft-entry",
+        title = "Put shoes in cubbies",
+        roomName = "Entry",
+        effort = ChoreEffortValue.Light,
+        proofNeededSuggested = false,
+        repeatsEnabled = false,
+        selectedOneTimeDate = "Today",
+    ),
+)
