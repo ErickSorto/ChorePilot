@@ -65,3 +65,4 @@ Useful local checks:
 ./gradlew :composeApp:assembleDebug
 firebase deploy --only firestore:rules,storage
 ```
+
