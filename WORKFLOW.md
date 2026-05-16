@@ -29,13 +29,13 @@ hooks:
     git config --global --add safe.directory "$PWD" 2>/dev/null || true
 agent:
   max_concurrent_agents: 1
-  max_turns: 20
+  max_turns: 3
 codex:
-  command: PATH=/Users/ericksorto/.local/share/fnm/node-versions/v24.15.0/installation/bin:$PATH /Users/ericksorto/.local/share/fnm/node-versions/v24.15.0/installation/bin/codex --config shell_environment_policy.inherit=all app-server
+  command: PATH=/Users/ericksorto/.local/share/fnm/node-versions/v24.15.0/installation/bin:$PATH /Users/ericksorto/.local/share/fnm/node-versions/v24.15.0/installation/bin/codex --config shell_environment_policy.inherit=all --config model_reasoning_effort=\"low\" --config features.rmcp_client=false --config features.image_generation=false app-server
   approval_policy: never
   thread_sandbox: danger-full-access
   turn_sandbox_policy:
-    type: danger-full-access
+    type: dangerFullAccess
 ---
 You are working on Linear issue `{{ issue.identifier }}` for the ChorePilot repository.
 
@@ -77,6 +77,15 @@ Follow the repository's `AGENTS.md` instructions exactly:
 9. Commit the finished work, push the branch, and open a GitHub pull request when credentials allow it.
 10. Move the Linear issue to `Human Review` only after validation passes and the PR is linked. If your Linear team uses a different review status, use that configured handoff status instead.
 11. If blocked by missing auth, secrets, unavailable tools, hidden confirmation prompts, or an ambiguous product requirement, update the workpad with the exact blocker and stop cleanly. Do not wait indefinitely for user input that Symphony cannot surface.
+
+## Reasoning And Budget Rules
+
+- Default to low reasoning. Treat this as a small, focused engineering pass unless the issue explicitly says it is architectural, cross-platform, security-sensitive, data-loss-sensitive, billing-sensitive, or release-blocking.
+- Use medium reasoning only when the issue touches multiple features, shared infrastructure, auth, billing, notifications, persistence, or ambiguous UX behavior.
+- Do not use high or extra-high reasoning for ordinary bugs, visual polish, small UI adjustments, copy changes, routing fixes, or one-screen fixes.
+- Keep the first investigation under 10 focused file reads. If the likely fix is not clear after that, update `## Codex Workpad` with what is known, what is unknown, and stop cleanly.
+- Do not re-read broad repository context each turn. Reuse the workpad and only inspect files directly related to the current issue.
+- Prefer a targeted compile/test command over `./gradlew check` during the agent pass. Leave full CI to GitHub unless the issue truly needs broad validation.
 
 ## Focus Rules
 
