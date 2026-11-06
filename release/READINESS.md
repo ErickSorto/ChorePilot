@@ -1,5 +1,19 @@
 # Release readiness — November 6, 2026
 
+## Signing setup follow-up
+
+The user approved a new Apple Distribution identity and ChorePilot App Store
+profile. The encrypted signing export, profile, and Firebase configuration are
+now GitHub `release-testing` secrets, and the user entered the export password
+directly. The environment permits only `main`, requires ErickSorto's review,
+and disallows administrator bypass. The four secret names are present; use the
+[signing-only verification workflow](SIGNING-CHECK.md) to test their usability.
+
+Certificate-to-profile matching adds three regression tests; 79 Python tests
+now pass. Store API credentials and release enablement switches remain
+unconfigured. No app build or store action has run. The dated inventory below
+records the earlier state before this explicitly approved signing setup.
+
 This branch publishes the previously prepared release tooling for review. It is
 not an application release candidate. Both manual pipelines remain disabled.
 
