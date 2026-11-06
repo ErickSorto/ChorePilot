@@ -34,3 +34,5 @@ iosApp/GoogleService-Info*.plist
 *.mobileprovision
 *.jks
 *.keystore
+__pycache__/
+*.py[cod]

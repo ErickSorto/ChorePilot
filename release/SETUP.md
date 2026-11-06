@@ -27,10 +27,11 @@ confirm the account's budget before enabling or running them.
    python3 scripts/release.py init 2.0.0 --android-code 200 --ios-build 200 --notes-file /path/to/english-notes.txt
    ```
 
-3. Edit `release/releases/2.0.0.json`. Write English once, supply translations in
-   `notes`, and keep each locale at 500 characters or fewer. There is no AI
-   provider, translation subscription, or API key integration. A translator or
-   an independently authorized translation tool can fill these fields.
+3. Edit `release/releases/2.0.0.json`, or initialize it with blank notes and run
+   `python3 scripts/release.py generate-notes 2.0.0 --base VERIFIED_PREVIOUS_RELEASE_COMMIT`.
+   The latter drafts English and all configured translations using an existing
+   ChatGPT CLI login, without a new API key or translation subscription. Every
+   locale remains limited to 500 characters. See [generation guidance](README-notes.md).
 4. Read each translation against the source, then record each review:
 
    ```sh

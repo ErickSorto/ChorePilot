@@ -11,9 +11,14 @@ not an application release candidate. Both manual pipelines remain disabled.
   “No issues found.” Managed publishing is off. Last publication: October 12.
 - The developer account separately asks for a trader-status declaration by
   February 2027; no declaration was made during this review.
-- App Store Connect requires sign-in, so its current version, build inventory,
-  and review status remain unverified. The local October 2 upload record confirms
-  version 1.0 build 7 was uploaded, but not submitted in that operation.
+- The signed-in App Store Connect session shows iOS 1.0 Ready for Distribution,
+  using build 7. The highest visible uploaded build is 7, uploaded October 2;
+  builds 4–7 are complete. The unrelated macOS 1.0 draft remains untouched.
+  The existing iOS version uses automatic release after approval. Future pipeline
+  preparation deliberately selects manual release; that setting was not changed.
+- An existing active team API key and a matching local private-key filename were
+  found. No key was created, opened, copied, or tested against the API. A working
+  API credential and Apple distribution signing still need verification.
 - GitHub's public repository has no release secrets, environments, or variables.
   Its only existing workflow is ChorePilot CI.
 
@@ -31,23 +36,27 @@ privacy/account-deletion work, helper-proof changes, invite handoff, and UI work
 It has 498 modified and 963 deleted tracked files, plus 355 untracked entries;
 many are generated Pods or output artifacts. Do not publish that entire directory.
 
-Before activating, reconcile the intended app source into a dedicated release
-branch, include required untracked source/resources, and run Android/iOS build
-and device checks. Do not disable the RevenueCat guard on old main merely to
+A separate local `release/app-candidate` branch now reconciles the app source,
+including required untracked source/resources and the current-main navigation
+fix. It is unpushed and separate from this tooling PR. Its 384 Android unit tests
+and shared iOS simulator Kotlin compilation passed; a signed native build and
+device checks remain. Do not disable the RevenueCat guard on old main merely to
 make a build pass. Historical INVENTORY/VALIDATION documents describe the local
 October checkout, not a verification of the app on this branch.
 
 Known behavior to verify includes iPhone invitation handoff and submission of
-proof for someone else's chore. The local invite redirect uses firebaseapp.com,
-while the inspected iOS associated domains include web.app and chorepilot.app;
-the signed-device handoff needs explicit verification. Historical production
+proof for someone else's chore. The firebaseapp.com invite redirect intentionally
+opens a browser landing page; its Open button targets the associated web.app
+domain. The complete signed-device handoff still needs verification. Historical production
 proof-upload 403s were associated with a deployed/local backend mismatch.
 No backend deployment or fresh production-function comparison occurred here.
 
 ## Remaining activation inputs
 
-1. Sign in to App Store Connect and verify all uploaded build numbers. Proposed
-   1.0.3 / Android 53 / iOS 8 remain provisional; no release manifest is approved.
+1. Confirm the intended source, prior shipped source baseline, and release
+   version. Proposed 1.0.3 / Android 53 / iOS 8 remain provisional; no real new
+   release manifest is approved. Browser login and current build inventory are
+   now verified; highest observed Android/iOS builds are 52/7 respectively.
 2. Select and verify the existing Android upload key and passwords, Apple signing
    certificate/profile, and store API credentials. Firebase files and a local
    Android keystore exist; no release credential environment variables are set.
@@ -62,14 +71,32 @@ Use `bash scripts/check-release-tooling.sh` with Ruby 3.4 and the pinned bundle
 to validate the release tooling. Ruby test files run separately because the
 stubbed Fastlane tests and real Spaceship tests have incompatible process globals.
 
+## Added generation in the existing flow
+
+`generate-notes VERSION --base VERIFIED_PREVIOUS_RELEASE_COMMIT` now drafts
+and translates all configured languages through the existing ChatGPT CLI login.
+It updates the same release manifest and review preview, clears review hashes,
+and binds generated notes to the committed source and release configuration.
+Source changes, uncertain facts, invalid locales/lengths, and concurrent input
+changes stop the flow. No second manifest, credential, paid API service, or
+unattended hosted AI workflow was introduced. See [README-notes.md](README-notes.md).
+
+The explicit baseline is important for this app: the broad local source snapshot
+cannot establish exactly what changed since the shipped binaries. Reviewed facts
+can clarify commit subjects, but cannot substitute for a verified baseline.
+
 ## Validation in this review
 
-- 60 Python release-tool tests passed.
+- 76 Python release-tool tests passed, including 16 generation tests.
 - 65 Ruby release-tool tests / 355 assertions passed using the pinned bundle.
 - Gradle configuration (`help`) passed on the isolated current-main branch.
   This is not a signed build or a device test; existing KMP/AGP deprecation
   warnings remain.
 - The StoreRelease scheme references the correct existing app target.
+- A live synthetic fixture generated valid English, Spanish, French, German,
+  Portuguese, and Russian drafts using the existing ChatGPT login. The preview
+  was created, approvals remained empty, and reviewed export was blocked.
+  No real ChorePilot facts or store operations were involved in that smoke test.
 - Separately, 148 backend unit tests passed in the original local app checkout.
   These do not prove the deployed backend matches that source.
 - No signed AAB/IPA, test upload, backend deployment, review submission, public

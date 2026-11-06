@@ -129,7 +129,7 @@ class ReleaseManager:
         require_version(version)
         return contained_path(self.root, "release", "releases", version + ".json")
 
-    def load(self, version):
+    def load(self, version, verify_generation=True):
         manifest = read_json(self.manifest_path(version))
         if manifest.get("version") != version:
             raise ReleaseError("Manifest version must match its requested version and filename.")
@@ -143,6 +143,9 @@ class ReleaseManager:
         reviews = manifest.get("reviews")
         if not isinstance(reviews, dict) or not set(reviews).issubset(self.locales):
             raise ReleaseError("Manifest reviews must be an object containing only configured locales.")
+        if verify_generation and "generation" in manifest:
+            from release_generation import verify_source
+            verify_source(self, manifest)
         return manifest
 
     def init(self, version, android_code, ios_build, notes=""):
@@ -295,6 +298,13 @@ def main(argv=None):
             raise
     else:
         add_commands(commands)
+    try:
+        from release_generation import add_commands as add_generation_commands
+    except ModuleNotFoundError as exc:
+        if exc.name != "release_generation":
+            raise
+    else:
+        add_generation_commands(commands)
     arguments = parser.parse_args(argv)
     try:
         manager = ReleaseManager(ROOT)
@@ -311,6 +321,9 @@ def main(argv=None):
         elif arguments.command == "export":
             path = manager.export(arguments.version, reviewed=arguments.reviewed)
             print(f"Exported release {arguments.version} to {path}.")
+        elif arguments.command == "generate-notes":
+            from release_generation import run_command as generate_command
+            return generate_command(manager, arguments)
         else:
             return run_command(manager, arguments)
     except (ValueError, OSError, UnicodeError) as exc:

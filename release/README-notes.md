@@ -1,6 +1,57 @@
 # Release notes and reusable store text
 
-This tool prepares files locally. It never contacts a store, generates translations, uses an AI API, or uploads a build. Python 3.10 or later is required. The script finds the project from its own location, so commands work from any current directory when the script path is correct.
+This tool prepares release files without contacting a store or uploading builds.
+The optional `generate-notes` command uses an existing ChatGPT CLI login to
+summarize committed changes and translate notes; it does not use an API key or
+install a service. Other commands are local. Python 3.10 or later is required.
+The script finds the project from its own location.
+
+## Generate notes and translations
+
+After checking out and committing the intended candidate, initialize the existing
+manifest with **confirmed** version/build numbers, leaving notes blank. Then:
+
+```sh
+python3 scripts/release.py generate-notes VERSION --base PREVIOUS_RELEASE_COMMIT
+```
+
+This generates the source note and every configured language, validates them,
+writes `notes` in the existing manifest, clears review hashes, and produces the
+existing `build/release/VERSION/review.md`. It does not create another release
+format or approve the wording. Review the preview before running the existing
+`review VERSION --all`, `review-store VERSION`, and `prepare VERSION --reviewed`.
+
+The baseline is explicit: use the source commit that actually shipped, not an
+arbitrary tag or an assumed current main. If earlier releases were never committed,
+reconstruct and review that baseline first. Vague or bulk commit subjects may
+need `--facts-file /path/to/reviewed-changes.txt`. That file should contain only
+verified user-visible changes, without personal data, credentials or logs.
+
+The assistant receives commit subjects, changed file paths, and optional change
+facts; source file contents, authors, credentials and log files are not collected.
+It runs in an ephemeral temporary directory with read-only permissions, shell
+tools disabled, user tool configuration excluded, and web search disabled. It
+requires an existing ChatGPT login, uses that plan's usage allowance, and refuses
+API-key fallback. A working installed CLI is required; `--assistant-bin` can
+select it. On macOS it also checks the installed ChatGPT app's bundled CLI when
+the PATH command is unavailable. No installation, login or credential copying is
+performed. This local command is not an unattended GitHub Actions AI service.
+The CLI behavior is documented in [non-interactive usage](https://developers.openai.com/codex/non-interactive-mode)
+and [authentication](https://developers.openai.com/codex/auth).
+
+Unknown/missing locales, blank or oversized notes, placeholders, model warnings,
+changed input, failed authentication or timeouts stop import. Warnings are saved
+locally under the review directory. Existing notes require `--replace-drafts`;
+that explicit regeneration clears all note/store reviews. Check the result even
+when no warning was returned: model text is not evidence of correctness.
+
+Generated manifests record the source/configuration fingerprints. Source edits
+block subsequent review/export until notes are regenerated; committing only
+release metadata does not invalidate the source binding. Source scope defaults
+to the app, native/backend/hosting code and build files. Other project layouts
+can set `notes_generation.source_paths` in `release/config.json` to literal
+repository paths. Keep all release-relevant source in scope. Generated folders
+and release metadata do not belong there.
 
 ## Start a release
 
@@ -14,7 +65,9 @@ python3 scripts/release.py init 1.2.3 --android-code 53 --ios-build 8 --notes-fi
 
 The numbers are examples, not recommendations for the next release. Omitting `--notes-file` creates blank source notes too. Existing releases are never overwritten by `init`.
 
-Edit `release/releases/1.2.3.json`. Its `notes` object contains every locale configured in `release/config.json`; translations start blank. Add reviewed translations yourself or through a separately authorized translation process. Do not translate app names, URLs, or identifiers accidentally. There is no automatic English fallback for missing translations.
+Edit `release/releases/1.2.3.json`, use `generate-notes`, or use the existing
+translation handoff commands. The `notes` object contains every configured
+locale; missing translations never silently fall back to English.
 
 Each locale is limited to 500 Unicode characters, including line breaks, so the same text fits the Google Play release-notes field and can be reused for iOS.
 

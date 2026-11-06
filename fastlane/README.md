@@ -91,8 +91,9 @@ Store operations consume the reviewed **delta plan**, never the broad build
 export directory. `prepare_store`, `submit_store`, and `release_store` are gated
 separately by platform, action, and version. Read [STORE-FLOW.md](../release/STORE-FLOW.md)
 for exact effects, required fields, and activation. Android public release
-remains a Play Console action. Translation generation is not connected to any
-paid or AI service.
+remains a Play Console action. Local `release.py generate-notes` uses an existing
+ChatGPT CLI login to draft notes and translations before review. No separate paid
+translation service, API key, or AI job in GitHub Actions is configured.
 
 ## References
 

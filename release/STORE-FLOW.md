@@ -7,9 +7,24 @@ Google Play release notes, TestFlight “What to Test”, and App Store “What'
 
 This is installed code, not an activated connection. No store calls, credential
 configuration, pushes, uploads, review submissions, or public releases were made
-while implementing it. Translation generation is not configured.
+while implementing the original flow. Local note generation and translation now
+use the existing ChatGPT CLI login through `generate-notes`; no new AI key,
+translation service, or unattended GitHub AI job is configured.
 
 ## What you do each release
+
+For automatic drafting, initialize the manifest with confirmed version/build
+numbers and no `--notes-file`, then run:
+
+```sh
+python3 scripts/release.py generate-notes VERSION --base VERIFIED_PREVIOUS_RELEASE_COMMIT
+```
+
+The command generates all configured languages into the same manifest and opens
+the existing review path. Continue at step 2 below. Use `--facts-file` for reviewed
+change context when Git subjects are vague. It never approves or submits its own
+output. [Generation inputs and source checks](README-notes.md#generate-notes-and-translations)
+explain the existing-login requirement and limitations. The manual path remains:
 
 1. Choose unused build numbers from the stores and write one source note:
 
