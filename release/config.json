@@ -1,0 +1,40 @@
+{
+  "app_name": "ChorePilot",
+  "android_module": ":composeApp",
+  "android_package": "com.sortoapps.chorepilot",
+  "android_firebase_path": "composeApp/google-services.json",
+  "ios_bundle_id": "com.sortoapps.chorepilot",
+  "ios_team_id": "9J5J9J3D9R",
+  "ios_firebase_path": "iosApp/iosApp/GoogleService-Info.plist",
+  "ios_workspace": "iosApp/iosApp.xcworkspace",
+  "ios_project": "iosApp/iosApp.xcodeproj",
+  "ios_scheme": "StoreRelease",
+  "ios_target": "iosApp",
+  "source_locale": "en-US",
+  "locales": {
+    "en-US": {
+      "android": "en-US",
+      "ios": "en-US"
+    },
+    "pt-BR": {
+      "android": "pt-BR",
+      "ios": "pt-BR"
+    },
+    "es-ES": {
+      "android": "es-ES",
+      "ios": "es-ES"
+    },
+    "de-DE": {
+      "android": "de-DE",
+      "ios": "de-DE"
+    },
+    "fr-FR": {
+      "android": "fr-FR",
+      "ios": "fr-FR"
+    },
+    "ru-RU": {
+      "android": "ru-RU",
+      "ios": "ru"
+    }
+  }
+}

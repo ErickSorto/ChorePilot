@@ -1,0 +1,1 @@
+household,chart,shared,housework,routine,reminder,roommate,organizer,schedule,checklist,pet,photo
